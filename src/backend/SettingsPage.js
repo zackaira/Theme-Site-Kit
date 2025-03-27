@@ -1,0 +1,707 @@
+const { useState, useEffect } = wp.element;
+const { __ } = wp.i18n;
+import axios from "axios";
+import SettingRow from "./components/SettingRow";
+import SettingHeader from "./components/SettingHeader";
+import SettingGroup from "./components/SettingGroup";
+import Loader from "./Loader";
+import SocialIcons from "../frontend/components/SocialIcons";
+import GeneralPage from "./components/GeneralPage";
+import { kwtskGroupSettings, kwtskSocialOptions } from "./helpers";
+
+const Settings = ({ kwtskObj }) => {
+	const url = `${kwtskObj.apiUrl}kwtsk/v1`;
+	const [loader, setLoader] = useState(false);
+	const [loadSetting, setLoadSetting] = useState(true);
+	const getInitialTab = () => {
+		const params = new URLSearchParams(window.location.search);
+		return params.get("tab") || "general";
+	};
+	const [activeTab, setActiveTab] = useState(getInitialTab());
+	const kwtskDefaults = kwtskObj.kwtskDefaults;
+	// const wcActive = Boolean(kwtskObj.wcActive);
+	const [kwtskOptions, setLinktOptions] = useState({});
+	const [kwtskUrlVal, setLinktUrlVal] = useState(false);
+	const [showSocialPreview, setShowSocialPreview] = useState(false);
+
+	const changeTab = (tabId) => {
+		setActiveTab(tabId);
+
+		const params = new URLSearchParams(window.location.search);
+		params.set("tab", tabId);
+		window.history.replaceState(null, "", "?" + params.toString());
+	};
+
+	// console.log(kwtskOptions);
+
+	// setState dynamically for each setting
+	const handleChange = ({
+		target: { type, checked, name, value, className },
+	}) => {
+		if (
+			type === "checkbox" &&
+			(className === "checkbox-single" ||
+				className === "toggle-switch-checkbox")
+		) {
+			value = checked;
+		}
+
+		// Check if the name contains an underscore (indicating a nested setting)
+		const underscoreIndex = name.indexOf("_");
+		if (underscoreIndex > -1) {
+			const settingGroup = name.substring(0, underscoreIndex);
+			const settingName = name.substring(underscoreIndex + 1);
+
+			setLinktOptions({
+				...kwtskOptions,
+				[settingGroup]: {
+					// Use an empty object if the group isn’t defined yet
+					...(kwtskOptions[settingGroup] || {}),
+					[settingName]: value,
+				},
+			});
+		} else {
+			// For settings with no group
+			setLinktOptions({
+				...kwtskOptions,
+				[name]: value,
+			});
+		}
+	};
+
+	useEffect(() => {
+		kwtskGroupSettings();
+	}, [kwtskOptions]);
+
+	// Submit form
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		setLoader(true);
+
+		axios
+			.post(
+				url + "/settings",
+				{
+					kwtskOptions: JSON.stringify(kwtskOptions),
+				},
+				{
+					// Add Nonce to prevent this working elsewhere
+					headers: {
+						"content-type": "application/json",
+						"X-WP-NONCE": kwtskObj.nonce,
+					},
+				},
+			)
+			.then((res) => {
+				// console.log(res.data);
+				// const kwtskOptions = JSON.parse(res.data.kwtskOptions);
+				if (res.data === "Successful") setLinktUrlVal(true);
+				setLoader(false);
+			});
+	};
+
+	const confirmDelete = (e) => {
+		const deleteBtn = document.getElementsByClassName("kwtsk-delete");
+		deleteBtn[0].classList.add("show-confirm");
+		setTimeout(function () {
+			deleteBtn[0].classList.remove("show-confirm");
+		}, 2500);
+	};
+
+	const handleDeleteOptions = (e) => {
+		e.preventDefault();
+		if (
+			window.confirm(
+				__("Are you sure you want to delete all settings?", "theme-site-kit"),
+			)
+		) {
+			setLoader(true);
+			setLoadSetting(true);
+			axios
+				.delete(url + "/delete", {
+					headers: {
+						"X-WP-NONCE": kwtskObj.nonce,
+					},
+				})
+				.then((res) => {
+					setLoader(false);
+					location.reload();
+				});
+		}
+	};
+
+	// Get Settings from db
+	useEffect(() => {
+		axios
+			.get(url + "/settings")
+			.then((res) => {
+				const kwtskOptions = res?.data
+					? JSON.parse(res.data)
+					: console.log("Theme Site Kit Options Empty");
+
+				// setState dynamically for all settings
+				if (kwtskOptions) {
+					for (const key in kwtskOptions) {
+						setLinktOptions((prevState) => ({
+							...prevState,
+							[key]: kwtskOptions[key] ? kwtskOptions[key] : "",
+						}));
+					}
+				} else {
+					setLinktOptions(kwtskDefaults); // Set settings to kwtskDefaults if not found
+					// document.querySelector(".kwtskSaveBtn").click();
+				}
+				// console.log(kwtskOptions);
+			})
+			.then(() => {
+				setLoadSetting(false);
+			});
+	}, []);
+
+	return (
+		<React.Fragment>
+			<div className="kwtsk-settings">
+				<div className="kwtskSettingBar">
+					<h2>{__("Theme Site Kit Settings", "theme-site-kit")}</h2>
+					<div className="kwtskSettingBarOptions">
+						<a
+							href="https://kairaweb.com/documentation/"
+							className="fa-solid fa-life-ring kwtsk-docs"
+							title={__("Documentation", "theme-site-kit")}
+							target="_blank"
+						></a>
+					</div>
+				</div>
+
+				<div
+					className={`kwtsk-settings-content ${activeTab === "general" ? "hide-save" : ""}`}
+				>
+					<form id="kwtsk-settings-form" onSubmit={(e) => handleSubmit(e)}>
+						<div className="kwtsk-tabs">
+							<ul>
+								<li>
+									<a
+										id="kwtsktab-general"
+										className={`kwtsk-tab ${activeTab === "general" ? "active" : ""}`}
+										onClick={() => changeTab("general")}
+									>
+										{__("General", "theme-site-kit")}
+									</a>
+								</li>
+								<li>
+									<a
+										id="kwtsktab-disable_comments"
+										className={`kwtsk-tab ${activeTab === "disable_comments" ? "active" : ""}`}
+										onClick={() => changeTab("disable_comments")}
+									>
+										{__("Disable Comments", "theme-site-kit")}
+									</a>
+								</li>
+								<li>
+									<a
+										id="kwtsktab-social_links"
+										className={`kwtsk-tab ${activeTab === "social_links" ? "active" : ""}`}
+										onClick={() => changeTab("social_links")}
+									>
+										{__("Social Links", "theme-site-kit")}
+									</a>
+								</li>
+								<li>
+									<a
+										id="kwtsktab-mobile_menu"
+										className={`kwtsk-tab ${activeTab === "mobile_menu" ? "active" : ""}`}
+										onClick={() => changeTab("mobile_menu")}
+									>
+										{__("Mobile Menu", "theme-site-kit")}
+									</a>
+								</li>
+								<li>
+									<a
+										id="kwtsktab-extras"
+										className={`kwtsk-tab ${activeTab === "extras" ? "active" : ""}`}
+										onClick={() => changeTab("extras")}
+									>
+										{__("Extras", "theme-site-kit")}
+									</a>
+								</li>
+							</ul>
+
+							<div className="kwtsk-content-wrap">
+								<div className="kwtsk-content-wrap-inner">
+									{(loadSetting || loader) && <Loader />}
+
+									<div
+										id="kwtsk-content-general"
+										className={`kwtsk-content ${
+											activeTab === "general" ? "active" : ""
+										}`}
+									>
+										<GeneralPage />
+									</div>
+
+									<div
+										id="kwtsk-content-disable_comments"
+										className={`kwtsk-content ${
+											activeTab === "disable_comments" ? "active" : ""
+										}`}
+									>
+										<SettingHeader
+											title={__("Disable Comments", "theme-site-kit")}
+											description={__(
+												"Easily turn off comments across your entire site or selectively disable them per post or page. Keep your content clean and focused, without unnecessary clutter or spam.",
+												"theme-site-kit",
+											)}
+										/>
+
+										<table className="form-table" role="presentation">
+											<tbody>
+												<SettingRow
+													title={__("Disable Comments", "theme-site-kit")}
+													slug="disablecomments_disable"
+													value={kwtskOptions.disablecomments?.disable}
+													inputType="radio"
+													options={[
+														{
+															value: "everywhere",
+															label: __("Everywhere", "theme-site-kit"),
+														},
+														{
+															value: "post_types",
+															label: __("Post Types Only", "theme-site-kit"),
+														},
+													]}
+													onChange={handleChange}
+													customClass={"kwtsk-disable-comments"}
+													notitle
+												/>
+
+												{kwtskOptions.disablecomments?.disable ===
+													"post_types" && (
+													<>
+														{kwtskObj.post_types && (
+															<tr>
+																<th scope="row">
+																	<h4>
+																		{__(
+																			"Disable Comments on:",
+																			"theme-site-kit",
+																		)}
+																	</h4>
+																</th>
+																<td>
+																	<table
+																		className="form-table inner-setting-table"
+																		role="presentation"
+																	>
+																		<tbody>
+																			{Object.entries(kwtskObj.post_types).map(
+																				([key, postType]) => (
+																					<SettingRow
+																						key={postType.name}
+																						title={postType.label}
+																						slug="disablecomments_post_types"
+																						value={
+																							kwtskOptions.disablecomments?.post_types?.includes(
+																								postType.name,
+																							) || false
+																						}
+																						inputType="toggle"
+																						onChange={(e) => {
+																							let updated =
+																								kwtskOptions.disablecomments
+																									?.post_types || [];
+																							if (e.target.checked) {
+																								updated = [
+																									...updated,
+																									postType.name,
+																								];
+																							} else {
+																								updated = updated.filter(
+																									(pt) => pt !== postType.name,
+																								);
+																							}
+																							handleChange({
+																								target: {
+																									name: "disablecomments_post_types",
+																									value: updated,
+																								},
+																							});
+																						}}
+																					/>
+																				),
+																			)}
+																		</tbody>
+																	</table>
+																</td>
+															</tr>
+														)}
+													</>
+												)}
+											</tbody>
+										</table>
+									</div>
+
+									<div
+										id="kwtsk-content-social_links"
+										className={`kwtsk-content ${
+											activeTab === "social_links" ? "active" : ""
+										}`}
+									>
+										<SettingHeader
+											title={__("Social Links", "theme-site-kit")}
+											description={__(
+												"Add slick, always-visible floating icons for your social media profiles and contact options. Positioned neatly along the side of your site, they make it easy for visitors to connect with you anytime.",
+												"theme-site-kit",
+											)}
+										/>
+
+										<table className="form-table" role="presentation">
+											<tbody>
+												<SettingRow
+													title={__("Enable Social Links", "theme-site-kit")}
+													slug={`social_enabled`}
+													value={kwtskOptions.social?.enabled}
+													inputType="toggle"
+													onChange={handleChange}
+												/>
+
+												{kwtskOptions.social?.enabled && (
+													<>
+														<SettingRow
+															title={__("Show Preview", "theme-site-kit")}
+															slug={`social_preview`}
+															value={showSocialPreview}
+															inputType="toggle"
+															onChange={() =>
+																setShowSocialPreview((state) => !state)
+															}
+														/>
+														<SettingRow
+															title={__("Position", "linkt")}
+															slug="social_position"
+															value={kwtskOptions.social?.position}
+															inputType="select"
+															options={{
+																"right-top": __("Right Top", "theme-site-kit"),
+																"right-bottom": __(
+																	"Right Bottom",
+																	"theme-site-kit",
+																),
+																"left-top": __("Left Top", "theme-site-kit"),
+																"left-bottom": __(
+																	"Left Bottom",
+																	"theme-site-kit",
+																),
+																"bottom-left": __(
+																	"Bottom Left",
+																	"theme-site-kit",
+																),
+																"bottom-center": __(
+																	"Bottom Center",
+																	"theme-site-kit",
+																),
+																"bottom-right": __(
+																	"Bottom Right",
+																	"theme-site-kit",
+																),
+															}}
+															onChange={handleChange}
+														/>
+
+														{kwtskOptions.social?.position !==
+															"bottom-center" && (
+															<SettingRow
+																title={__("Offset", "theme-site-kit")}
+																slug="social_offset"
+																value={kwtskOptions.social?.offset}
+																placeholder="150"
+																inputType="number"
+																onChange={handleChange}
+																suffix="px"
+															/>
+														)}
+
+														<SettingGroup
+															label={__("Edit Social Icons", "theme-site-kit")}
+														>
+															<SettingRow
+																title={__("Icon Size", "linkt")}
+																slug="social_iconsize"
+																value={kwtskOptions.social?.iconsize}
+																inputType="select"
+																options={{
+																	xsmall: __("Extra Small", "theme-site-kit"),
+																	small: __("Small", "theme-site-kit"),
+																	medium: __("Medium", "theme-site-kit"),
+																	large: __("Large", "theme-site-kit"),
+																	xlarge: __("Extra Large", "theme-site-kit"),
+																}}
+																onChange={handleChange}
+															/>
+															<SettingRow
+																title={__("Icon Spacing", "blockons")}
+																slug="social_spacing"
+																value={kwtskOptions.social?.spacing}
+																inputType="range"
+																defaultValue={8}
+																min={1}
+																max={40}
+																suffix="px"
+																onChange={handleChange}
+															/>
+
+															<SettingRow
+																title={__("Icon Style", "linkt")}
+																slug="social_style"
+																value={kwtskOptions.social?.style}
+																inputType="select"
+																options={{
+																	square: __("Square", "theme-site-kit"),
+																	rounded: __("Rounded", "theme-site-kit"),
+																	rounder: __("More Rounded", "theme-site-kit"),
+																	round: __("Round", "theme-site-kit"),
+																}}
+																onChange={handleChange}
+															/>
+
+															<SettingRow
+																title={__("Show Background", "theme-site-kit")}
+																slug="social_showbg"
+																value={kwtskOptions.social?.showbg}
+																inputType="toggle"
+																onChange={handleChange}
+															/>
+
+															{kwtskOptions.social?.showbg && (
+																<SettingRow
+																	title={__(
+																		"Background Color",
+																		"theme-site-kit",
+																	)}
+																	slug="social_iconbgcolor"
+																	value={kwtskOptions.social?.iconbgcolor}
+																	inputType="colorpicker"
+																	defaultValue="#FFF"
+																	onChange={handleChange}
+																/>
+															)}
+
+															<SettingRow
+																title={__("Label on Hover", "theme-site-kit")}
+																slug="social_showtext"
+																value={kwtskOptions.social?.showtext}
+																inputType="toggle"
+																onChange={handleChange}
+															/>
+															<SettingRow
+																title={__(
+																	"Icon Original Color",
+																	"theme-site-kit",
+																)}
+																slug="social_iconorigcolor"
+																value={kwtskOptions.social?.iconorigcolor}
+																inputType="toggle"
+																onChange={handleChange}
+															/>
+
+															{(!kwtskOptions.social?.iconorigcolor ||
+																kwtskOptions.social?.showtext) && (
+																<SettingRow
+																	title={
+																		kwtskOptions.social?.iconorigcolor &&
+																		kwtskOptions.social?.showtext
+																			? __("Text Color", "theme-site-kit")
+																			: __(
+																					"Icon & Text Color",
+																					"theme-site-kit",
+																				)
+																	}
+																	slug="social_iconcolor"
+																	value={kwtskOptions.social?.iconcolor}
+																	inputType="colorpicker"
+																	defaultValue="#AF2DBF"
+																	onChange={handleChange}
+																/>
+															)}
+														</SettingGroup>
+
+														<SettingRow
+															slug="social_icons"
+															value={kwtskOptions.social?.icons}
+															inputType="socialicons"
+															options={kwtskSocialOptions}
+															onChange={handleChange}
+															notitle
+														/>
+													</>
+												)}
+											</tbody>
+										</table>
+									</div>
+
+									<div
+										id="kwtsk-content-mobile_menu"
+										className={`kwtsk-content ${
+											activeTab === "mobile_menu" ? "active" : ""
+										}`}
+									>
+										<SettingHeader
+											title={__("Custom Mobile Menu", "theme-site-kit")}
+											description={__(
+												"Upgrade your site's mobile experience with an enhanced core Navigation Block extension. This feature creates a smooth, modern slide-out menu that looks great and works even better on mobile devices.",
+												"theme-site-kit",
+											)}
+										/>
+
+										<table className="form-table" role="presentation">
+											<tbody>
+												<SettingRow
+													title={__(
+														"Enable Custom Mobile Menu",
+														"theme-site-kit",
+													)}
+													slug={`mobilemenu_enabled`}
+													value={kwtskOptions.mobilemenu?.enabled}
+													inputType="toggle"
+													onChange={handleChange}
+												/>
+
+												{kwtskOptions.mobilemenu?.enabled && (
+													<>
+														<SettingRow
+															title={__("Mobile Menu Colors", "linkt")}
+															slug="mobilemenu_style"
+															value={kwtskOptions.mobilemenu?.style}
+															inputType="select"
+															options={{
+																dark: __("Dark", "theme-site-kit"),
+																light: __("Light", "theme-site-kit"),
+																custom: __("Custom", "theme-site-kit"),
+															}}
+															onChange={handleChange}
+														/>
+
+														{kwtskOptions.mobilemenu?.style === "custom" && (
+															<>
+																<SettingRow
+																	title={__(
+																		"Background Color",
+																		"theme-site-kit",
+																	)}
+																	slug="mobilemenu_bgcolor"
+																	value={kwtskOptions.social?.bgcolor}
+																	inputType="colorpicker"
+																	defaultValue="#1d2327"
+																	onChange={handleChange}
+																/>
+																<SettingRow
+																	title={__("Text Color", "theme-site-kit")}
+																	slug="mobilemenu_textcolor"
+																	value={kwtskOptions.social?.textcolor}
+																	inputType="colorpicker"
+																	defaultValue="#b4b4b4"
+																	onChange={handleChange}
+																/>
+
+																<SettingRow
+																	title={__(
+																		"Selected Text Color",
+																		"theme-site-kit",
+																	)}
+																	slug="mobilemenu_selectedcolor"
+																	value={kwtskOptions.social?.selectedcolor}
+																	inputType="colorpicker"
+																	defaultValue="#FFF"
+																	onChange={handleChange}
+																/>
+															</>
+														)}
+													</>
+												)}
+											</tbody>
+										</table>
+									</div>
+
+									<div
+										id="kwtsk-content-extras"
+										className={`kwtsk-content ${
+											activeTab === "extras" ? "active" : ""
+										}`}
+									>
+										<SettingHeader
+											title={__("Extra Useful Features", "theme-site-kit")}
+											description={__(
+												"A few thoughtful Extra's to improve your workflow and enhance your frontend experience - small details that make a big difference.",
+												"theme-site-kit",
+											)}
+										/>
+
+										<table className="form-table" role="presentation">
+											<tbody>
+												<SettingRow
+													title={__("Enable SVG Uploads", "theme-site-kit")}
+													slug={`svgupload_enabled`}
+													value={kwtskOptions.svgupload?.enabled}
+													inputType="toggle"
+													onChange={handleChange}
+													note={__(
+														"Allow SVG uploads in the Media Library. SVG files are XML-based vector images that can be scaled to any size without losing quality. They are often used for logos, icons, and other graphics on the web.",
+														"theme-site-kit",
+													)}
+												/>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div className="kwtskSettingBar bottom">
+									<div className="kwtskSettingBarMain">
+										<button
+											type="submit"
+											className="button kwtskSaveBtn button-primary"
+										>
+											{__("Save Settings", "theme-site-kit")}
+										</button>
+										<div className="kwtskSaveBtnLoader">
+											{(loadSetting || loader) && <Loader />}
+										</div>
+
+										{kwtskUrlVal && (
+											<a
+												href="options-permalink.php"
+												className="stand-out-note-link"
+												target="_blank"
+											>
+												{__("Update the Permalinks", "theme-site-kit")}
+											</a>
+										)}
+									</div>
+									<div className="kwtskSettingBarOptions">
+										<div
+											className="kwtsk-delete"
+											title={__("Reset Settings", "theme-site-kit")}
+											onClick={confirmDelete}
+										>
+											<div className="kwtsk-confirm-delete">
+												<a onClick={handleDeleteOptions}>
+													{__(
+														"Confirm... Reset All Settings!",
+														"theme-site-kit",
+													)}
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				{showSocialPreview && <SocialIcons options={kwtskOptions.social} />}
+			</div>
+		</React.Fragment>
+	);
+};
+
+export default Settings;

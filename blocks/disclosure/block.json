@@ -1,0 +1,67 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "kwtsk/disclosure",
+	"title": "Affiliate Disclosure",
+	"textdomain": "theme-site-kit",
+	"icon": "heading",
+	"category": "kwtsk-category",
+	"keywords": ["affiliate", "author", "disclosure", "theme-site-kit"],
+	"attributes": {
+		"alignment": {
+			"type": "string",
+			"default": "center"
+		},
+		"align": {
+			"type": "string",
+			"default": "center"
+		},
+		"maxWidth": {
+			"type": "string",
+			"default": "100%"
+		},
+		"author": {
+			"type": "string",
+			"default": ""
+		},
+		"disclosureDesign": {
+			"type": "string",
+			"default": "one"
+		},
+		"authorLink": {
+			"type": "boolean",
+			"default": false
+		},
+		"showName": {
+			"type": "boolean",
+			"default": true
+		},
+		"showAvatar": {
+			"type": "boolean",
+			"default": true
+		},
+		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"disclosureTitle": {
+			"type": "string",
+			"default": "<strong>Affiliate Disclosure</strong>"
+		},
+		"disclosureCopy": {
+			"type": "string",
+			"default": "Some of the links on this website are affiliate links, which means that I may earn a commission if you click on the link or make a purchase using the link. As an affiliate, I earn from qualifying purchases. This is at no additional cost to you. I only recommend products and services that I believe will add value to my readers. Thank you for your support!"
+		},
+		"discVertPad": {
+			"type": "number",
+			"default": 20
+		},
+		"discHorizPad": {
+			"type": "number",
+			"default": 20
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": ["file:./style-index.css", "kwtsk-fontawesome"]
+}

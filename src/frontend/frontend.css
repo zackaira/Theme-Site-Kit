@@ -1,0 +1,374 @@
+/**
+ * Frontend Styling
+ */
+.kwtsk-social-icons {
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	z-index: 9999;
+}
+@media screen and (max-width: 600px) {
+	.kwtsk-social-icons {
+		display: none !important;
+	}
+}
+.kwtsk-social-icons.nobg .kwtsk-social-icon-a {
+	background: none !important;
+	box-shadow: none !important;
+}
+.kwtsk-social-icons.nobg .kwtsk-social-icon-a .kwtsk-icon {
+	text-shadow: 0 1px 6px rgb(0 0 0 / 12%);
+}
+.kwtsk-social-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+.kwtsk-social-icon:hover {
+	z-index: 4;
+}
+.kwtsk-social-icon-a {
+	box-shadow: 0 1px 6px rgb(0 0 0 / 12%);
+	background-color: #fff;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	text-decoration: none;
+	transition: all 0.3s;
+}
+.kwtsk-social-icon-a:hover {
+	box-shadow: 0 1px 6px rgb(0 0 0 / 18%);
+	transform: scale(1.15);
+}
+.kwtsk-social-icon-a .kwtsk-icon {
+	font-size: inherit;
+}
+.kwtsk-social-icon-label {
+	box-shadow: 0 1px 6px rgb(0 0 0 / 12%);
+	border-radius: 4px;
+	position: absolute;
+	background-color: #fff;
+	color: #fff;
+	min-width: 75px;
+	text-align: center;
+	padding: 2px 5px;
+	box-sizing: border-box;
+	font-size: 12px;
+	min-height: 22px;
+	letter-spacing: 0.4px;
+	white-space: nowrap;
+	opacity: 0;
+	visibility: hidden;
+}
+.kwtsk-social-icon:hover .kwtsk-social-icon-label {
+	visibility: visible;
+	opacity: 1;
+}
+.kwtsk-social-icon-label div.corner {
+	position: absolute;
+	border-width: 5px;
+	border-style: solid;
+}
+.kwtsk-social-icons.kwtsk-si-right-top .kwtsk-social-icon-label,
+.kwtsk-social-icons.kwtsk-si-right-bottom .kwtsk-social-icon-label {
+	top: 50%;
+	right: calc(100% + 6px);
+	margin-top: -11px;
+	transition:
+		opacity 0.3s,
+		right 0.3s;
+}
+.kwtsk-social-icons.kwtsk-si-right-top .kwtsk-social-icon-label div.corner,
+.kwtsk-social-icons.kwtsk-si-right-bottom .kwtsk-social-icon-label div.corner {
+	top: 50%;
+	left: 100%;
+	border-left-color: #fff;
+	border-right-color: transparent !important;
+	border-top-color: transparent !important;
+	border-bottom-color: transparent !important;
+	margin-top: -5px;
+}
+.kwtsk-social-icons.kwtsk-si-right-top
+	.kwtsk-social-icon:hover
+	.kwtsk-social-icon-label,
+.kwtsk-social-icons.kwtsk-si-right-bottom
+	.kwtsk-social-icon:hover
+	.kwtsk-social-icon-label {
+	right: calc(100% + 12px);
+}
+
+.kwtsk-social-icons.kwtsk-si-left-top .kwtsk-social-icon-label,
+.kwtsk-social-icons.kwtsk-si-left-bottom .kwtsk-social-icon-label {
+	top: 50%;
+	left: calc(100% + 6px);
+	margin-top: -11px;
+	transition:
+		opacity 0.3s,
+		left 0.3s;
+}
+.kwtsk-social-icons.kwtsk-si-left-top .kwtsk-social-icon-label div.corner,
+.kwtsk-social-icons.kwtsk-si-left-bottom .kwtsk-social-icon-label div.corner {
+	top: 50%;
+	right: 100%;
+	border-right-color: #fff;
+	border-left-color: transparent !important;
+	border-top-color: transparent !important;
+	border-bottom-color: transparent !important;
+	margin-top: -5px;
+}
+.kwtsk-social-icons.kwtsk-si-left-top
+	.kwtsk-social-icon:hover
+	.kwtsk-social-icon-label,
+.kwtsk-social-icons.kwtsk-si-left-bottom
+	.kwtsk-social-icon:hover
+	.kwtsk-social-icon-label {
+	left: calc(100% + 12px);
+}
+
+.kwtsk-social-icons.kwtsk-si-bottom-left .kwtsk-social-icon-label,
+.kwtsk-social-icons.kwtsk-si-bottom-center .kwtsk-social-icon-label,
+.kwtsk-social-icons.kwtsk-si-bottom-right .kwtsk-social-icon-label {
+	top: auto;
+	bottom: calc(100% + 10px);
+	right: auto;
+}
+.kwtsk-social-icons.kwtsk-si-bottom-left .kwtsk-social-icon-label div.corner,
+.kwtsk-social-icons.kwtsk-si-bottom-center .kwtsk-social-icon-label div.corner,
+.kwtsk-social-icons.kwtsk-si-bottom-right .kwtsk-social-icon-label div.corner {
+	display: none;
+}
+/* -- Position -- */
+body.kwtsk-hide-icons .kwtsk-social-icons.kwtsk-si-right-top {
+	right: -100px;
+}
+body.kwtsk-hide-icons .kwtsk-social-icons.kwtsk-si-right-bottom {
+	right: -100px;
+}
+body.kwtsk-hide-icons .kwtsk-social-icons.kwtsk-si-left-top {
+	left: -100px;
+}
+body.kwtsk-hide-icons .kwtsk-social-icons.kwtsk-si-left-bottom {
+	left: -100px;
+}
+body.kwtsk-hide-icons .kwtsk-social-icons.kwtsk-si-bottom-left {
+	bottom: -100px !important;
+}
+body.kwtsk-hide-icons .kwtsk-social-icons.kwtsk-si-bottom-center {
+	bottom: -100px !important;
+}
+body.kwtsk-hide-icons .kwtsk-social-icons.kwtsk-si-bottom-right {
+	bottom: -100px !important;
+}
+
+.kwtsk-social-icons.kwtsk-si-right-top {
+	right: 10px;
+	top: 80px;
+	transition: right 0.4s;
+}
+.kwtsk-social-icons.kwtsk-si-right-bottom {
+	right: 10px;
+	bottom: 80px;
+	transition: right 0.4s;
+}
+.kwtsk-social-icons.kwtsk-si-left-top {
+	left: 10px;
+	top: 80px;
+	transition: left 0.4s;
+}
+.kwtsk-social-icons.kwtsk-si-left-bottom {
+	left: 10px;
+	bottom: 80px;
+	transition: left 0.4s;
+}
+.kwtsk-social-icons.kwtsk-si-bottom-left {
+	flex-direction: row;
+	bottom: 10px;
+	left: 80px;
+	transition: bottom 0.4s;
+}
+.kwtsk-social-icons.kwtsk-si-bottom-center {
+	flex-direction: row;
+	bottom: 10px;
+	left: 50%;
+	transition: bottom 0.4s;
+	transform: translateX(-50%);
+}
+.kwtsk-social-icons.kwtsk-si-bottom-right {
+	flex-direction: row;
+	bottom: 10px;
+	right: 80px;
+	transition: bottom 0.4s;
+}
+/* -- Size -- */
+.kwtsk-social-icons.kwtsk-si-xsmall .kwtsk-social-icon-a {
+	width: 25px;
+	height: 25px;
+	font-size: 12px;
+}
+.kwtsk-social-icons.kwtsk-si-small .kwtsk-social-icon-a {
+	width: 32px;
+	height: 32px;
+	font-size: 18px;
+}
+.kwtsk-social-icons.kwtsk-si-medium .kwtsk-social-icon-a {
+	width: 40px;
+	height: 40px;
+	font-size: 24px;
+}
+.kwtsk-social-icons.kwtsk-si-large .kwtsk-social-icon-a {
+	width: 48px;
+	height: 48px;
+	font-size: 28px;
+}
+.kwtsk-social-icons.kwtsk-si-xlarge .kwtsk-social-icon-a {
+	width: 54px;
+	height: 54px;
+	font-size: 38px;
+}
+/* -- Rounding -- */
+.kwtsk-social-icons.kwtsk-si-square .kwtsk-social-icon-a {
+	border-radius: 0;
+}
+.kwtsk-social-icons.kwtsk-si-rounded .kwtsk-social-icon-a {
+	border-radius: 5px;
+}
+.kwtsk-social-icons.kwtsk-si-rounder .kwtsk-social-icon-a {
+	border-radius: 12px;
+}
+.kwtsk-social-icons.kwtsk-si-round .kwtsk-social-icon-a {
+	border-radius: 100px;
+}
+/* -- Icon Original Colors -- */
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-envelope {
+	color: #444 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-phone-alt {
+	color: #444 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-whatsapp {
+	color: #29af3e !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-telegram {
+	color: #0088cc !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-line {
+	color: #00c300 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-facebook {
+	color: #1877f2 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-x-twitter {
+	color: #1da1f2 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-instagram {
+	color: #e1306c !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-linkedin {
+	color: #0077b5 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-pinterest {
+	color: #e60023 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-tiktok {
+	color: #000000 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-bluesky {
+	color: #00acee !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-youtube {
+	color: #ff0000 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-vimeo {
+	color: #1ab7ea !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-wordpress {
+	color: #21759b !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-tumblr {
+	color: #36465d !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-dribbble {
+	color: #ea4c89 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-airbnb {
+	color: #ff5a5f !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-behance {
+	color: #1769ff !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-product-hunt {
+	color: #da552f !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-twitch {
+	color: #9146ff !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-figma {
+	color: #f24e1e !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-spotify {
+	color: #1db954 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-soundcloud {
+	color: #ff5500 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-deezer {
+	color: #ef5466 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-meetup {
+	color: #ed1c40 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-etsy {
+	color: #d5641c !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-paypal {
+	color: #003087 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-skype {
+	color: #00aff0 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-reddit-alien {
+	color: #ff4500 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-mix {
+	color: #000000 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-hubspot {
+	color: #ff7a59 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-strava {
+	color: #fc4c02 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-foursquare {
+	color: #f94877 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-github-alt {
+	color: #181717 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-audible {
+	color: #f8991d !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-aws {
+	color: #ff9900 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-kickstarter-k {
+	color: #2bde73 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-flickr {
+	color: #ff0084 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-deviantart {
+	color: #05cc47 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-500px {
+	color: #0099e5 !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-btc {
+	color: #f7931a !important;
+}
+.kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-ethereum {
+	color: #3c3c3d !important;
+}

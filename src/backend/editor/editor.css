@@ -1,0 +1,30 @@
+.kwtsk-divider {
+	box-shadow: 0 4px 0 rgb(224 224 224);
+	display: block;
+	height: 1px;
+	width: 100%;
+	margin: 10px 0 30px;
+}
+.kwtsk-hide {
+	display: none !important;
+}
+/**
+ * Theme Site Kit ColorPicker Component
+ */
+.components-dropdown.kwtsk-colorpicker {
+	width: 100%;
+	margin: 0 0 15px;
+}
+.components-button.kwtsk-colorpicker-btn {
+	box-shadow: 0 0 0 1px #e0e0e0;
+	padding: 14px 12px;
+	width: 100%;
+	text-decoration: none;
+	color: #545454;
+}
+.components-button.kwtsk-colorpicker-btn .component-color-indicator {
+	margin: 0 10px 0 0;
+}
+.components-button.kwtsk-colorpicker-btn:hover {
+	box-shadow: 0 0 0 1px #b9b9b9;
+}
