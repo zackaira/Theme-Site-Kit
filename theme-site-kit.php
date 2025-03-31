@@ -25,8 +25,8 @@ if ( !defined( 'KWTP_PLUGIN_DIR' ) ) {
 	define('KWTP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 }
 
-if ( function_exists( 'blockons_fs' ) ) {
-	blockons_fs()->set_basename( true, __FILE__ );
+if ( function_exists( 'kwtsk_fs' ) ) {
+	kwtsk_fs()->set_basename( true, __FILE__ );
 } else {
 	if ( ! function_exists( 'kwtsk_fs' ) ) {
 		// Create a helper function for easy SDK access.

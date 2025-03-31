@@ -1,6 +1,6 @@
 const { __ } = wp.i18n;
 
-const GeneralPage = ({}) => {
+const GeneralPage = ({ adminUrl, changeTab }) => {
 	const question = document.querySelector(".ask-feedback");
 
 	return (
@@ -35,9 +35,12 @@ const GeneralPage = ({}) => {
 							"theme-site-kit",
 						)}
 					</p>
-					<a className="kwtsk-gp-a" href="#">
-						{__("See More", "theme-site-kit")}
-					</a>
+					<span
+						className="kwtsk-gp-a"
+						onClick={() => changeTab("disable_comments")}
+					>
+						{__("Go to next tab(s)", "theme-site-kit")}
+					</span>
 				</div>
 				<div className="kwtsk-gp-feature">
 					<div className="kwtsk-gp-feature-img layouts"></div>
@@ -48,8 +51,12 @@ const GeneralPage = ({}) => {
 							"theme-site-kit",
 						)}
 					</p>
-					<a className="kwtsk-gp-a" href="#">
-						{__("See More", "theme-site-kit")}
+					<a
+						className="kwtsk-gp-a"
+						target="_blank"
+						href={`${adminUrl}themes.php?page=theme-site-kit-layouts`}
+					>
+						{__("View Page Layouts", "theme-site-kit")}
 					</a>
 				</div>
 				<div className="kwtsk-gp-feature">
@@ -61,8 +68,12 @@ const GeneralPage = ({}) => {
 							"theme-site-kit",
 						)}
 					</p>
-					<a className="kwtsk-gp-a" href="#">
-						{__("See More", "theme-site-kit")}
+					<a
+						className="kwtsk-gp-a"
+						target="_blank"
+						href="https://kairaweb.com/wordpress-plugin/theme-site-kit/"
+					>
+						{__("View Block Patterns", "theme-site-kit")}
 					</a>
 				</div>
 			</div>
@@ -104,6 +115,9 @@ const GeneralPage = ({}) => {
 							"theme-site-kit",
 						)}
 					</p>
+					<span className="kwtsk-gp-plugin-a">
+						{__("View Plugin", "theme-site-kit")}
+					</span>
 				</a>
 				<a
 					className="kwtsk-gp-plugin"
@@ -118,6 +132,9 @@ const GeneralPage = ({}) => {
 							"theme-site-kit",
 						)}
 					</p>
+					<span className="kwtsk-gp-plugin-a">
+						{__("View Plugin", "theme-site-kit")}
+					</span>
 				</a>
 				<a
 					className="kwtsk-gp-plugin"
@@ -132,6 +149,9 @@ const GeneralPage = ({}) => {
 							"theme-site-kit",
 						)}
 					</p>
+					<span className="kwtsk-gp-plugin-a">
+						{__("View Plugin", "theme-site-kit")}
+					</span>
 				</a>
 			</div>
 		</div>

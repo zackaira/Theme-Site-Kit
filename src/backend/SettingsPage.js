@@ -11,6 +11,7 @@ import { kwtskGroupSettings, kwtskSocialOptions } from "./helpers";
 
 const Settings = ({ kwtskObj }) => {
 	const url = `${kwtskObj.apiUrl}kwtsk/v1`;
+	const adminUrl = `${kwtskObj.adminUrl}`;
 	const [loader, setLoader] = useState(false);
 	const [loadSetting, setLoadSetting] = useState(true);
 	const getInitialTab = () => {
@@ -24,7 +25,7 @@ const Settings = ({ kwtskObj }) => {
 	const [kwtskUrlVal, setLinktUrlVal] = useState(false);
 	const [showSocialPreview, setShowSocialPreview] = useState(false);
 
-	const changeTab = (tabId) => {
+	const changeTab = (tabId = "general") => {
 		setActiveTab(tabId);
 
 		const params = new URLSearchParams(window.location.search);
@@ -236,7 +237,10 @@ const Settings = ({ kwtskObj }) => {
 											activeTab === "general" ? "active" : ""
 										}`}
 									>
-										<GeneralPage />
+										<GeneralPage
+											adminUrl={adminUrl}
+											changeTab={() => changeTab("disable_comments")}
+										/>
 									</div>
 
 									<div
@@ -439,7 +443,7 @@ const Settings = ({ kwtskObj }) => {
 																onChange={handleChange}
 															/>
 															<SettingRow
-																title={__("Icon Spacing", "blockons")}
+																title={__("Icon Spacing", "theme-site-kit")}
 																slug="social_spacing"
 																value={kwtskOptions.social?.spacing}
 																inputType="range"

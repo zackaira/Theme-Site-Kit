@@ -4,27 +4,30 @@ const { Button } = wp.components;
 import axios from "axios";
 import LayoutItem from "./LayoutItem";
 
-const LayoutsPage = ({ kwtskObj }) => {
-	const [layouts, setLayouts] = useState([]);
+const LayoutsPage = ({ kwtskObj, svgOn }) => {
+	const [collections, setCollections] = useState([]);
+	const [installedPlugins, setInstalledPlugins] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [activeCollection, setActiveCollection] = useState(null);
 	const [previewLayout, setPreviewLayout] = useState(null);
 	const [importingLayoutId, setImportingLayoutId] = useState(null);
 	const [importedPages, setImportedPages] = useState({});
+	const isPremium = kwtskObj.isPremium;
+	const upgradeUrl = kwtskObj.upgradeUrl;
+	const [pluginStatuses, setPluginStatuses] = useState({});
 
 	const [categories, setCategories] = useState([]);
 	const [tags, setTags] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState("");
 	const [selectedTag, setSelectedTag] = useState("");
 
+	// Fetch layouts
 	useEffect(() => {
 		axios
-			.get("https://layouts.kairaweb.com/block-layouts/layouts-api.php", {
-				headers: { "X-Auth-Token": "GETLYUTS" },
-			})
+			.get(`${kwtskObj.apiUrl}kwtsk/v1/layouts`)
 			.then((response) => {
-				setLayouts(response.data.layouts);
+				setCollections(response.data.layouts);
 				setCategories(response.data.categories);
 				setTags(response.data.tags);
 				setLoading(false);
@@ -34,7 +37,23 @@ const LayoutsPage = ({ kwtskObj }) => {
 				setError("Error fetching layouts");
 				setLoading(false);
 			});
-	}, []);
+	}, [kwtskObj.apiUrl]);
+
+	// Fetch installed plugins list.
+	useEffect(() => {
+		axios
+			.get(`${kwtskObj.apiUrl}kwtsk/v1/installed-plugins`, {
+				headers: {
+					"X-WP-Nonce": kwtskObj.nonce,
+				},
+			})
+			.then((response) => {
+				setInstalledPlugins(response.data);
+			})
+			.catch((error) => {
+				console.error("Error fetching installed plugins:", error);
+			});
+	}, [kwtskObj.apiUrl, kwtskObj.nonce]);
 
 	useEffect(() => {
 		if (previewLayout) {
@@ -52,39 +71,15 @@ const LayoutsPage = ({ kwtskObj }) => {
 		return <div>{error}</div>;
 	}
 
-	const filteredLayouts = layouts.filter((layout) => {
-		if (selectedCategory && layout.collectionCategory !== selectedCategory) {
-			return false;
-		}
-		if (selectedTag && !layout.tags.includes(selectedTag)) {
+	const filteredCollections = collections.filter((collection) => {
+		if (
+			selectedCategory &&
+			collection.collectionCategory !== selectedCategory
+		) {
 			return false;
 		}
 		return true;
 	});
-
-	// Group after filtering
-	const groupedLayouts = filteredLayouts.reduce((g, layout) => {
-		const key = layout.collectionName || "Other";
-		g[key] = g[key] || [];
-		g[key].push(layout);
-		return g;
-	}, {});
-
-	const handleViewCollection = (collectionName) => {
-		setActiveCollection(collectionName);
-	};
-
-	const handlePreviewLayout = (layout) => {
-		setPreviewLayout(layout);
-	};
-
-	const handleClosePreview = () => {
-		setPreviewLayout(null);
-	};
-
-	const handleBack = () => {
-		setActiveCollection(null);
-	};
 
 	const importLayout = async (layout) => {
 		const confirmed = window.confirm(
@@ -97,16 +92,10 @@ const LayoutsPage = ({ kwtskObj }) => {
 
 		setImportingLayoutId(layout.id);
 
-		console.log("layout:", layout);
-
 		try {
 			const response = await axios.post(
-				`${kwtskObj.apiUrl}wp/v2/pages`,
-				{
-					title: layout.title,
-					content: layout.blockContent,
-					status: "draft",
-				},
+				`${kwtskObj.apiUrl}kwtsk/v1/import-layout`,
+				layout,
 				{
 					headers: {
 						"X-WP-Nonce": kwtskObj.nonce,
@@ -114,12 +103,12 @@ const LayoutsPage = ({ kwtskObj }) => {
 					},
 				},
 			);
-
 			const newPage = response.data;
 			setImportedPages((prev) => ({
 				...prev,
-				[layout.id]: newPage.id,
+				[layout.id]: newPage.post_id,
 			}));
+			console.log("Layout imported successfully", newPage);
 		} catch (err) {
 			console.error(err);
 			alert(
@@ -133,45 +122,174 @@ const LayoutsPage = ({ kwtskObj }) => {
 		}
 	};
 
-	let content;
-	if (activeCollection) {
-		const collectionLayouts = groupedLayouts[activeCollection] || [];
-		content = (
-			<div className="kwtsk-layouts-collection">
-				<div className="kwtsk-collection-header">
-					<h2>{activeCollection}</h2>
-					<Button onClick={handleBack} className="kwtsk-btn">
-						{"<<"} {__("Go Back", "theme-site-kit")}
-					</Button>
-				</div>
-				<div className="kwtsk-layout-items">
-					{collectionLayouts.map((layout, index) => (
-						<LayoutItem
-							key={layout.id || index}
-							layout={layout}
-							importLayout={importLayout}
-							handlePreviewLayout={handlePreviewLayout}
-							isImporting={
-								importingLayoutId !== null && importingLayoutId === layout.id
+	// Helper function to get required plugins for the active collection.
+	function activeCollRequiredPlugins() {
+		const activeColl = collections.find(
+			(c) => c.collectionName === activeCollection,
+		);
+		return activeColl && activeColl.requiredPlugins
+			? activeColl.requiredPlugins
+			: [];
+	}
+
+	let requiredPluginsDisplay = null;
+	if (activeCollection && activeCollRequiredPlugins().length > 0) {
+		requiredPluginsDisplay = (
+			<div className="kwtsk-required-plugins">
+				<h4>{__("Required Plugins", "theme-site-kit")}</h4>
+				<p>
+					{__(
+						"To use these layouts, please install the following plugins:",
+						"theme-site-kit",
+					)}
+				</p>
+				<ul>
+					{activeCollRequiredPlugins().map((plugin) => {
+						// Look for the plugin in the installed plugins list.
+						const installed = installedPlugins.find(
+							(p) => p.slug === plugin.slug,
+						);
+						let currentStatus = pluginStatuses[plugin.slug];
+						if (!currentStatus) {
+							if (installed) {
+								currentStatus = installed.active ? "activated" : "activate";
+							} else {
+								currentStatus = "not_installed";
 							}
-							importedPageId={importedPages[layout.id]}
-							adminUrl={kwtskObj.adminUrl}
-						/>
-					))}
-				</div>
+						}
+						let buttonContent;
+						if (currentStatus === "installing") {
+							buttonContent = (
+								<span>{__("Installing Plugin...", "theme-site-kit")}</span>
+							);
+						} else if (currentStatus === "activating") {
+							buttonContent = (
+								<span>{__("Activating Plugin...", "theme-site-kit")}</span>
+							);
+						} else if (currentStatus === "activated") {
+							buttonContent = (
+								<span>{__("Already installed", "theme-site-kit")}</span>
+							);
+						} else if (currentStatus === "activate") {
+							buttonContent = (
+								<Button
+									onClick={async () => {
+										setPluginStatuses((prev) => ({
+											...prev,
+											[plugin.slug]: "activating",
+										}));
+										try {
+											const res = await axios.post(
+												`${kwtskObj.apiUrl}kwtsk/v1/install-plugin`,
+												{ slug: plugin.slug },
+												{
+													headers: {
+														"X-WP-Nonce": kwtskObj.nonce,
+														"Content-Type": "application/json",
+													},
+												},
+											);
+											// Assume success returns a message indicating activation.
+											setPluginStatuses((prev) => ({
+												...prev,
+												[plugin.slug]: "activated",
+											}));
+										} catch (e) {
+											setPluginStatuses((prev) => ({
+												...prev,
+												[plugin.slug]: undefined,
+											}));
+										}
+									}}
+									className="kwtsk-install-btn"
+								>
+									{__("Activate", "theme-site-kit")}
+								</Button>
+							);
+						} else {
+							// Default: not installed.
+							buttonContent = (
+								<Button
+									onClick={async () => {
+										setPluginStatuses((prev) => ({
+											...prev,
+											[plugin.slug]: "installing",
+										}));
+										try {
+											const res = await axios.post(
+												`${kwtskObj.apiUrl}kwtsk/v1/install-plugin`,
+												{ slug: plugin.slug },
+												{
+													headers: {
+														"X-WP-Nonce": kwtskObj.nonce,
+														"Content-Type": "application/json",
+													},
+												},
+											);
+											const message = res.data.message.toLowerCase();
+											if (message.includes("installed but inactive")) {
+												setPluginStatuses((prev) => ({
+													...prev,
+													[plugin.slug]: "activate",
+												}));
+											} else if (
+												message.includes("already installed") ||
+												message.includes("activated")
+											) {
+												setPluginStatuses((prev) => ({
+													...prev,
+													[plugin.slug]: "activated",
+												}));
+											}
+										} catch (e) {
+											setPluginStatuses((prev) => ({
+												...prev,
+												[plugin.slug]: undefined,
+											}));
+										}
+									}}
+									className="kwtsk-install-btn"
+								>
+									{__("Install Now", "theme-site-kit")}
+								</Button>
+							);
+						}
+						return (
+							<li key={plugin.slug}>
+								<span>{plugin.name}</span> {buttonContent}
+							</li>
+						);
+					})}
+				</ul>
 			</div>
 		);
-	} else {
+	}
+
+	let content;
+	if (activeCollection === null) {
 		content = (
 			<>
 				<div className="kwtsk-page-title">
-					<h2>{__("Import Page Layouts", "kw=theme-pro")}</h2>
+					<h2>{__("Import Page Layouts", "theme-site-kit")}</h2>
 					<p>
 						{__(
-							"Welcome to the Import Page Layouts tool — your shortcut to quickly building new pages using professionally designed Gutenberg layouts. Instead of building from scratch, simply browse the different layouts, choose a layout you like, import it, and jump straight into editing your content.",
+							"Welcome to the Import Page Layouts tool — your shortcut to quickly building new pages using professionally designed Gutenberg layouts. Instead of building from scratch, simply browse the different layout collections below.",
 							"theme-site-kit",
 						)}
 					</p>
+					{!svgOn && (
+						<p className="kwtsk-svg-warning">
+							{__(
+								"Please ensure SVG Uploads are enabled, as some of these layouts include SVG images.",
+								"theme-site-kit",
+							)}{" "}
+							<a
+								href={`${kwtskObj.adminUrl}options-general.php?page=theme-site-kit-settings&tab=extras`}
+							>
+								{__("Go to SVG Uploads", "")}
+							</a>
+						</p>
+					)}
 				</div>
 				<div className="kwtsk-filters">
 					<select
@@ -185,7 +303,66 @@ const LayoutsPage = ({ kwtskObj }) => {
 							</option>
 						))}
 					</select>
+				</div>
+				<div className="kwtsk-collections">
+					{filteredCollections.length > 0 ? (
+						filteredCollections.map((collection) => (
+							<div key={collection.collectionName} className="kwtsk-collection">
+								<h3>{collection.collectionName}</h3>
+								<div className="kwtsk-collection-content">
+									<div className="kwtsk-collection-preview">
+										<img
+											src={collection.previewImage}
+											alt={collection.collectionName}
+										/>
 
+										{!isPremium && (
+											<a
+												href={upgradeUrl}
+												className="fa-solid fa-web-awesome kwtsk-pro-icon"
+											></a>
+										)}
+									</div>
+									<div className="kwtsk-collection-info">
+										<Button
+											onClick={() =>
+												setActiveCollection(collection.collectionName)
+											}
+											className="kwtsk-collection-btn"
+										>
+											{__("View Layout Collection", "theme-site-kit")}
+										</Button>
+									</div>
+								</div>
+							</div>
+						))
+					) : (
+						<div className="kwtsk-no-layouts">
+							{__("No layout collections available.", "theme-site-kit")}
+						</div>
+					)}
+				</div>
+			</>
+		);
+	} else {
+		let childLayouts = collections.find(
+			(c) => c.collectionName === activeCollection,
+		)?.layouts;
+		if (selectedTag) {
+			childLayouts = childLayouts.filter(
+				(layout) => layout.tags && layout.tags.includes(selectedTag),
+			);
+		}
+		content = (
+			<div className="kwtsk-layouts-collection">
+				<div className="kwtsk-collection-header">
+					<h2>{activeCollection}</h2>
+					<Button
+						onClick={() => setActiveCollection(null)}
+						className="kwtsk-btn"
+					>
+						{"<<"} {__("Go Back", "theme-site-kit")}
+					</Button>
 					<div className="kwtsk-tags">
 						{tags.map((tag) => (
 							<button
@@ -198,43 +375,31 @@ const LayoutsPage = ({ kwtskObj }) => {
 						))}
 					</div>
 				</div>
-
-				{Object.keys(groupedLayouts).length > 0 ? (
-					Object.keys(groupedLayouts).map((collectionName) => (
-						<div key={collectionName} className="kwtsk-layouts-collection">
-							<div className="kwtsk-collection-header">
-								<h2>{collectionName}</h2>
-								<Button
-									onClick={() => handleViewCollection(collectionName)}
-									className="kwtsk-btn"
-								>
-									{__("View Layout Collection", "theme-site-kit")} {">>"}
-								</Button>
-							</div>
-							<div className="kwtsk-layout-items">
-								{groupedLayouts[collectionName].map((layout, index) => (
-									<LayoutItem
-										key={layout.id || index}
-										layout={layout}
-										importLayout={importLayout}
-										handlePreviewLayout={handlePreviewLayout}
-										isImporting={
-											importingLayoutId !== null &&
-											importingLayoutId === layout.id
-										}
-										importedPageId={importedPages[layout.id]}
-										adminUrl={kwtskObj.adminUrl}
-									/>
-								))}
-							</div>
+				{requiredPluginsDisplay}
+				<div className="kwtsk-layout-items">
+					{childLayouts && childLayouts.length > 0 ? (
+						childLayouts.map((layout, index) => (
+							<LayoutItem
+								key={layout.id || index}
+								layout={layout}
+								importLayout={importLayout}
+								handlePreviewLayout={setPreviewLayout}
+								isImporting={
+									importingLayoutId !== null && importingLayoutId === layout.id
+								}
+								importedPageId={importedPages[layout.id]}
+								isPremium={isPremium}
+								upgradeUrl={upgradeUrl}
+								adminUrl={kwtskObj.adminUrl}
+							/>
+						))
+					) : (
+						<div>
+							{__("No layouts available in this collection.", "theme-site-kit")}
 						</div>
-					))
-				) : (
-					<div className="kwtsk-no-layouts">
-						{__("No layouts available.", "theme-site-kit")}
-					</div>
-				)}
-			</>
+					)}
+				</div>
+			</div>
 		);
 	}
 
@@ -245,7 +410,7 @@ const LayoutsPage = ({ kwtskObj }) => {
 			{previewLayout && (
 				<div
 					className="kwtsk-layout-modal-overlay"
-					onClick={handleClosePreview}
+					onClick={() => setPreviewLayout(null)}
 				>
 					<div
 						className="kwtsk-layout-modal-content"
@@ -253,24 +418,28 @@ const LayoutsPage = ({ kwtskObj }) => {
 					>
 						<button
 							className="kwtsk-layout-modal-close"
-							onClick={handleClosePreview}
+							onClick={() => setPreviewLayout(null)}
 						>
 							×
 						</button>
-
 						<div className="kwtsk-layout-modal-header">
 							<div>
 								<h4>{previewLayout.title}</h4>
 								<p>{previewLayout.description}</p>
 							</div>
-							<Button
-								onClick={() => importLayout(previewLayout)}
-								className="kwtsk-btn"
-							>
-								{__("Import Layout", "theme-site-kit")}
-							</Button>
+							{isPremium ? (
+								<Button
+									onClick={() => importLayout(previewLayout)}
+									className="kwtsk-btn"
+								>
+									{__("Import Layout", "theme-site-kit")}
+								</Button>
+							) : (
+								<a href={upgradeUrl} className="kwtsk-btn">
+									{__("Upgrade to Pro", "theme-site-kit")}
+								</a>
+							)}
 						</div>
-
 						<div className="kwtsk-layout-modal-img">
 							<img src={previewLayout.previewImage} alt={previewLayout.title} />
 						</div>

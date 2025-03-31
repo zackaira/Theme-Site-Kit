@@ -52,6 +52,15 @@ Created using the latest techniques and technologies for WordPress and the core 
 We're concerned about bloat code... Theme Site Kit only includes the code as it's used, focusing on speed and performance!
 
 
+= Related Products by Kaira =
+
+[StoreCustomizer](https://wordpress.org/plugins/woocustomizer/): Customize your WooCommerce store pages with ease.
+
+[Blockons](https://wordpress.org/plugins/blockons/): Advanced editor blocks and site addons for your WordPress site.
+
+[Linkt](https://wordpress.org/plugins/linkt/): Affiliate and Custom link tracking and management.
+
+
 = Translations =
 
 Please get in contact if you're interested in helping translate Theme Site Kit into a language not yet available. We'd love to have your assistance!

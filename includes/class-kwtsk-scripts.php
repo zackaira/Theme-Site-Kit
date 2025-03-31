@@ -88,8 +88,8 @@ class Theme_Site_Kit_Scripts {
 		wp_register_script('kwtsk-admin-editor-script', esc_url(KWTP_PLUGIN_URL . 'dist/editor' . $suffix . '.js'), array('wp-edit-post'), KWTP_PLUGIN_VERSION, true);
 
 		// Dashboard Widget
-		wp_register_style('kwtsk-dashboard-style', esc_url(KWTP_PLUGIN_URL . 'dist/dashboard' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTP_PLUGIN_VERSION);
-		wp_register_script('kwtsk-dashboard-script', esc_url(KWTP_PLUGIN_URL . 'dist/dashboard' . $suffix . '.js'), array('wp-element', 'wp-i18n'), KWTP_PLUGIN_VERSION, true);
+		// wp_register_style('kwtsk-dashboard-style', esc_url(KWTP_PLUGIN_URL . 'dist/dashboard' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTP_PLUGIN_VERSION);
+		// wp_register_script('kwtsk-dashboard-script', esc_url(KWTP_PLUGIN_URL . 'dist/dashboard' . $suffix . '.js'), array('wp-element', 'wp-i18n'), KWTP_PLUGIN_VERSION, true);
 	} // End kwtsk_register_scripts ()
 
 	/**
@@ -124,6 +124,7 @@ class Theme_Site_Kit_Scripts {
 		global $kwtsk_fs;
 		$adminPage = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : $pagenow;
 		$suffix = (defined('WP_DEBUG') && true === WP_DEBUG) ? '' : '.min';
+		$isPro = (boolean)kwtsk_fs()->can_use_premium_code__premium_only();
 
 		$kwtskSavedOptions = get_option('kwtsk_options');
 		$kwtskOptions = $kwtskSavedOptions ? json_decode($kwtskSavedOptions) : '';
@@ -159,6 +160,7 @@ class Theme_Site_Kit_Scripts {
 				'apiUrl' => esc_url(get_rest_url()),
 				'nonce' => wp_create_nonce('wp_rest'),
 				'adminUrl' => esc_url(admin_url()),
+				'isPremium' => $isPro,
 				'post_types' => $filtered_post_types,
 				'kwtskOptions' => $kwtskOptions,
 			));
@@ -173,26 +175,28 @@ class Theme_Site_Kit_Scripts {
 				'apiUrl' => esc_url(get_rest_url()),
 				'adminUrl' => esc_url(admin_url()),
 				'nonce' => wp_create_nonce('wp_rest'),
-				// 'kwtskOptions' => $kwtskOptions,
+				'isPremium' => $isPro,
+				'canSvg' => $kwtskOptions->svgupload->enabled,
+				'upgradeUrl' => esc_url($kwtsk_fs->get_upgrade_url()),
 			));
 			// wp_enqueue_media();
 		}
 
 		// Dashboard Widget
-		if ('index.php' === $adminPage) {
-			wp_enqueue_style('kwtsk-dashboard-style');
-			wp_enqueue_script('kwtsk-dashboard-script');
-			wp_localize_script('kwtsk-dashboard-script', 'kwtskDObj', array(
-				'apiUrl' => esc_url(get_rest_url()),
-				'adminUrl' => esc_url(admin_url()),
-				'nonce' => wp_create_nonce('wp_rest'),
-				'kwtskOptions' => $kwtskOptions->settings,
-			));
-		}
+		// if ('index.php' === $adminPage) {
+		// 	wp_enqueue_style('kwtsk-dashboard-style');
+		// 	wp_enqueue_script('kwtsk-dashboard-script');
+		// 	wp_localize_script('kwtsk-dashboard-script', 'kwtskDObj', array(
+		// 		'apiUrl' => esc_url(get_rest_url()),
+		// 		'adminUrl' => esc_url(admin_url()),
+		// 		'nonce' => wp_create_nonce('wp_rest'),
+		// 		'kwtskOptions' => $kwtskOptions->settings,
+		// 	));
+		// }
 		
 		// Update the language file with this line in the terminal - "wp i18n make-pot ./ lang/theme-site-kit.pot"
 		wp_set_script_translations('kwtsk-admin-settings-script', 'theme-site-kit', KWTP_PLUGIN_DIR . 'lang');
-		wp_set_script_translations('kwtsk-dashboard-script', 'theme-site-kit', KWTP_PLUGIN_DIR . 'lang');
+		// wp_set_script_translations('kwtsk-dashboard-script', 'theme-site-kit', KWTP_PLUGIN_DIR . 'lang');
 	} // End kwtsk_admin_scripts ()
 
 	/**
@@ -251,7 +255,7 @@ class Theme_Site_Kit_Scripts {
 					"selectedcolor" => "#ffffff",
 				),
 				"svgupload" => array(
-					"enabled" => false,
+					"enabled" => true,
 				),
 				"social" => array(
 					"enabled" => false,

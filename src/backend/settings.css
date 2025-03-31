@@ -286,7 +286,29 @@ body.kwtsk-free a.kwtsk-account {
 .kwtsk-gp-plugin p {
 	font-size: 13px;
 }
-.kwtsk-gp-feature a.kwtsk-gp-a {
+.kwtsk-gp-feature .kwtsk-gp-a,
+.kwtsk-gp-plugin .kwtsk-gp-plugin-a {
+	background-color: #dcdcdc;
+	border-radius: 3px;
+	padding: 8px 10px;
+	line-height: 1;
+	text-align: center;
+	text-decoration: none;
+	color: #414242;
+	transition:
+		background-color 0.3s ease-in-out 0s,
+		color 0.3s ease-in-out 0s,
+		box-shadow 0.3s ease-in-out 0s;
+}
+.kwtsk-gp-feature .kwtsk-gp-a:hover,
+.kwtsk-gp-plugin:hover .kwtsk-gp-plugin-a {
+	background-color: var(--kwtsk-main);
+	color: #fff;
+}
+.kwtsk-gp-plugin .kwtsk-gp-plugin-a {
+	display: inline-block;
+	margin: 0 0 12px;
+	font-size: 13px;
 }
 
 .kwtsk-gp-plugins {

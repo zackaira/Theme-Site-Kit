@@ -1,3 +1,25 @@
+:root {
+	--kwtsk-main: #7047eb;
+}
+
+.kwtsk-pro-icon {
+	background-color: #7047eb;
+	color: #f9bc68;
+	box-shadow: 0 1px 4px rgb(0 0 0 / 25%);
+	border-radius: 40px;
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+}
+.kwtsk-pro-icon:hover {
+	color: #e19a36;
+}
 .kwtsk-page-title {
 	margin: 0 0 25px;
 	max-width: 840px;
@@ -9,6 +31,10 @@
 }
 .kwtsk-page-title p {
 	font-size: 15px;
+}
+.kwtsk-page-title p.kwtsk-svg-warning {
+	font-size: 13px;
+	font-weight: bold;
 }
 .kwtsk-no-layouts {
 	text-align: center;
@@ -30,6 +56,99 @@
 	font-size: 28px;
 }
 
+/* - Required Plugins */
+.kwtsk-required-plugins {
+	margin: 20px 0 40px;
+	max-width: 378px;
+}
+.kwtsk-required-plugins h4 {
+	margin: 0 0 12px;
+	padding: 0;
+	font-size: 14px;
+}
+.kwtsk-required-plugins ul {
+	margin: 0;
+	padding: 0;
+}
+.kwtsk-required-plugins ul li {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+}
+/* - layout-collection */
+.kwtsk-collections {
+	display: flex;
+	align-items: flex-start;
+	gap: 15px;
+}
+.kwtsk-collection {
+	max-width: 280px;
+}
+.kwtsk-collection h3 {
+	margin: 0 0 10px;
+	padding: 0;
+	font-size: 18px;
+	text-align: center;
+}
+.kwtsk-collection-preview {
+	box-shadow: 0 1px 0 #e3e3e3;
+	max-width: 100%;
+	max-height: 320px;
+	overflow-y: scroll;
+	width: 280px;
+	height: 320px;
+	position: relative;
+}
+/* .kwtsk-collection-preview.noimg::before {
+	content: "";
+	display: inline-block;
+	vertical-align: middle;
+	position: absolute;
+	top: 6px;
+	left: calc(50% - 7px);
+	width: 14px;
+	height: 14px;
+	border: 2px solid #000;
+	border-top-color: transparent;
+	border-radius: 50%;
+	animation: kwtsk-spin 0.8s linear infinite;
+} */
+.kwtsk-collection-preview img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	margin: 0;
+}
+.kwtsk-collection-content {
+	background-color: #fff;
+	box-shadow: 0 1px 6px rgb(0 0 0 / 16%);
+	border-radius: 4px;
+	overflow: hidden;
+	transition: box-shadow 0.3s ease-in-out 0s;
+}
+.kwtsk-collection-info {
+	padding: 15px;
+	text-align: center;
+}
+.kwtsk-collection .kwtsk-collection-btn {
+	background-color: #dcdcdc;
+	border: 0;
+	border-radius: 3px;
+	padding: 8px 10px;
+	line-height: 1;
+	text-align: center;
+	text-decoration: none;
+	color: #414242;
+	cursor: pointer;
+	transition:
+		background-color 0.3s ease-in-out 0s,
+		color 0.3s ease-in-out 0s;
+}
+.kwtsk-collection:hover .kwtsk-collection-btn {
+	background-color: var(--kwtsk-main);
+	color: #fff;
+}
+/* - single-layout */
 .kwtsk-layout-items {
 	display: flex;
 	align-items: flex-start;
@@ -41,6 +160,7 @@
 	box-shadow: 0 1px 6px rgb(0 0 0 / 16%);
 	border-radius: 4px;
 	overflow: hidden;
+	cursor: pointer;
 	transition: box-shadow 0.3s ease-in-out 0s;
 }
 .kwtsk-layout:hover {
@@ -196,6 +316,7 @@ body.kwtsk-modal-open {
 .kwtsk-layout-modal-content {
 	background-color: #fff;
 	position: relative;
+	width: 100%;
 	max-width: 820px;
 	max-height: 84%;
 	border-radius: 4px;

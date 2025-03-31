@@ -54,7 +54,7 @@ class Theme_Site_Kit_Patterns {
 			 * Headers
 			 */
 			register_block_pattern(
-				'blockons/header-simple',
+				'kwtsk/header-simple',
 				array(
 					'title'       => __( 'Simple Header', 'theme-site-kit' ),
 					'description' => _x( 'A simple header.', 'Block pattern description', 'theme-site-kit' ),
@@ -77,7 +77,7 @@ class Theme_Site_Kit_Patterns {
 				)
 			);
 			register_block_pattern(
-				'blockons/header-two',
+				'kwtsk/header-two',
 				array(
 					'title'       => __( 'Two Header', 'theme-site-kit' ),
 					'description' => _x( 'A Two header.', 'Block pattern description', 'theme-site-kit' ),
@@ -104,7 +104,7 @@ class Theme_Site_Kit_Patterns {
 			 * Footers
 			 */
 			register_block_pattern(
-				'blockons/footer-two',
+				'kwtsk/footer-two',
 				array(
 					'title'       => __( 'Two Footer', 'theme-site-kit' ),
 					'description' => _x( 'A Two Footer.', 'Block pattern description', 'theme-site-kit' ),
