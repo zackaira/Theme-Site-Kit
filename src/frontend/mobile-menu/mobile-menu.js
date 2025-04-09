@@ -1,7 +1,9 @@
 import "./mobile-menu.css";
 
 document.addEventListener("DOMContentLoaded", function () {
-	console.log("MOBILE MENU LOADED !!!!");
+	const isPremium = kwtskMMObj?.isPremium;
+
+	if (!isPremium) return;
 
 	const customMobileMenus = document.querySelectorAll(
 		"nav.wp-block-navigation.kwtsk-mm",

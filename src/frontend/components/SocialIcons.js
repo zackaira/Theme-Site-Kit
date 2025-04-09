@@ -1,6 +1,6 @@
 const { __ } = wp.i18n;
 
-const SocialIcons = ({ options }) => {
+const SocialIcons = ({ options, isPro }) => {
 	const {
 		enabled,
 		icons,
@@ -27,6 +27,8 @@ const SocialIcons = ({ options }) => {
 	};
 	const offsetFrom = positionMap[position] || "top";
 
+	const displayedIcons = isPro ? icons : icons.slice(0, 3);
+
 	return (
 		<div
 			className={`kwtsk-social-icons ${showbg ? "hasbg" : "nobg"} kwtsk-si-${position} kwtsk-si-${style} kwtsk-si-${iconsize} ${iconorigcolor ? "kwtsk-colorig" : ""}`}
@@ -35,7 +37,7 @@ const SocialIcons = ({ options }) => {
 				gap: `${spacing}px`,
 			}}
 		>
-			{icons.map((icon, index) => {
+			{displayedIcons.map((icon, index) => {
 				const { value, label, url } = icon;
 				return (
 					<div className="kwtsk-social-icon" key={index}>

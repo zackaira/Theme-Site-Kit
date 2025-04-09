@@ -6,7 +6,9 @@ import InputRange from "./inputs/InputRange";
 import ColorPicker from "./inputs/ColorPicker";
 import InputRadioSelect from "./inputs/InputRadioSelect";
 import SocialIconSelector from "./inputs/SocialIconSelector";
+import CptsSelect from "./inputs/CptsSelect";
 import SettingTooltip from "./UI/SettingTooltip";
+import ProNote from "./UI/ProNote";
 import { kwtskConvertToSlug } from "../helpers";
 
 import Heading from "./UI/Heading";
@@ -19,6 +21,8 @@ const SettingRow = (props) => {
 	let theInput;
 	if (props.inputType === "toggle") {
 		theInput = <InputToggleSwitch {...props} />;
+	} else if (props.inputType === "onlytoggle") {
+		return <InputToggleSwitch {...props} />;
 	} else if (props.inputType === "select") {
 		theInput = <InputSelect {...props} />;
 	} else if (props.inputType === "radio") {
@@ -29,6 +33,16 @@ const SettingRow = (props) => {
 				<td colSpan={2}>
 					<div className={props.customClass}>
 						<SocialIconSelector {...props} />
+					</div>
+				</td>
+			</tr>
+		);
+	} else if (props.inputType === "cptsoptions") {
+		return (
+			<tr>
+				<td colSpan={2}>
+					<div>
+						<CptsSelect {...props} />
 					</div>
 				</td>
 			</tr>
@@ -48,10 +62,8 @@ const SettingRow = (props) => {
 	} else if (props.inputType === "pronote") {
 		return (
 			<tr className="kwtsk-row pronote">
-				<th>&nbsp;</th>
-				<td>
-					{props.title && <h6>{props.title}:</h6>}
-					{props.desc && <p>{props.desc}</p>}
+				<td colSpan={2}>
+					<ProNote {...props} />
 				</td>
 			</tr>
 		);

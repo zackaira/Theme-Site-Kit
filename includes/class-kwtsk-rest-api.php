@@ -53,6 +53,12 @@ class Theme_Site_Kit_API_Rest_Routes {
 			'callback'            => [$this, 'kwtsk_install_plugin'],
 			'permission_callback' => [$this, 'kwtsk_save_settings_permission'],
 		]);
+
+		register_rest_route('kwtsk/v1', '/check-post-type', [
+			'methods'             => 'GET',
+			'callback'            => [$this, 'kwtsk_check_post_type_post_count'],
+			'permission_callback' => [$this, 'kwtsk_get_settings_permission'],
+		]);
 	}
 
 	/*
@@ -141,6 +147,12 @@ class Theme_Site_Kit_API_Rest_Routes {
 			if ( intval( $post['parent'] ) === 0 ) {
 				$collection_id   = $post['id'];
 				$collection_name = $post['title']['rendered'];
+
+				// Read the custom field from the parent.
+				$isProLayout = false;
+				if ( isset( $post['is_pro_layout'] ) ) {
+					$isProLayout = filter_var( $post['is_pro_layout'], FILTER_VALIDATE_BOOLEAN );
+				}
 				
 				// Extract category from the embedded taxonomy terms for "page-layout-categories".
 				$collection_category = '';
@@ -175,6 +187,7 @@ class Theme_Site_Kit_API_Rest_Routes {
 					'collectionCategory' => $collection_category,
 					'requiredPlugins'    => $required_plugins,
 					'previewImage'       => $previewImage,
+					'isProLayout'        => $isProLayout,
 					'layouts'            => array(),
 				);
 		
@@ -221,6 +234,7 @@ class Theme_Site_Kit_API_Rest_Routes {
 						'previewImage' => $previewImage,
 						'tags'         => $child_tags,
 					);
+					
 					$collections[ $parent_id ]['layouts'][] = $layout;
 		
 					// Collect tags globally, avoiding duplicates.
@@ -457,5 +471,22 @@ class Theme_Site_Kit_API_Rest_Routes {
 			) );
 		}
 	}
+
+	/**
+	 * Check dynamic post type count before deleting.
+	 */
+	public function kwtsk_check_post_type_post_count(WP_REST_Request $request) {
+		$post_type = sanitize_key( $request->get_param( 'type' ) );
+	
+		if ( ! post_type_exists( $post_type ) ) {
+			return new WP_Error( 'invalid_post_type', 'Post type not found', [ 'status' => 404 ] );
+		}
+	
+		$count = wp_count_posts( $post_type );
+		// Sum all statuses (publish, draft, pending, etc.)
+		$total = array_sum( (array) $count );
+	
+		return rest_ensure_response( [ 'count' => $total ] );
+	}	
 }
 new Theme_Site_Kit_API_Rest_Routes();

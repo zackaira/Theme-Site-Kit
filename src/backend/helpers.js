@@ -4,10 +4,18 @@ const { __ } = wp.i18n;
  * Convert Text to slug
  */
 export const kwtskConvertToSlug = (text, spacer = "_") => {
+	const safeSpacer = spacer === "-" ? "-" : "_"; // Allow only "-" or "_"
 	return text
 		.toLowerCase()
-		.replace(/[^\w ]+/g, "")
-		.replace(/ +/g, spacer);
+		.trim()
+		.replace(/[^\w\s-]/g, "") // Allow letters, numbers, spaces, underscores, hyphens
+		.replace(/\s+/g, safeSpacer) // Replace spaces with the spacer
+		.replace(new RegExp(`${safeSpacer}{2,}`, "g"), safeSpacer) // Collapse multiple spacers
+		.replace(new RegExp(`^${safeSpacer}|${safeSpacer}$`, "g"), ""); // Trim leading/trailing spacers
+};
+
+export const kwtskCapitalizeWords = (str) => {
+	return str.replace(/\b\w/g, (match) => match.toUpperCase());
 };
 
 export const kwtskGroupSettings = () => {

@@ -9,9 +9,12 @@ import SocialIcons from "../frontend/components/SocialIcons";
 import GeneralPage from "./components/GeneralPage";
 import { kwtskGroupSettings, kwtskSocialOptions } from "./helpers";
 
-const Settings = ({ kwtskObj }) => {
+const SettingsPage = ({ kwtskObj }) => {
 	const url = `${kwtskObj.apiUrl}kwtsk/v1`;
-	const adminUrl = `${kwtskObj.adminUrl}`;
+	const adminUrl = kwtskObj.adminUrl;
+	const accountUrl = kwtskObj.accountUrl;
+	const upgradeUrl = kwtskObj.upgradeUrl;
+	const isPremium = Boolean(kwtskObj.isPremium);
 	const [loader, setLoader] = useState(false);
 	const [loadSetting, setLoadSetting] = useState(true);
 	const getInitialTab = () => {
@@ -21,8 +24,7 @@ const Settings = ({ kwtskObj }) => {
 	const [activeTab, setActiveTab] = useState(getInitialTab());
 	const kwtskDefaults = kwtskObj.kwtskDefaults;
 	// const wcActive = Boolean(kwtskObj.wcActive);
-	const [kwtskOptions, setLinktOptions] = useState({});
-	const [kwtskUrlVal, setLinktUrlVal] = useState(false);
+	const [kwtskOptions, setKwtskOptions] = useState({});
 	const [showSocialPreview, setShowSocialPreview] = useState(false);
 
 	const changeTab = (tabId = "general") => {
@@ -33,7 +35,7 @@ const Settings = ({ kwtskObj }) => {
 		window.history.replaceState(null, "", "?" + params.toString());
 	};
 
-	// console.log(kwtskOptions);
+	console.log(kwtskOptions);
 
 	// setState dynamically for each setting
 	const handleChange = ({
@@ -47,13 +49,38 @@ const Settings = ({ kwtskObj }) => {
 			value = checked;
 		}
 
+		// Match pattern: cpts_post_types_{slug}_{setting}
+		const cptMatch = name.match(
+			/^cpts_post_types_(.+)_(enable_categories|enable_tags)$/,
+		);
+
+		if (cptMatch) {
+			const postType = cptMatch[1];
+			const settingName = cptMatch[2];
+
+			setKwtskOptions((prevOptions) => ({
+				...prevOptions,
+				cpts: {
+					...prevOptions.cpts,
+					post_types: {
+						...(prevOptions.cpts?.post_types || {}),
+						[postType]: {
+							...(prevOptions.cpts?.post_types?.[postType] || {}),
+							[settingName]: value,
+						},
+					},
+				},
+			}));
+			return;
+		}
+
 		// Check if the name contains an underscore (indicating a nested setting)
 		const underscoreIndex = name.indexOf("_");
 		if (underscoreIndex > -1) {
 			const settingGroup = name.substring(0, underscoreIndex);
 			const settingName = name.substring(underscoreIndex + 1);
 
-			setLinktOptions({
+			setKwtskOptions({
 				...kwtskOptions,
 				[settingGroup]: {
 					// Use an empty object if the group isn’t defined yet
@@ -63,7 +90,7 @@ const Settings = ({ kwtskObj }) => {
 			});
 		} else {
 			// For settings with no group
-			setLinktOptions({
+			setKwtskOptions({
 				...kwtskOptions,
 				[name]: value,
 			});
@@ -96,7 +123,6 @@ const Settings = ({ kwtskObj }) => {
 			.then((res) => {
 				// console.log(res.data);
 				// const kwtskOptions = JSON.parse(res.data.kwtskOptions);
-				if (res.data === "Successful") setLinktUrlVal(true);
 				setLoader(false);
 			});
 	};
@@ -143,13 +169,13 @@ const Settings = ({ kwtskObj }) => {
 				// setState dynamically for all settings
 				if (kwtskOptions) {
 					for (const key in kwtskOptions) {
-						setLinktOptions((prevState) => ({
+						setKwtskOptions((prevState) => ({
 							...prevState,
 							[key]: kwtskOptions[key] ? kwtskOptions[key] : "",
 						}));
 					}
 				} else {
-					setLinktOptions(kwtskDefaults); // Set settings to kwtskDefaults if not found
+					setKwtskOptions(kwtskDefaults); // Set settings to kwtskDefaults if not found
 					// document.querySelector(".kwtskSaveBtn").click();
 				}
 				// console.log(kwtskOptions);
@@ -165,6 +191,14 @@ const Settings = ({ kwtskObj }) => {
 				<div className="kwtskSettingBar">
 					<h2>{__("Theme Site Kit Settings", "theme-site-kit")}</h2>
 					<div className="kwtskSettingBarOptions">
+						{isPremium && (
+							<a
+								href={accountUrl}
+								className="fa-solid fa-user kwtsk-account"
+								title={__("My Account", "theme-site-kit")}
+							></a>
+						)}
+
 						<a
 							href="https://kairaweb.com/documentation/"
 							className="fa-solid fa-life-ring kwtsk-docs"
@@ -189,6 +223,15 @@ const Settings = ({ kwtskObj }) => {
 										{__("General", "theme-site-kit")}
 									</a>
 								</li>
+								{/* <li>
+									<a
+										id="kwtsktab-maintenance_mode"
+										className={`kwtsk-tab ${activeTab === "maintenance_mode" ? "active" : ""}`}
+										onClick={() => changeTab("maintenance_mode")}
+									>
+										{__("Maintenance Mode", "theme-site-kit")}
+									</a>
+								</li> */}
 								<li>
 									<a
 										id="kwtsktab-disable_comments"
@@ -218,6 +261,15 @@ const Settings = ({ kwtskObj }) => {
 								</li>
 								<li>
 									<a
+										id="kwtsktab-cpts"
+										className={`kwtsk-tab ${activeTab === "cpts" ? "active" : ""}`}
+										onClick={() => changeTab("cpts")}
+									>
+										{__("Custom Post Types", "theme-site-kit")}
+									</a>
+								</li>
+								<li>
+									<a
 										id="kwtsktab-extras"
 										className={`kwtsk-tab ${activeTab === "extras" ? "active" : ""}`}
 										onClick={() => changeTab("extras")}
@@ -242,6 +294,40 @@ const Settings = ({ kwtskObj }) => {
 											changeTab={() => changeTab("disable_comments")}
 										/>
 									</div>
+
+									{/* <div
+										id="kwtsk-content-maintenance_mode"
+										className={`kwtsk-content ${
+											activeTab === "maintenance_mode" ? "active" : ""
+										}`}
+									>
+										<SettingHeader
+											title={__("Maintenance Mode", "theme-site-kit")}
+											description={__(
+												"Enable maintenance mode to temporarily hide your site from visitors while you build your website or make needed updates.",
+												"theme-site-kit",
+											)}
+										/>
+
+										<table className="form-table" role="presentation">
+											<tbody>
+												<SettingRow
+													title={__(
+														"Enable Maintenance Mode",
+														"theme-site-kit",
+													)}
+													slug={`maintenance_enabled`}
+													value={kwtskOptions.maintenance?.enabled}
+													inputType="toggle"
+													onChange={handleChange}
+												/>
+
+												{kwtskOptions.maintenance?.enabled && (
+													<>Some other settings</>
+												)}
+											</tbody>
+										</table>
+									</div> */}
 
 									<div
 										id="kwtsk-content-disable_comments"
@@ -380,6 +466,7 @@ const Settings = ({ kwtskObj }) => {
 																setShowSocialPreview((state) => !state)
 															}
 														/>
+
 														<SettingRow
 															title={__("Position", "linkt")}
 															slug="social_position"
@@ -529,6 +616,16 @@ const Settings = ({ kwtskObj }) => {
 															)}
 														</SettingGroup>
 
+														{!isPremium &&
+															kwtskOptions.social?.icons.length >= 3 && (
+																<SettingRow
+																	title="dfsgsdgsdfg"
+																	desc="skdbf vksbdfvbsdkfjhbksdjhfb kjshdf kjhs dfvjkhds"
+																	upgradeUrl={upgradeUrl}
+																	inputType="pronote"
+																/>
+															)}
+
 														<SettingRow
 															slug="social_icons"
 															value={kwtskOptions.social?.icons}
@@ -572,53 +669,131 @@ const Settings = ({ kwtskObj }) => {
 
 												{kwtskOptions.mobilemenu?.enabled && (
 													<>
-														<SettingRow
-															title={__("Mobile Menu Colors", "linkt")}
-															slug="mobilemenu_style"
-															value={kwtskOptions.mobilemenu?.style}
-															inputType="select"
-															options={{
-																dark: __("Dark", "theme-site-kit"),
-																light: __("Light", "theme-site-kit"),
-																custom: __("Custom", "theme-site-kit"),
-															}}
-															onChange={handleChange}
-														/>
-
-														{kwtskOptions.mobilemenu?.style === "custom" && (
+														{isPremium ? (
 															<>
 																<SettingRow
-																	title={__(
-																		"Background Color",
-																		"theme-site-kit",
-																	)}
-																	slug="mobilemenu_bgcolor"
-																	value={kwtskOptions.social?.bgcolor}
-																	inputType="colorpicker"
-																	defaultValue="#1d2327"
+																	title={__("Mobile Menu Colors", "linkt")}
+																	slug="mobilemenu_style"
+																	value={kwtskOptions.mobilemenu?.style}
+																	inputType="select"
+																	options={{
+																		dark: __("Dark", "theme-site-kit"),
+																		light: __("Light", "theme-site-kit"),
+																		custom: __("Custom", "theme-site-kit"),
+																	}}
 																	onChange={handleChange}
 																/>
+
+																{kwtskOptions.mobilemenu?.style ===
+																	"custom" && (
+																	<>
+																		<SettingRow
+																			title={__(
+																				"Background Color",
+																				"theme-site-kit",
+																			)}
+																			slug="mobilemenu_bgcolor"
+																			value={kwtskOptions.social?.bgcolor}
+																			inputType="colorpicker"
+																			defaultValue="#1d2327"
+																			onChange={handleChange}
+																		/>
+																		<SettingRow
+																			title={__("Text Color", "theme-site-kit")}
+																			slug="mobilemenu_textcolor"
+																			value={kwtskOptions.social?.textcolor}
+																			inputType="colorpicker"
+																			defaultValue="#b4b4b4"
+																			onChange={handleChange}
+																		/>
+
+																		<SettingRow
+																			title={__(
+																				"Selected Text Color",
+																				"theme-site-kit",
+																			)}
+																			slug="mobilemenu_selectedcolor"
+																			value={kwtskOptions.social?.selectedcolor}
+																			inputType="colorpicker"
+																			defaultValue="#FFF"
+																			onChange={handleChange}
+																		/>
+																	</>
+																)}
+															</>
+														) : (
+															<SettingRow
+																title="dfsgsdgsdfg"
+																desc="skdbf vksbdfvbsdkfjhbksdjhfb kjshdf kjhs dfvjkhds"
+																inputType="pronote"
+																upgradeUrl={upgradeUrl}
+															/>
+														)}
+													</>
+												)}
+											</tbody>
+										</table>
+									</div>
+
+									<div
+										id="kwtsk-content-cpts"
+										className={`kwtsk-content ${
+											activeTab === "cpts" ? "active" : ""
+										}`}
+									>
+										<SettingHeader
+											title={__("Custom Post Types", "theme-site-kit")}
+											description={__(
+												"Create and Manage custom Post Types on your WordPress site.",
+												"theme-site-kit",
+											)}
+										/>
+
+										<table className="form-table" role="presentation">
+											<tbody>
+												<SettingRow
+													title={__(
+														"Enable Custom Post Types",
+														"theme-site-kit",
+													)}
+													slug={`cpts_enabled`}
+													value={kwtskOptions.cpts?.enabled}
+													inputType="toggle"
+													onChange={handleChange}
+												/>
+												{kwtskOptions.cpts?.enabled && (
+													<>
+														{isPremium ? (
+															<>
 																<SettingRow
-																	title={__("Text Color", "theme-site-kit")}
-																	slug="mobilemenu_textcolor"
-																	value={kwtskOptions.social?.textcolor}
-																	inputType="colorpicker"
-																	defaultValue="#b4b4b4"
-																	onChange={handleChange}
+																	slug="cpts_note"
+																	desc={__(
+																		"Once you've added your custom Post Type(s), you will need to refresh the page to view them in your WordPress admin.",
+																		"theme-site-kit",
+																	)}
+																	inputType="pronote"
+																	upgradeUrl={upgradeUrl}
 																/>
 
 																<SettingRow
 																	title={__(
-																		"Selected Text Color",
+																		"Custom Post Types",
 																		"theme-site-kit",
 																	)}
-																	slug="mobilemenu_selectedcolor"
-																	value={kwtskOptions.social?.selectedcolor}
-																	inputType="colorpicker"
-																	defaultValue="#FFF"
+																	slug={`cpts_post_types`}
+																	value={kwtskOptions.cpts?.post_types}
+																	inputType="cptsoptions"
 																	onChange={handleChange}
+																	apiUrl={url}
 																/>
 															</>
+														) : (
+															<SettingRow
+																title="dfsgsdgsdfg"
+																desc="skdbf vksbdfvbsdkfjhbksdjhfb kjshdf kjhs dfvjkhds"
+																upgradeUrl={upgradeUrl}
+																inputType="pronote"
+															/>
 														)}
 													</>
 												)}
@@ -669,16 +844,6 @@ const Settings = ({ kwtskObj }) => {
 										<div className="kwtskSaveBtnLoader">
 											{(loadSetting || loader) && <Loader />}
 										</div>
-
-										{kwtskUrlVal && (
-											<a
-												href="options-permalink.php"
-												className="stand-out-note-link"
-												target="_blank"
-											>
-												{__("Update the Permalinks", "theme-site-kit")}
-											</a>
-										)}
 									</div>
 									<div className="kwtskSettingBarOptions">
 										<div
@@ -708,4 +873,4 @@ const Settings = ({ kwtskObj }) => {
 	);
 };
 
-export default Settings;
+export default SettingsPage;

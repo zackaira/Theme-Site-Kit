@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		ReactDOM.render(
 			<SocialIcons
 				options={kwtskFObj?.kwtskOptions}
-				// isPro={isPremium}
+				isPro={kwtskFObj?.isPremium}
 			/>,
 			kwtskSocial,
 		);

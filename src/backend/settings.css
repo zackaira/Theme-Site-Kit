@@ -8,7 +8,7 @@
 }
 
 .kwtsk-settings {
-	max-width: 920px;
+	max-width: 980px;
 	position: relative;
 }
 .kwtsk-loader-wrap {
@@ -182,6 +182,9 @@ body.kwtsk-free a.kwtsk-account {
 .kwtsk-tabs li {
 	margin: 0 1px;
 	padding: 0;
+	flex: 1;
+	text-align: center;
+	white-space: nowrap;
 }
 .kwtsk-tab {
 	background-color: #f4f7fb;
@@ -525,11 +528,11 @@ body.kwtsk-free a.kwtsk-account {
 .kwtsk-row.heading td {
 	padding-bottom: 0;
 }
-.kwtsk-row.pronote th {
-	padding: 0 10px 0 0;
-}
 .kwtsk-row.pronote td {
-	padding: 0 15px;
+	padding: 0;
+}
+.kwtsk-pronote {
+	margin: 20px 0 0;
 }
 .kwtsk-row.pronote h6 {
 	margin: 0;
@@ -547,6 +550,10 @@ p.kwtsk-input-note {
 	margin: 2px 0 10px;
 	opacity: 0.6;
 	font-size: 12px;
+}
+.kwtsk-pronote .kwtsk-pronote-a {
+}
+.kwtsk-pronote .kwtsk-pronote-a .pronote-btn {
 }
 
 /* -- Toggle Switch -- */
@@ -982,4 +989,125 @@ input.checkbox-single {
 .kwtsk-icon-input button.kwtsk-add {
 	margin-left: 10px;
 	padding: 8px 12px;
+}
+
+/* -- Custom Post Types -- */
+.cpts-select {
+}
+.cpts-select .no-cpts {
+	color: #b3b3b3;
+	font-size: 16px;
+	padding: 40px 10px;
+	text-align: center;
+}
+.cpts-select .cpts-add-new {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+}
+.cpts-select .cpts-add-new input {
+	flex: 1;
+	margin: 0;
+	padding: 8px 12px;
+}
+.cpts-select .cpts-add-new input.valid {
+}
+.cpts-select .cpts-add-new input.invalid {
+	border: 1px solid #965454;
+	box-shadow: 0 0 0 1px #d90f0f;
+}
+.cpts-select .cpts-add-new button {
+	padding: 5px 15px;
+	height: 46px;
+}
+
+.cpts-select .form-table.inner-setting-table {
+	margin: 40px 0 0;
+}
+.cpts-select .form-table.inner-setting-table th {
+	padding: 12px;
+}
+.cpts-select .form-table.inner-setting-table th.cpts-slug {
+	padding-left: 6px;
+}
+.cpts-select .form-table.inner-setting-table th.cpts-cats {
+	width: 120px;
+	text-align: center;
+}
+.cpts-select .form-table.inner-setting-table th.cpts-tags {
+	width: 120px;
+	text-align: center;
+}
+.cpts-select .form-table.inner-setting-table th.cpts-delete {
+	width: 35px;
+}
+.cpts-select .form-table.inner-setting-table tr.even {
+	background-color: #f9f9f9;
+}
+.cpts-select .form-table.inner-setting-table td {
+	padding: 10px 0;
+}
+.cpts-select .form-table.inner-setting-table td.center {
+	text-align: center;
+}
+.cpts-select .form-table.inner-setting-table td:first-child {
+	padding-left: 10px;
+}
+.cpts-select .form-table.inner-setting-table td:last-child {
+	padding-right: 10px;
+}
+.cpts-select .form-table.inner-setting-table input {
+	margin: 0;
+	padding: 8px 12px;
+}
+.cpts-select .form-table.inner-setting-table code {
+	display: inline-block;
+	padding: 6px 12px;
+	background: #e9e9e9;
+	border-radius: 3px;
+	min-width: 88px;
+}
+.cpts-select .cpts-del {
+	font-size: 18px;
+	width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #fff;
+	border-radius: 20px;
+	box-shadow: 0 1px 4px rgb(0 0 0 / 20%);
+	cursor: pointer;
+	position: relative;
+	opacity: 0;
+	transition: all 0.3s;
+}
+.cpts-select .form-table tr .cpts-del.checking {
+	opacity: 1 !important;
+}
+.cpts-select .form-table tr .cpts-del.checking::before {
+	content: "";
+	display: inline-block;
+	vertical-align: middle;
+	position: absolute;
+	top: 6px;
+	left: calc(50% - 8px);
+	width: 12px;
+	height: 12px;
+	border: 2px solid #6a6f75;
+	border-top-color: transparent;
+	border-radius: 50%;
+	animation: kwtsk-delspin 0.8s linear infinite;
+}
+@keyframes kwtsk-delspin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+.cpts-select .cpts-del:hover {
+	color: #d40808;
+	background-color: #fff4f4;
+}
+.cpts-select .form-table tr:hover .cpts-del {
+	opacity: 1;
 }

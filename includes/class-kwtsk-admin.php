@@ -23,7 +23,7 @@ class Theme_Site_Kit_Admin {
 		add_filter('admin_body_class', array($this, 'kwtsk_admin_body_classes'));
 
 		// Add Dashboard Widget
-		add_action('wp_dashboard_setup', array( $this, 'kwtsk_dashboard_widget' ));
+		// add_action('wp_dashboard_setup', array( $this, 'kwtsk_dashboard_widget' ));
 	}
 
 	/**
@@ -167,15 +167,15 @@ class Theme_Site_Kit_Admin {
 	/**
 	 * Create a Dashboard Widget for Theme Site Kit
 	 */
-	public function kwtsk_dashboard_widget() {
-		$kwtskSavedOptions = get_option('kwtsk_options');
-		$kwtskOptions = $kwtskSavedOptions ? json_decode($kwtskSavedOptions) : '';
+	// public function kwtsk_dashboard_widget() {
+	// 	$kwtskSavedOptions = get_option('kwtsk_options');
+	// 	$kwtskOptions = $kwtskSavedOptions ? json_decode($kwtskSavedOptions) : '';
 
-		wp_add_dashboard_widget(
-			'kwtsk_dashboard_widget',
-			'WIDGET TITLE', array( $this, 'kwtsk_render_dashboard_widget' )
-		);
-	}
+	// 	wp_add_dashboard_widget(
+	// 		'kwtsk_dashboard_widget',
+	// 		'WIDGET TITLE', array( $this, 'kwtsk_render_dashboard_widget' )
+	// 	);
+	// }
 
 	/**
 	 * Render the Dashboard Widget info

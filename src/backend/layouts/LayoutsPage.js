@@ -13,7 +13,7 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 	const [previewLayout, setPreviewLayout] = useState(null);
 	const [importingLayoutId, setImportingLayoutId] = useState(null);
 	const [importedPages, setImportedPages] = useState({});
-	const isPremium = kwtskObj.isPremium;
+	const isPremium = Boolean(kwtskObj.isPremium);
 	const upgradeUrl = kwtskObj.upgradeUrl;
 	const [pluginStatuses, setPluginStatuses] = useState({});
 
@@ -132,8 +132,27 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 			: [];
 	}
 
+	function getPluginStatus(plugin) {
+		// Look for this plugin in the installed plugins list.
+		const installed = installedPlugins.find((p) => p.slug === plugin.slug);
+		let currentStatus = pluginStatuses[plugin.slug];
+		if (!currentStatus) {
+			if (installed) {
+				currentStatus = installed.active ? "activated" : "activate";
+			} else {
+				currentStatus = "not_installed";
+			}
+		}
+		return currentStatus;
+	}
+
+	const reqPlugins = activeCollRequiredPlugins();
+	const allActivated =
+		reqPlugins.length > 0 &&
+		reqPlugins.every((plugin) => getPluginStatus(plugin) === "activated");
+
 	let requiredPluginsDisplay = null;
-	if (activeCollection && activeCollRequiredPlugins().length > 0) {
+	if (reqPlugins.length > 0 && !allActivated) {
 		requiredPluginsDisplay = (
 			<div className="kwtsk-required-plugins">
 				<h4>{__("Required Plugins", "theme-site-kit")}</h4>
@@ -144,33 +163,22 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 					)}
 				</p>
 				<ul>
-					{activeCollRequiredPlugins().map((plugin) => {
-						// Look for the plugin in the installed plugins list.
-						const installed = installedPlugins.find(
-							(p) => p.slug === plugin.slug,
-						);
-						let currentStatus = pluginStatuses[plugin.slug];
-						if (!currentStatus) {
-							if (installed) {
-								currentStatus = installed.active ? "activated" : "activate";
-							} else {
-								currentStatus = "not_installed";
-							}
-						}
+					{reqPlugins.map((plugin) => {
+						const status = getPluginStatus(plugin);
 						let buttonContent;
-						if (currentStatus === "installing") {
+						if (status === "installing") {
 							buttonContent = (
 								<span>{__("Installing Plugin...", "theme-site-kit")}</span>
 							);
-						} else if (currentStatus === "activating") {
+						} else if (status === "activating") {
 							buttonContent = (
 								<span>{__("Activating Plugin...", "theme-site-kit")}</span>
 							);
-						} else if (currentStatus === "activated") {
+						} else if (status === "activated") {
 							buttonContent = (
 								<span>{__("Already installed", "theme-site-kit")}</span>
 							);
-						} else if (currentStatus === "activate") {
+						} else if (status === "activate") {
 							buttonContent = (
 								<Button
 									onClick={async () => {
@@ -189,7 +197,6 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 													},
 												},
 											);
-											// Assume success returns a message indicating activation.
 											setPluginStatuses((prev) => ({
 												...prev,
 												[plugin.slug]: "activated",
@@ -201,7 +208,7 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 											}));
 										}
 									}}
-									className="kwtsk-install-btn"
+									className="kwtsk-req-btn activate"
 								>
 									{__("Activate", "theme-site-kit")}
 								</Button>
@@ -248,7 +255,7 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 											}));
 										}
 									}}
-									className="kwtsk-install-btn"
+									className="kwtsk-req-btn"
 								>
 									{__("Install Now", "theme-site-kit")}
 								</Button>
@@ -316,7 +323,7 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 											alt={collection.collectionName}
 										/>
 
-										{!isPremium && (
+										{collection.isProLayout && !isPremium && (
 											<a
 												href={upgradeUrl}
 												className="fa-solid fa-web-awesome kwtsk-pro-icon"
@@ -353,6 +360,10 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 				(layout) => layout.tags && layout.tags.includes(selectedTag),
 			);
 		}
+		const activeCollectionObj = collections.find(
+			(c) => c.collectionName === activeCollection,
+		);
+
 		content = (
 			<div className="kwtsk-layouts-collection">
 				<div className="kwtsk-collection-header">
@@ -388,6 +399,7 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 									importingLayoutId !== null && importingLayoutId === layout.id
 								}
 								importedPageId={importedPages[layout.id]}
+								isProLayout={activeCollectionObj?.isProLayout}
 								isPremium={isPremium}
 								upgradeUrl={upgradeUrl}
 								adminUrl={kwtskObj.adminUrl}

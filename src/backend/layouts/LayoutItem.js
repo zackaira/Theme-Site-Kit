@@ -7,10 +7,14 @@ const LayoutItem = ({
 	handlePreviewLayout,
 	isImporting,
 	importedPageId,
+	isProLayout,
 	isPremium,
 	upgradeUrl,
 	adminUrl,
 }) => {
+	console.log("isProLayout: ", isProLayout);
+	console.log("isPremium: ", isPremium);
+
 	return (
 		<div className="kwtsk-layout">
 			<div className="kwtsk-layout-img">
