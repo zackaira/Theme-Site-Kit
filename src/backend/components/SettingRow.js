@@ -3,6 +3,7 @@ import InputToggleSwitch from "./inputs/InputToggleSwitch";
 import InputSelect from "./inputs/InputSelect";
 import InputText from "./inputs/InputText";
 import InputRange from "./inputs/InputRange";
+import InputMultiCheckbox from "./inputs/InputMultiCheckbox";
 import ColorPicker from "./inputs/ColorPicker";
 import InputRadioSelect from "./inputs/InputRadioSelect";
 import SocialIconSelector from "./inputs/SocialIconSelector";
@@ -27,6 +28,8 @@ const SettingRow = (props) => {
 		theInput = <InputSelect {...props} />;
 	} else if (props.inputType === "radio") {
 		theInput = <InputRadioSelect {...props} />;
+	} else if (props.inputType === "multicheckbox") {
+		theInput = <InputMultiCheckbox {...props} />;
 	} else if (props.inputType === "socialicons") {
 		return (
 			<tr>

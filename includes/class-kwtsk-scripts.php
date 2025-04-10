@@ -152,24 +152,47 @@ class Theme_Site_Kit_Scripts {
 		if ('theme-site-kit-settings' == $adminPage) {
 			wp_enqueue_style('kwtsk-frontend-style');
 			wp_enqueue_style('kwtsk-admin-settings-style');
-
-			$all_post_types = get_post_types(array( 'public' => true ), 'objects' );
-			$excluded_types = array( 'product', 'attachment', 'media', 'revision', 'nav_menu_item', 'linkt' );
+		
+			$all_post_types = get_post_types(array('public' => true), 'objects');
+			$excluded_types = array('product', 'attachment', 'media', 'revision', 'nav_menu_item', 'linkt');
 			// Filter out the excluded post types
-			$filtered_post_types = array_filter( $all_post_types, function( $post_type, $post_type_name ) use ( $excluded_types ) {
-				return ! in_array( $post_type_name, $excluded_types );
-			}, ARRAY_FILTER_USE_BOTH );
-			
+			$filtered_post_types = array_filter($all_post_types, function($post_type, $post_type_name) use ($excluded_types) {
+				return ! in_array($post_type_name, $excluded_types);
+			}, ARRAY_FILTER_USE_BOTH);
+		
+			// Get list of all published pages and format as { page_id: page_name, ... }
+			$published_pages = get_posts(array(
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+				'numberposts' => -1,
+				'orderby'     => 'title',
+    			'order'       => 'ASC',
+			));
+			$pages_for_js = array();
+			foreach ($published_pages as $page) {
+				// Use the page ID as key and page title as value
+				$pages_for_js[$page->ID] = $page->post_title;
+			}
+		
+			// Get all available user roles and format as { role_slug: Role Name, ... }
+			$user_roles_raw = function_exists('get_editable_roles') ? get_editable_roles() : array();
+			$user_roles = array();
+			foreach ($user_roles_raw as $role_key => $role_data) {
+				$user_roles[$role_key] = $role_data['name'];
+			}
+		
 			wp_enqueue_script('kwtsk-admin-settings-script');
 			wp_localize_script('kwtsk-admin-settings-script', 'kwtskSObj', array(
-				'apiUrl' => esc_url(get_rest_url()),
-				'nonce' => wp_create_nonce('wp_rest'),
-				'adminUrl' => esc_url(admin_url()),
-				'isPremium' => $isPro,
-				'post_types' => $filtered_post_types,
-				'kwtskOptions' => $kwtskOptions,
-				'accountUrl' => esc_url($kwtsk_fs->get_account_url()),
-				'upgradeUrl' => esc_url($kwtsk_fs->get_upgrade_url()),
+				'apiUrl'         => esc_url(get_rest_url()),
+				'nonce'          => wp_create_nonce('wp_rest'),
+				'adminUrl'       => esc_url(admin_url()),
+				'isPremium'      => $isPro,
+				'post_types'     => $filtered_post_types,
+				'kwtskOptions'   => $kwtskOptions,
+				'accountUrl'     => esc_url($kwtsk_fs->get_account_url()),
+				'upgradeUrl'     => esc_url($kwtsk_fs->get_upgrade_url()),
+				'publishedPages' => $pages_for_js,
+				'userRoles'      => $user_roles,
 			));
 			// wp_enqueue_media();
 		}
@@ -284,7 +307,19 @@ class Theme_Site_Kit_Scripts {
 					"post_types" => array(),
 				),
 				"maintenance" => array(
-					"enabled" => true,
+					"enabled" => false,
+					"mode" => "",
+					"access" => "loggedin",
+					"userroles" => array(),
+					"template" => "",
+					"bgcolor" => "#ffffff",
+					"title" => "",
+					"titlecolor" => "#333",
+					"text" => "",
+					"textcolor" => "#666",
+				),
+				"code" => array(
+					"enabled" => false,
 				),
 		);
 		return $defaultSettings;

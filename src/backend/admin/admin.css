@@ -83,3 +83,15 @@
 		transform: rotate(360deg);
 	}
 }
+
+/* -- Maintenance Mode in Admin Bar -- */
+#wpadminbar ul#wp-admin-bar-root-default li.kwtsk-maintenance-mode.enabled {
+	background-color: #d63638;
+}
+#wpadminbar
+	ul#wp-admin-bar-root-default
+	li.kwtsk-maintenance-mode.enabled:hover
+	a.ab-item {
+	background-color: #bc2022;
+	color: #fff;
+}

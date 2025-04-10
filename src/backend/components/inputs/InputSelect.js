@@ -15,6 +15,12 @@ const InputSelect = (props) => {
 				value={props.value || props.defaultValue}
 				className="snSelect"
 			>
+				{props.emptyOption && (
+					<option value="" key="empty">
+						{props.emptyLabel || "Select an option..."}
+					</option>
+				)}
+
 				{Object.entries(selectOptions).map(([key, value]) => (
 					<option value={key} key={key}>
 						{value}

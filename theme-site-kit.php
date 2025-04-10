@@ -81,6 +81,7 @@ if ( function_exists( 'kwtsk_fs' ) ) {
 	require_once 'includes/class-kwtsk-disable-comments.php';
 	require_once 'includes/class-kwtsk-svg-handler.php';
 	require_once 'includes/class-kwtsk-post-types.php';
+	require_once 'includes/class-kwtsk-maintenance-mode.php';
 
 	/**
 	 * Main instance of Theme_Site_Kit_Scripts to prevent the need to use globals

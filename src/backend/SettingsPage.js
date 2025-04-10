@@ -15,6 +15,10 @@ const SettingsPage = ({ kwtskObj }) => {
 	const accountUrl = kwtskObj.accountUrl;
 	const upgradeUrl = kwtskObj.upgradeUrl;
 	const isPremium = Boolean(kwtskObj.isPremium);
+	const postTypes = kwtskObj.post_types;
+	const publishedPages = kwtskObj.publishedPages;
+	const userRoles = kwtskObj.userRoles;
+
 	const [loader, setLoader] = useState(false);
 	const [loadSetting, setLoadSetting] = useState(true);
 	const getInitialTab = () => {
@@ -223,15 +227,6 @@ const SettingsPage = ({ kwtskObj }) => {
 										{__("General", "theme-site-kit")}
 									</a>
 								</li>
-								{/* <li>
-									<a
-										id="kwtsktab-maintenance_mode"
-										className={`kwtsk-tab ${activeTab === "maintenance_mode" ? "active" : ""}`}
-										onClick={() => changeTab("maintenance_mode")}
-									>
-										{__("Maintenance Mode", "theme-site-kit")}
-									</a>
-								</li> */}
 								<li>
 									<a
 										id="kwtsktab-disable_comments"
@@ -239,6 +234,15 @@ const SettingsPage = ({ kwtskObj }) => {
 										onClick={() => changeTab("disable_comments")}
 									>
 										{__("Disable Comments", "theme-site-kit")}
+									</a>
+								</li>
+								<li>
+									<a
+										id="kwtsktab-maintenance_mode"
+										className={`kwtsk-tab ${activeTab === "maintenance_mode" ? "active" : ""}`}
+										onClick={() => changeTab("maintenance_mode")}
+									>
+										{__("Maintenance Mode", "theme-site-kit")}
 									</a>
 								</li>
 								<li>
@@ -295,40 +299,6 @@ const SettingsPage = ({ kwtskObj }) => {
 										/>
 									</div>
 
-									{/* <div
-										id="kwtsk-content-maintenance_mode"
-										className={`kwtsk-content ${
-											activeTab === "maintenance_mode" ? "active" : ""
-										}`}
-									>
-										<SettingHeader
-											title={__("Maintenance Mode", "theme-site-kit")}
-											description={__(
-												"Enable maintenance mode to temporarily hide your site from visitors while you build your website or make needed updates.",
-												"theme-site-kit",
-											)}
-										/>
-
-										<table className="form-table" role="presentation">
-											<tbody>
-												<SettingRow
-													title={__(
-														"Enable Maintenance Mode",
-														"theme-site-kit",
-													)}
-													slug={`maintenance_enabled`}
-													value={kwtskOptions.maintenance?.enabled}
-													inputType="toggle"
-													onChange={handleChange}
-												/>
-
-												{kwtskOptions.maintenance?.enabled && (
-													<>Some other settings</>
-												)}
-											</tbody>
-										</table>
-									</div> */}
-
 									<div
 										id="kwtsk-content-disable_comments"
 										className={`kwtsk-content ${
@@ -368,7 +338,7 @@ const SettingsPage = ({ kwtskObj }) => {
 												{kwtskOptions.disablecomments?.disable ===
 													"post_types" && (
 													<>
-														{kwtskObj.post_types && (
+														{postTypes && (
 															<tr>
 																<th scope="row">
 																	<h4>
@@ -384,7 +354,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																		role="presentation"
 																	>
 																		<tbody>
-																			{Object.entries(kwtskObj.post_types).map(
+																			{Object.entries(postTypes).map(
 																				([key, postType]) => (
 																					<SettingRow
 																						key={postType.name}
@@ -424,6 +394,218 @@ const SettingsPage = ({ kwtskObj }) => {
 																	</table>
 																</td>
 															</tr>
+														)}
+													</>
+												)}
+											</tbody>
+										</table>
+									</div>
+
+									<div
+										id="kwtsk-content-maintenance_mode"
+										className={`kwtsk-content ${
+											activeTab === "maintenance_mode" ? "active" : ""
+										}`}
+									>
+										<SettingHeader
+											title={__("Maintenance Mode", "theme-site-kit")}
+											description={__(
+												"Enable maintenance mode to temporarily hide your site from visitors while you build your website or make needed updates.",
+												"theme-site-kit",
+											)}
+										/>
+
+										<table className="form-table" role="presentation">
+											<tbody>
+												<SettingRow
+													title={__(
+														"Enable Maintenance Mode",
+														"theme-site-kit",
+													)}
+													slug={`maintenance_enabled`}
+													value={kwtskOptions.maintenance?.enabled}
+													inputType="toggle"
+													onChange={handleChange}
+												/>
+
+												{kwtskOptions.maintenance?.enabled && (
+													<>
+														<SettingRow
+															title={__("Choose Mode", "linkt")}
+															slug="maintenance_mode"
+															value={kwtskOptions.maintenance?.mode}
+															inputType="select"
+															emptyOption={true}
+															emptyLabel={__("Disabled", "theme-site-kit")}
+															options={{
+																maintenance: __(
+																	"Maintenance Mode",
+																	"theme-site-kit",
+																),
+																coming_soon: __(
+																	"Coming Soon",
+																	"theme-site-kit",
+																),
+															}}
+															onChange={handleChange}
+															note={
+																kwtskOptions.maintenance?.mode
+																	? kwtskOptions.maintenance?.mode ===
+																		"maintenance"
+																		? __(
+																				"Maintenance Mode (returning HTTP 503 code)",
+																				"theme-site-kit",
+																			)
+																		: __(
+																				"Coming Soon mode (returning HTTP 200 code)",
+																				"theme-site-kit",
+																			)
+																	: __(
+																			"Choose between Coming Soon mode (returning HTTP 200 code) or Maintenance Mode (returning HTTP 503 code).",
+																			"theme-site-kit",
+																		)
+															}
+														/>
+
+														{(kwtskOptions.maintenance?.mode ===
+															"maintenance" ||
+															kwtskOptions.maintenance?.mode ===
+																"coming_soon") && (
+															<>
+																<SettingRow
+																	title={__("Choose Template", "linkt")}
+																	slug="maintenance_template"
+																	value={kwtskOptions.maintenance?.template}
+																	inputType="select"
+																	emptyOption={true}
+																	emptyLabel={__(
+																		"Select Page Template",
+																		"theme-site-kit",
+																	)}
+																	options={publishedPages}
+																	onChange={handleChange}
+																	note={
+																		kwtskOptions.maintenance?.template ? (
+																			<a
+																				href={`${adminUrl}post.php?post=${kwtskOptions.maintenance?.template}&action=edit`}
+																				target="_blank"
+																			>
+																				{__("Edit Template Page")}
+																			</a>
+																		) : (
+																			<>
+																				{__(
+																					"There is a default basic template set now. Use that one, or create your own template page.",
+																					"theme-site-kit",
+																				)}
+																				<br />
+																				<a
+																					href={`${adminUrl}post-new.php?post_type=page`}
+																					target="_blank"
+																				>
+																					{__("Create a New Template Page")}
+																				</a>
+																			</>
+																		)
+																	}
+																/>
+
+																{!kwtskOptions.maintenance?.template && (
+																	<SettingGroup
+																		label={__(
+																			"Edit Template Page",
+																			"theme-site-kit",
+																		)}
+																	>
+																		<SettingRow
+																			title={__(
+																				"Background Color",
+																				"theme-site-kit",
+																			)}
+																			slug="maintenance_bgcolor"
+																			value={kwtskOptions.maintenance?.bgcolor}
+																			inputType="colorpicker"
+																			defaultValue="#f5f5f5"
+																			onChange={handleChange}
+																		/>
+
+																		<SettingRow
+																			title={__("Title", "theme-site-kit")}
+																			slug="maintenance_title"
+																			value={kwtskOptions.maintenance?.title}
+																			inputType="text"
+																			onChange={handleChange}
+																		/>
+																		<SettingRow
+																			title={__(
+																				"Title Color",
+																				"theme-site-kit",
+																			)}
+																			slug="maintenance_titlecolor"
+																			value={
+																				kwtskOptions.maintenance?.titlecolor
+																			}
+																			inputType="colorpicker"
+																			defaultValue="#333"
+																			onChange={handleChange}
+																		/>
+
+																		<SettingRow
+																			title={__("Text", "theme-site-kit")}
+																			slug="maintenance_text"
+																			value={kwtskOptions.maintenance?.text}
+																			inputType="text"
+																			onChange={handleChange}
+																		/>
+																		<SettingRow
+																			title={__(
+																				"Background Color",
+																				"theme-site-kit",
+																			)}
+																			slug="maintenance_textcolor"
+																			value={
+																				kwtskOptions.maintenance?.textcolor
+																			}
+																			inputType="colorpicker"
+																			defaultValue="#666"
+																			onChange={handleChange}
+																		/>
+																	</SettingGroup>
+																)}
+
+																<SettingRow
+																	title={__("Who Can Access the Site", "linkt")}
+																	slug="maintenance_access"
+																	value={kwtskOptions.maintenance?.access}
+																	inputType="select"
+																	options={{
+																		loggedin: __(
+																			"Logged In Users",
+																			"theme-site-kit",
+																		),
+																		custom: __("Custom", "theme-site-kit"),
+																	}}
+																	onChange={handleChange}
+																/>
+																{kwtskOptions.maintenance?.access ===
+																	"custom" && (
+																	<>
+																		<SettingRow
+																			title={__(
+																				"Select User Roles",
+																				"theme-site-kit",
+																			)}
+																			slug="maintenance_userroles"
+																			value={
+																				kwtskOptions.maintenance?.userroles
+																			}
+																			inputType="multicheckbox"
+																			options={userRoles}
+																			onChange={handleChange}
+																		/>
+																	</>
+																)}
+															</>
 														)}
 													</>
 												)}
@@ -772,7 +954,6 @@ const SettingsPage = ({ kwtskObj }) => {
 																		"theme-site-kit",
 																	)}
 																	inputType="pronote"
-																	upgradeUrl={upgradeUrl}
 																/>
 
 																<SettingRow

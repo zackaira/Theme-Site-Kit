@@ -4,12 +4,16 @@ const ProNote = (props) => {
 	return (
 		<div className={`kwtsk-pronote ${props.nomargin ? "nomargin" : ""}`}>
 			{props.title && <h6>{props.title}:</h6>}
+
 			{props.desc && <p>{props.desc}</p>}
-			<div className="kwtsk-pronote-a">
-				<a href={props.upgradeUrl} className="pronote-btn" target="_blank">
-					{__("Purchase Pro", "theme-site-kit")}
-				</a>
-			</div>
+
+			{props.upgradeUrl && (
+				<div className="kwtsk-pronote-a">
+					<a href={props.upgradeUrl} className="pronote-btn" target="_blank">
+						{__("Purchase Pro", "theme-site-kit")}
+					</a>
+				</div>
+			)}
 		</div>
 	);
 };
