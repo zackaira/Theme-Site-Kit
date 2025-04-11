@@ -2,7 +2,9 @@ const { __ } = wp.i18n;
 
 const ProNote = (props) => {
 	return (
-		<div className={`kwtsk-pronote ${props.nomargin ? "nomargin" : ""}`}>
+		<div
+			className={`kwtsk-pronote ${props.nomargin ? "nomargin" : ""} ${props.mini ? "mini" : ""}`}
+		>
 			{props.title && <h6>{props.title}:</h6>}
 
 			{props.desc && <p>{props.desc}</p>}

@@ -38,8 +38,8 @@ class Theme_Site_Kit_Admin {
 	// 		foreach ($blocks as $blockName => $enabled) {
 	// 			$prefix = substr($blockName, 0, 3);
 
-	// 			if (file_exists(KWTP_PLUGIN_DIR . 'build/' . str_replace("_", "-", $blockName) . '/index.php')) {
-	// 				require KWTP_PLUGIN_DIR . 'build/' . str_replace("_", "-", $blockName) . '/index.php';
+	// 			if (file_exists(KWTSK_PLUGIN_DIR . 'build/' . str_replace("_", "-", $blockName) . '/index.php')) {
+	// 				require KWTSK_PLUGIN_DIR . 'build/' . str_replace("_", "-", $blockName) . '/index.php';
 	// 			}
 	// 		}
 	// 	endif;
@@ -62,8 +62,8 @@ class Theme_Site_Kit_Admin {
 
 		add_submenu_page(
 			'themes.php',
-			__('Theme Site Kit', 'theme-site-kit'),
-			__('Theme Site Kit', 'theme-site-kit'),
+			__('Page Layouts', 'theme-site-kit'),
+			__('Page Layouts', 'theme-site-kit'),
 			$capability,
 			'theme-site-kit-layouts',
 			array($this, 'kwtsk_menu_layouts_page_template')

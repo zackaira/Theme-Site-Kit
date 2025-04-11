@@ -108,7 +108,7 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 				...prev,
 				[layout.id]: newPage.post_id,
 			}));
-			console.log("Layout imported successfully", newPage);
+			// console.log("Layout imported successfully", newPage);
 		} catch (err) {
 			console.error(err);
 			alert(
@@ -147,12 +147,41 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 	}
 
 	const reqPlugins = activeCollRequiredPlugins();
+
+	// Define an array of ignore pairs.
+	// Each object has:
+	// - `ignore`: the plugin slug to ignore,
+	// - `condition`: the plugin slug that, if installed, makes us ignore the `ignore` plugin.
+	const ignorePluginPairs = [
+		{ ignore: "blockons", condition: "blockons-pro" },
+		// You can add more pairs here if needed.
+	];
+
+	// Filter out "blockons-pro" if "blockons" is installed
+	const filteredReqPlugins = reqPlugins.filter((plugin) => {
+		// Check if the plugin is in the ignorePluginPairs list.
+		const ignoreItem = ignorePluginPairs.find(
+			(item) => item.ignore === plugin.slug,
+		);
+		// If found, and if the condition plugin is installed, then ignore this plugin.
+		if (ignoreItem) {
+			if (installedPlugins.some((p) => p.slug === ignoreItem.condition)) {
+				return false; // Do not include this plugin.
+			}
+		}
+		// Otherwise, keep it.
+		return true;
+	});
+
+	// Update the allActivated calculation based on the filtered list.
 	const allActivated =
-		reqPlugins.length > 0 &&
-		reqPlugins.every((plugin) => getPluginStatus(plugin) === "activated");
+		filteredReqPlugins.length > 0 &&
+		filteredReqPlugins.every(
+			(plugin) => getPluginStatus(plugin) === "activated",
+		);
 
 	let requiredPluginsDisplay = null;
-	if (reqPlugins.length > 0 && !allActivated) {
+	if (filteredReqPlugins.length > 0 && !allActivated) {
 		requiredPluginsDisplay = (
 			<div className="kwtsk-required-plugins">
 				<h4>{__("Required Plugins", "theme-site-kit")}</h4>
@@ -163,7 +192,7 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 					)}
 				</p>
 				<ul>
-					{reqPlugins.map((plugin) => {
+					{filteredReqPlugins.map((plugin) => {
 						const status = getPluginStatus(plugin);
 						let buttonContent;
 						if (status === "installing") {
@@ -187,7 +216,7 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 											[plugin.slug]: "activating",
 										}));
 										try {
-											const res = await axios.post(
+											await axios.post(
 												`${kwtskObj.apiUrl}kwtsk/v1/install-plugin`,
 												{ slug: plugin.slug },
 												{
@@ -280,7 +309,13 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 					<h2>{__("Import Page Layouts", "theme-site-kit")}</h2>
 					<p>
 						{__(
-							"Welcome to the Import Page Layouts tool — your shortcut to quickly building new pages using professionally designed Gutenberg layouts. Instead of building from scratch, simply browse the different layout collections below.",
+							"Welcome to the Import Page Layouts tool - your shortcut to quickly building new pages using professionally designed Gutenberg layouts. Instead of building from scratch, simply browse the different layout collections below.",
+							"theme-site-kit",
+						)}
+					</p>
+					<p>
+						{__(
+							"Note: Imported layouts may appear slightly different depending on your active theme. Variations might include adjustments in heading sizes, small styling details, or fonts.",
 							"theme-site-kit",
 						)}
 					</p>
@@ -437,7 +472,7 @@ const LayoutsPage = ({ kwtskObj, svgOn }) => {
 						<div className="kwtsk-layout-modal-header">
 							<div>
 								<h4>{previewLayout.title}</h4>
-								<p>{previewLayout.description}</p>
+								{/* <p>{previewLayout.description}</p> */}
 							</div>
 							{isPremium ? (
 								<Button

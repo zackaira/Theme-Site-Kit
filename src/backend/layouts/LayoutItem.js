@@ -12,9 +12,6 @@ const LayoutItem = ({
 	upgradeUrl,
 	adminUrl,
 }) => {
-	console.log("isProLayout: ", isProLayout);
-	console.log("isPremium: ", isPremium);
-
 	return (
 		<div className="kwtsk-layout">
 			<div className="kwtsk-layout-img">
@@ -22,9 +19,11 @@ const LayoutItem = ({
 			</div>
 			<div className="kwtsk-layout-content">
 				<h3>{layout.title}</h3>
-				<p>{layout.description}</p>
+
+				{/* <p>{layout.description}</p> */}
+
 				<div className="kwtsk-layout-btns">
-					{isPremium ? (
+					{(isProLayout && isPremium) || (!isProLayout && !isPremium) ? (
 						<>
 							{importedPageId ? (
 								<a

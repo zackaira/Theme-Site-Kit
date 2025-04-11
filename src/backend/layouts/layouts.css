@@ -218,9 +218,9 @@
 	padding: 10px;
 }
 .kwtsk-layout-content h3 {
-	margin: 0;
+	font-size: 18px;
+	margin: 5px 0 14px;
 	padding: 0;
-	font-size: 16px;
 }
 .kwtsk-layout-content p {
 	font-size: 12px;
@@ -363,12 +363,13 @@ body.kwtsk-modal-open {
 }
 .kwtsk-layout-modal-header {
 	display: flex;
-	align-items: flex-end;
+	align-items: baseline;
 	justify-content: space-between;
 	padding: 0;
+	margin: 25px 0 0;
 }
 .kwtsk-layout-modal-header h4 {
-	margin: 0 0 14px;
+	margin: 0;
 	padding: 0;
 	font-size: 24px;
 	color: #000;

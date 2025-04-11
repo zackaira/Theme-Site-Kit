@@ -26,7 +26,7 @@ class Theme_Site_Kit_Scripts {
 	/**
 	 * Constructor funtion
 	 */
-	public function __construct($file = '', $version = KWTP_PLUGIN_VERSION) {
+	public function __construct($file = '', $version = KWTSK_PLUGIN_VERSION) {
 		$this->file     = $file;
 		$this->_version = $version;
 
@@ -61,35 +61,35 @@ class Theme_Site_Kit_Scripts {
 		$kwtskOptions = $kwtskSavedOptions ? json_decode($kwtskSavedOptions) : '';
 
 		// Font Awesome Free
-		wp_register_style('kwtsk-fontawesome', esc_url(KWTP_PLUGIN_URL . 'assets/font-awesome/css/all.min.css'), array(), KWTP_PLUGIN_VERSION);
+		wp_register_style('kwtsk-fontawesome', esc_url(KWTSK_PLUGIN_URL . 'assets/font-awesome/css/all.min.css'), array(), KWTSK_PLUGIN_VERSION);
 		
 		// Frontend
-		wp_register_style('kwtsk-frontend-style', esc_url(KWTP_PLUGIN_URL . 'dist/frontend' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTP_PLUGIN_VERSION);
-		wp_register_script('kwtsk-frontend-script', esc_url(KWTP_PLUGIN_URL . 'dist/frontend' . $suffix . '.js'), array('wp-i18n'), KWTP_PLUGIN_VERSION);
+		wp_register_style('kwtsk-frontend-style', esc_url(KWTSK_PLUGIN_URL . 'dist/frontend' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTSK_PLUGIN_VERSION);
+		wp_register_script('kwtsk-frontend-script', esc_url(KWTSK_PLUGIN_URL . 'dist/frontend' . $suffix . '.js'), array('wp-i18n'), KWTSK_PLUGIN_VERSION);
 
 		// Custom Mobile Menu (add custom-mobile-menu class to Nav Block)
-        wp_register_style( 'kwtsk-mobile-menu-style', esc_url(KWTP_PLUGIN_URL) . 'dist/mobile-menu' . $suffix . '.css', array(), KWTP_PLUGIN_VERSION );
-        wp_register_script( 'kwtsk-mobile-menu-script', esc_url(KWTP_PLUGIN_URL) . 'dist/mobile-menu' . $suffix . '.js', array(), KWTP_PLUGIN_VERSION, true );
+        wp_register_style( 'kwtsk-mobile-menu-style', esc_url(KWTSK_PLUGIN_URL) . 'dist/mobile-menu' . $suffix . '.css', array(), KWTSK_PLUGIN_VERSION );
+        wp_register_script( 'kwtsk-mobile-menu-script', esc_url(KWTSK_PLUGIN_URL) . 'dist/mobile-menu' . $suffix . '.js', array(), KWTSK_PLUGIN_VERSION, true );
         
 		// Admin
-		wp_register_style('kwtsk-admin-style', esc_url(KWTP_PLUGIN_URL . 'dist/admin' . $suffix . '.css'), array(), KWTP_PLUGIN_VERSION);
-		wp_register_script('kwtsk-admin-script', esc_url(KWTP_PLUGIN_URL . 'dist/admin' . $suffix . '.js'), array(), KWTP_PLUGIN_VERSION, true);
+		wp_register_style('kwtsk-admin-style', esc_url(KWTSK_PLUGIN_URL . 'dist/admin' . $suffix . '.css'), array(), KWTSK_PLUGIN_VERSION);
+		wp_register_script('kwtsk-admin-script', esc_url(KWTSK_PLUGIN_URL . 'dist/admin' . $suffix . '.js'), array(), KWTSK_PLUGIN_VERSION, true);
 
 		// Settings
-		wp_register_style('kwtsk-admin-settings-style', esc_url(KWTP_PLUGIN_URL . 'dist/settings' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTP_PLUGIN_VERSION);
-		wp_register_script('kwtsk-admin-settings-script', esc_url(KWTP_PLUGIN_URL . 'dist/settings' . $suffix . '.js'), array('wp-element', 'wp-i18n'), KWTP_PLUGIN_VERSION, true);
+		wp_register_style('kwtsk-admin-settings-style', esc_url(KWTSK_PLUGIN_URL . 'dist/settings' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTSK_PLUGIN_VERSION);
+		wp_register_script('kwtsk-admin-settings-script', esc_url(KWTSK_PLUGIN_URL . 'dist/settings' . $suffix . '.js'), array('wp-element', 'wp-i18n'), KWTSK_PLUGIN_VERSION, true);
 
 		// Page Layouts
-		wp_register_style('kwtsk-admin-layouts-style', esc_url(KWTP_PLUGIN_URL . 'dist/layouts' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTP_PLUGIN_VERSION);
-		wp_register_script('kwtsk-admin-layouts-script', esc_url(KWTP_PLUGIN_URL . 'dist/layouts' . $suffix . '.js'), array('wp-element', 'wp-components', 'wp-i18n'), KWTP_PLUGIN_VERSION, true);
+		wp_register_style('kwtsk-admin-layouts-style', esc_url(KWTSK_PLUGIN_URL . 'dist/layouts' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTSK_PLUGIN_VERSION);
+		wp_register_script('kwtsk-admin-layouts-script', esc_url(KWTSK_PLUGIN_URL . 'dist/layouts' . $suffix . '.js'), array('wp-element', 'wp-components', 'wp-i18n'), KWTSK_PLUGIN_VERSION, true);
 
 		// Editor
-		wp_register_style('kwtsk-admin-editor-style', esc_url(KWTP_PLUGIN_URL . 'dist/editor' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTP_PLUGIN_VERSION);
-		wp_register_script('kwtsk-admin-editor-script', esc_url(KWTP_PLUGIN_URL . 'dist/editor' . $suffix . '.js'), array('wp-edit-post'), KWTP_PLUGIN_VERSION, true);
+		wp_register_style('kwtsk-admin-editor-style', esc_url(KWTSK_PLUGIN_URL . 'dist/editor' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTSK_PLUGIN_VERSION);
+		wp_register_script('kwtsk-admin-editor-script', esc_url(KWTSK_PLUGIN_URL . 'dist/editor' . $suffix . '.js'), array('wp-edit-post'), KWTSK_PLUGIN_VERSION, true);
 
 		// Dashboard Widget
-		// wp_register_style('kwtsk-dashboard-style', esc_url(KWTP_PLUGIN_URL . 'dist/dashboard' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTP_PLUGIN_VERSION);
-		// wp_register_script('kwtsk-dashboard-script', esc_url(KWTP_PLUGIN_URL . 'dist/dashboard' . $suffix . '.js'), array('wp-element', 'wp-i18n'), KWTP_PLUGIN_VERSION, true);
+		// wp_register_style('kwtsk-dashboard-style', esc_url(KWTSK_PLUGIN_URL . 'dist/dashboard' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTSK_PLUGIN_VERSION);
+		// wp_register_script('kwtsk-dashboard-script', esc_url(KWTSK_PLUGIN_URL . 'dist/dashboard' . $suffix . '.js'), array('wp-element', 'wp-i18n'), KWTSK_PLUGIN_VERSION, true);
 	} // End kwtsk_register_scripts ()
 
 	/**
@@ -146,7 +146,7 @@ class Theme_Site_Kit_Scripts {
 		));
 		
 
-		wp_set_script_translations('kwtsk-admin-script', 'theme-site-kit', KWTP_PLUGIN_DIR . 'lang');
+		wp_set_script_translations('kwtsk-admin-script', 'theme-site-kit', KWTSK_PLUGIN_DIR . 'lang');
 
 		// Admin Settings Page
 		if ('theme-site-kit-settings' == $adminPage) {
@@ -225,8 +225,8 @@ class Theme_Site_Kit_Scripts {
 		// }
 		
 		// Update the language file with this line in the terminal - "wp i18n make-pot ./ lang/theme-site-kit.pot"
-		wp_set_script_translations('kwtsk-admin-settings-script', 'theme-site-kit', KWTP_PLUGIN_DIR . 'lang');
-		// wp_set_script_translations('kwtsk-dashboard-script', 'theme-site-kit', KWTP_PLUGIN_DIR . 'lang');
+		wp_set_script_translations('kwtsk-admin-settings-script', 'theme-site-kit', KWTSK_PLUGIN_DIR . 'lang');
+		// wp_set_script_translations('kwtsk-dashboard-script', 'theme-site-kit', KWTSK_PLUGIN_DIR . 'lang');
 	} // End kwtsk_admin_scripts ()
 
 	/**
@@ -255,14 +255,14 @@ class Theme_Site_Kit_Scripts {
 	 */
 	public function kwtsk_load_plugin_textdomain() {
 		$domain = 'theme-site-kit';
-		load_plugin_textdomain($domain, false, KWTP_PLUGIN_DIR . 'lang/');
+		load_plugin_textdomain($domain, false, KWTSK_PLUGIN_DIR . 'lang/');
 	} // End kwtsk_load_plugin_textdomain ()
 
 	/**
 	 * Main Theme_Site_Kit_Scripts { Instance
 	 * Ensures only one instance of Theme_Site_Kit_Scripts {is loaded or can be loaded.
 	 */
-	public static function instance( $file = '', $version = KWTP_PLUGIN_VERSION) {
+	public static function instance( $file = '', $version = KWTSK_PLUGIN_VERSION) {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self( $file, $version );
 		}
@@ -333,8 +333,8 @@ class Theme_Site_Kit_Scripts {
 		$objDefaultOptions = json_encode($defaultOptions);
 
 		// Saved current Plugin Version if no version is saved
-		if (!get_option('kwtsk_plugin_version') || (get_option('kwtsk_plugin_version') != KWTP_PLUGIN_VERSION)) {
-			update_option('kwtsk_plugin_version', KWTP_PLUGIN_VERSION);
+		if (!get_option('kwtsk_plugin_version') || (get_option('kwtsk_plugin_version') != KWTSK_PLUGIN_VERSION)) {
+			update_option('kwtsk_plugin_version', KWTSK_PLUGIN_VERSION);
 		}
 		// Fix/Update Defaults if no defaults are saved or if defaults are different to previous version defaults
 		if (!get_option('kwtsk_default_options') || (get_option('kwtsk_default_options') != $defaultOptions)) {
@@ -361,7 +361,7 @@ class Theme_Site_Kit_Scripts {
 		$saved_plugin_version = get_option('kwtsk_plugin_version');
 
 		// Update plugin version if it has changed
-		if ($saved_plugin_version !== KWTP_PLUGIN_VERSION) {
+		if ($saved_plugin_version !== KWTSK_PLUGIN_VERSION) {
 			$this->kwtsk_update_plugin_version();
 		}
 	}
@@ -370,7 +370,7 @@ class Theme_Site_Kit_Scripts {
 	 * Updates the stored plugin version
 	 */
 	private function kwtsk_update_plugin_version() {
-		update_option('kwtsk_plugin_version', KWTP_PLUGIN_VERSION);
+		update_option('kwtsk_plugin_version', KWTSK_PLUGIN_VERSION);
 	}
 	
 	/**

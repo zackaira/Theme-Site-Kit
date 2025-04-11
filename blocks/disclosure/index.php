@@ -17,7 +17,7 @@ function kwtsk_disclosure_register_block() {
 	register_block_type( __DIR__ );
 
 	if ( function_exists( 'wp_set_script_translations' ) ) {
-		wp_set_script_translations( 'kwtsk-disclosure-editor-script', 'theme-site-kit', KWTP_PLUGIN_DIR . 'lang' );
+		wp_set_script_translations( 'kwtsk-disclosure-editor-script', 'theme-site-kit', KWTSK_PLUGIN_DIR . 'lang' );
 	}
 
 }

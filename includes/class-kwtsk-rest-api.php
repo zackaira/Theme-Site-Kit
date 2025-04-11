@@ -355,7 +355,7 @@ class Theme_Site_Kit_API_Rest_Routes {
 			'post_title'   => wp_strip_all_tags($title),
 			'post_content' => $content,
 			'post_excerpt' => $excerpt,
-			'post_status'  => 'publish',
+			'post_status'  => 'draft',
 			'post_type'    => 'page',
 		);
 		$new_post_id = wp_insert_post($new_post);

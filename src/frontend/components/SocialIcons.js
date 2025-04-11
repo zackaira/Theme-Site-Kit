@@ -31,7 +31,7 @@ const SocialIcons = ({ options, isPro }) => {
 
 	return (
 		<div
-			className={`kwtsk-social-icons ${showbg ? "hasbg" : "nobg"} kwtsk-si-${position} kwtsk-si-${style} kwtsk-si-${iconsize} ${iconorigcolor ? "kwtsk-colorig" : ""}`}
+			className={`kwtsk-social-icons ${showbg ? "hasbg" : "nobg"} kwtsk-si-${position} kwtsk-si-${style} kwtsk-si-${iconsize} ${isPro && iconorigcolor ? "kwtsk-colorig" : ""}`}
 			style={{
 				[offsetFrom]: `${position === "bottom-center" ? "10px" : `${offset}px`}`,
 				gap: `${spacing}px`,

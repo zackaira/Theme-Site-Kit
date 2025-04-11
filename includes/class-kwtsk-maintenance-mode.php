@@ -65,6 +65,8 @@ class Theme_Site_Kit_Maintenance_Mode {
      * unless the user is allowed to bypass it.
      */
     public function display_maintenance_mode() {
+		$isPremium = (boolean)kwtsk_fs()->can_use_premium_code__premium_only();
+
         // Check if the current user should bypass maintenance mode.
         if ( is_user_logged_in() && isset( $this->settings->access ) ) {
             // If access is set to "loggedin", all logged-in users bypass maintenance mode.
@@ -100,7 +102,7 @@ class Theme_Site_Kit_Maintenance_Mode {
         // "Coming Soon" mode stays as HTTP 200.
 
         // If a custom template page is specified, display that page content.
-        if ( ! empty( $this->settings->template ) && get_post_status( $this->settings->template ) ) {
+        if ( $isPremium && ! empty( $this->settings->template ) && get_post_status( $this->settings->template ) ) {
 			$template_post = get_post( $this->settings->template );
 			?>
 			<!DOCTYPE html>

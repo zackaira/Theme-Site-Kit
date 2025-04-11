@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Theme Site Kit
- * Version: 1.0.0
+ * Version: 1.0.1
  * Plugin URI: https://kairaweb.com/wordpress-plugins/theme-pro/
  * Description: Easily manage essential site customizations with Theme Site Kit - the Swiss-Army-Knife WordPress plugin for disabling comments, enabling SVG uploads, adding social links, and more.
  * Author: Kaira
@@ -15,14 +15,14 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-if ( !defined( 'KWTP_PLUGIN_VERSION' ) ) {
-	define('KWTP_PLUGIN_VERSION', '1.0.0');
+if ( !defined( 'KWTSK_PLUGIN_VERSION' ) ) {
+	define('KWTSK_PLUGIN_VERSION', '1.0.1');
 }
-if ( !defined( 'KWTP_PLUGIN_URL' ) ) {
-	define('KWTP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+if ( !defined( 'KWTSK_PLUGIN_URL' ) ) {
+	define('KWTSK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
-if ( !defined( 'KWTP_PLUGIN_DIR' ) ) {
-	define('KWTP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+if ( !defined( 'KWTSK_PLUGIN_DIR' ) ) {
+	define('KWTSK_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 }
 
 if ( function_exists( 'kwtsk_fs' ) ) {
@@ -90,7 +90,7 @@ if ( function_exists( 'kwtsk_fs' ) ) {
 	 * @return object Theme_Site_Kit_Scripts
 	 */
 	function kwtsk() {
-		$instance = Theme_Site_Kit_Scripts::instance( __FILE__, KWTP_PLUGIN_VERSION );
+		$instance = Theme_Site_Kit_Scripts::instance( __FILE__, KWTSK_PLUGIN_VERSION );
 		return $instance;
 	}
 	kwtsk();
