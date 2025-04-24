@@ -820,8 +820,6 @@ span.probanner {
 	color: #747474;
 }
 /* -- Disable Comments Radio -- */
-.kwtsk-disable-comments {
-}
 .kwtsk-disable-comments .kwtsk-radio-block {
 	margin: 0 0 12px;
 }
@@ -1045,8 +1043,6 @@ input.checkbox-single {
 }
 
 /* -- Custom Post Types -- */
-.cpts-select {
-}
 .cpts-select .no-cpts {
 	color: #b3b3b3;
 	font-size: 16px;
@@ -1062,8 +1058,6 @@ input.checkbox-single {
 	flex: 1;
 	margin: 0;
 	padding: 8px 12px;
-}
-.cpts-select .cpts-add-new input.valid {
 }
 .cpts-select .cpts-add-new input.invalid {
 	border: 1px solid #965454;
@@ -1138,7 +1132,8 @@ input.checkbox-single {
 .cpts-select .form-table tr .cpts-del.checking {
 	opacity: 1 !important;
 }
-.cpts-select .form-table tr .cpts-del.checking::before {
+.cpts-select .form-table tr .cpts-del.checking::before,
+.kwtsk-loaded-fonts.loading::after {
 	content: "";
 	display: inline-block;
 	vertical-align: middle;
@@ -1151,6 +1146,10 @@ input.checkbox-single {
 	border-top-color: transparent;
 	border-radius: 50%;
 	animation: kwtsk-delspin 0.8s linear infinite;
+}
+.kwtsk-loaded-fonts.loading::after {
+	top: calc(50% + 8px);
+	left: calc(50% - 8px);
 }
 @keyframes kwtsk-delspin {
 	to {

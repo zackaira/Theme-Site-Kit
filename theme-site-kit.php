@@ -7,7 +7,7 @@
  * Author: Kaira
  * Author URI: https://kairaweb.com/
  * Requires at least: 5.0
- * Tested up to: 6.7
+ * Tested up to: 6.8
  * Text Domain: theme-site-kit
  * Domain Path: /lang/
  *

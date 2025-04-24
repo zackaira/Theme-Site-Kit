@@ -487,6 +487,6 @@ class Theme_Site_Kit_API_Rest_Routes {
 		$total = array_sum( (array) $count );
 	
 		return rest_ensure_response( [ 'count' => $total ] );
-	}	
+	}
 }
 new Theme_Site_Kit_API_Rest_Routes();

@@ -39,7 +39,7 @@ const SettingsPage = ({ kwtskObj }) => {
 		window.history.replaceState(null, "", "?" + params.toString());
 	};
 
-	// console.log(kwtskOptions);
+	console.log(kwtskOptions);
 
 	// setState dynamically for each setting
 	const handleChange = ({
@@ -1045,10 +1045,17 @@ const SettingsPage = ({ kwtskObj }) => {
 													value={kwtskOptions.svgupload?.enabled}
 													inputType="toggle"
 													onChange={handleChange}
-													note={__(
-														"Allow SVG uploads in the Media Library. SVG files are XML-based vector images that can be scaled to any size without losing quality. They are often used for logos, icons, and other graphics on the web.",
-														"theme-site-kit",
-													)}
+													note={
+														kwtskOptions.svgupload?.enabled
+															? __(
+																	"You can now safely upload SVG files.",
+																	"theme-site-kit",
+																)
+															: __(
+																	"Allow SVG uploads in the Media Library. SVG files are XML-based vector images that can be scaled to any size without losing quality. They are often used for logos, icons, and other graphics on the web.",
+																	"theme-site-kit",
+																)
+													}
 												/>
 
 												{/* <SettingRow
