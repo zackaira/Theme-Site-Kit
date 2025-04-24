@@ -28,8 +28,22 @@ class Theme_Site_Kit_Custom_Code {
      * Initialize hooks.
      */
     private function kwtsk_init_hooks() {
-		// This hook will check for custom code on each page load
+		add_action( 'init', array( $this, 'kwtsk_register_custom_code_post_types') );
 		add_action( 'action', array( $this, 'display_custom_code' ) );
+	}
+
+	/**
+	 * Register Custom Post Types
+	 */
+	public function kwtsk_register_custom_code_post_types() {
+		$kwtskSavedOptions = get_option( 'kwtsk_options' );
+		$kwtskOptions      = $kwtskSavedOptions ? json_decode( $kwtskSavedOptions ) : null;
+
+		if ( empty( $kwtskOptions->code->enabled ) || ! is_object( $kwtskOptions->code->enabled ) ) {
+			return;
+		}
+
+		
 	}
 
 	/**
