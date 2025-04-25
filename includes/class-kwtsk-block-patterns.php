@@ -252,7 +252,7 @@ class Theme_Site_Kit_Patterns {
 											<div class="wp-block-group alignfull is-style-top-shadow has-site-background-color has-site-black-background-color has-text-color has-background" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--50)"><!-- wp:columns {"verticalAlignment":"center","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|30"}}}} -->
 											<div class="wp-block-columns are-vertically-aligned-center" style="margin-bottom:var(--wp--preset--spacing--30)"><!-- wp:column {"verticalAlignment":"center"} -->
 											<div class="wp-block-column is-vertically-aligned-center"><!-- wp:paragraph {"fontSize":"xsmall"} -->
-											<p class="has-xsmall-font-size">© 2025 Powered by <a href="https://kairaweb.com/" target="_blank" rel="noreferrer noopener">Kaira</a> <sub><sup><mark style="background-color: rgba(0, 0, 0, 0); color: #ababab" class="has-inline-color">|</mark></sup></sub> Privacy Policy</p>
+											<p class="has-xsmall-font-size">© 2025 Powered by <a href="https://kairaweb.com/" target="_blank" rel="noreferrer noopener">Kaira</a> <sub><sup><mark style="background-color: rgba(0, 0, 0, 0); color: #ababab" class="has-inline-color">|</mark></sup></sub> Privacy Policy</p>
 											<!-- /wp:paragraph --></div>
 											<!-- /wp:column -->
 											<!-- wp:column {"verticalAlignment":"center","style":{"spacing":{"blockGap":"5px"}}} -->
@@ -378,7 +378,7 @@ class Theme_Site_Kit_Patterns {
 											<div class="wp-block-group alignfull is-style-top-shadow has-contrast-font-color has-base-heading-background-color has-text-color has-background" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--50)"><!-- wp:columns {"verticalAlignment":"center","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|30"}}}} -->
 											<div class="wp-block-columns are-vertically-aligned-center" style="margin-bottom:var(--wp--preset--spacing--30)"><!-- wp:column {"verticalAlignment":"center"} -->
 											<div class="wp-block-column is-vertically-aligned-center"><!-- wp:paragraph {"fontSize":"xsmall"} -->
-											<p class="has-xsmall-font-size">© 2025 Powered by <a href="https://kairaweb.com/" target="_blank" rel="noreferrer noopener">Kaira</a> <sub><sup><mark style="background-color: rgba(0, 0, 0, 0); color: #ababab" class="has-inline-color">|</mark></sup></sub> Privacy Policy</p>
+											<p class="has-xsmall-font-size">© 2025 Powered by <a href="https://kairaweb.com/" target="_blank" rel="noreferrer noopener">Kaira</a> <sub><sup><mark style="background-color: rgba(0, 0, 0, 0); color: #ababab" class="has-inline-color">|</mark></sup></sub> Privacy Policy</p>
 											<!-- /wp:paragraph --></div>
 											<!-- /wp:column -->
 											<!-- wp:column {"verticalAlignment":"center","style":{"spacing":{"blockGap":"5px"}}} -->
@@ -586,6 +586,215 @@ class Theme_Site_Kit_Patterns {
 											<!-- /wp:group --></div>
 											<!-- /wp:group -->'
 					),
+				)
+			);
+
+			register_block_pattern(
+				'kwtsk/footer-simple-columns-light',
+				array(
+					'title'       => __( 'Simple Columns Footer Light', 'theme-site-kit' ),
+					'description' => _x( 'A light style footer with simple columns.', 'Block pattern description', 'theme-site-kit' ),
+					'categories'  => array( 'kwtsk-footer' ),
+					'content'     => trim( '<!-- wp:group {"align":"full","className":"is-style-top-shadow","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|70"},"blockGap":"0px","margin":{"top":"0px","bottom":"0px"}},"typography":{"fontSize":"14px"}},"layout":{"type":"constrained","contentSize":""}} -->
+											<div class="wp-block-group alignfull is-style-top-shadow" style="margin-top:0px;margin-bottom:0px;padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--70);font-size:14px"><!-- wp:columns {"verticalAlignment":"top","style":{"spacing":{"blockGap":{"left":"var:preset|spacing|70"},"margin":{"top":"0px","bottom":"0px"}}}} -->
+											<div class="wp-block-columns are-vertically-aligned-top" style="margin-top:0px;margin-bottom:0px"><!-- wp:column {"verticalAlignment":"top","width":"","style":{"spacing":{"padding":{"right":"0","left":"0"}}}} -->
+											<div class="wp-block-column is-vertically-aligned-top" style="padding-right:0;padding-left:0"><!-- wp:heading {"level":4,"style":{"elements":{"link":{"color":{"text":"var:preset|color|base-heading"}}},"typography":{"fontSize":"22px"},"spacing":{"margin":{"top":"0","bottom":"var:preset|spacing|40"}}},"textColor":"base-heading"} -->
+											<h4 class="wp-block-heading has-base-heading-color has-text-color has-link-color" style="margin-top:0;margin-bottom:var(--wp--preset--spacing--40);font-size:22px">ABOUT US</h4>
+											<!-- /wp:heading -->
+											<!-- wp:group {"style":{"spacing":{"padding":{"right":"0","left":"0"}}},"layout":{"type":"constrained","contentSize":"300px","justifyContent":"left"}} -->
+											<div class="wp-block-group" style="padding-right:0;padding-left:0"><!-- wp:paragraph -->
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sagittis risus ut tellus sodales, sed eleifend tellus hendrerit.</p>
+											<!-- /wp:paragraph -->
+											<!-- wp:paragraph -->
+											<p>Donec sagittis risus ut tellus sodales, sed eleifend tellus hendrerit.</p>
+											<!-- /wp:paragraph -->
+											<!-- wp:paragraph {"style":{"color":{"text":"#c9c9c9"},"elements":{"link":{"color":{"text":"#c9c9c9"}}}}} -->
+											<p class="has-text-color has-link-color" style="color:#c9c9c9"><a href="#" data-type="page" data-id="8">Read More</a></p>
+											<!-- /wp:paragraph --></div>
+											<!-- /wp:group --></div>
+											<!-- /wp:column -->
+											<!-- wp:column {"verticalAlignment":"top","width":""} -->
+											<div class="wp-block-column is-vertically-aligned-top"><!-- wp:heading {"level":4,"style":{"elements":{"link":{"color":{"text":"var:preset|color|base-heading"}}},"typography":{"fontSize":"22px"},"spacing":{"margin":{"top":"0","bottom":"var:preset|spacing|40"}}},"textColor":"base-heading"} -->
+											<h4 class="wp-block-heading has-base-heading-color has-text-color has-link-color" style="margin-top:0;margin-bottom:var(--wp--preset--spacing--40);font-size:22px">COMPANY</h4>
+											<!-- /wp:heading -->
+											<!-- wp:list {"className":"is-style-unstyled","style":{"spacing":{"margin":{"top":"var:preset|spacing|50"}}}} -->
+											<ul style="margin-top:var(--wp--preset--spacing--50)" class="wp-block-list is-style-unstyled"><!-- wp:list-item -->
+											<li>Home</li>
+											<!-- /wp:list-item -->
+											<!-- wp:list-item -->
+											<li>About Us</li>
+											<!-- /wp:list-item -->
+											<!-- wp:list-item -->
+											<li>Our Services</li>
+											<!-- /wp:list-item -->
+											<!-- wp:list-item -->
+											<li>Meet the Team</li>
+											<!-- /wp:list-item -->
+											<!-- wp:list-item -->
+											<li>Contact Us</li>
+											<!-- /wp:list-item --></ul>
+											<!-- /wp:list --></div>
+											<!-- /wp:column -->
+											<!-- wp:column {"verticalAlignment":"top","width":""} -->
+											<div class="wp-block-column is-vertically-aligned-top"><!-- wp:heading {"level":4,"style":{"elements":{"link":{"color":{"text":"var:preset|color|base-heading"}}},"typography":{"fontSize":"22px"},"spacing":{"margin":{"top":"0","bottom":"var:preset|spacing|40"}}},"textColor":"base-heading"} -->
+											<h4 class="wp-block-heading has-base-heading-color has-text-color has-link-color" style="margin-top:0;margin-bottom:var(--wp--preset--spacing--40);font-size:22px">CONTACT US</h4>
+											<!-- /wp:heading -->
+											<!-- wp:group {"style":{"spacing":{"padding":{"right":"0","left":"0"},"blockGap":"0"}},"layout":{"type":"constrained"}} -->
+											<div class="wp-block-group" style="padding-right:0;padding-left:0"><!-- wp:paragraph -->
+											<p>Telephone: (021) 760 0044</p>
+											<!-- /wp:paragraph -->
+											<!-- wp:paragraph -->
+											<p>Fax: (021) 760 0044</p>
+											<!-- /wp:paragraph -->
+											<!-- wp:paragraph -->
+											<p>Email: email@yourdomain.com</p>
+											<!-- /wp:paragraph --></div>
+											<!-- /wp:group -->
+											<!-- wp:heading {"level":4,"style":{"elements":{"link":{"color":{"text":"var:preset|color|base-heading"}}},"typography":{"fontSize":"22px"},"spacing":{"margin":{"top":"1.8rem","bottom":"var:preset|spacing|40"}}},"textColor":"base-heading"} -->
+											<h4 class="wp-block-heading has-base-heading-color has-text-color has-link-color" style="margin-top:1.8rem;margin-bottom:var(--wp--preset--spacing--40);font-size:22px">ADDRESS</h4>
+											<!-- /wp:heading -->
+											<!-- wp:group {"style":{"spacing":{"padding":{"right":"0","left":"0"},"blockGap":"0"}},"layout":{"type":"constrained"}} -->
+											<div class="wp-block-group" style="padding-right:0;padding-left:0"><!-- wp:paragraph -->
+											<p>28 Youraddress Street</p>
+											<!-- /wp:paragraph -->
+											<!-- wp:paragraph -->
+											<p>Fax: (021) 760 0044</p>
+											<!-- /wp:paragraph -->
+											<!-- wp:paragraph -->
+											<p>Email: email@yourdomain.com</p>
+											<!-- /wp:paragraph --></div>
+											<!-- /wp:group --></div>
+											<!-- /wp:column -->
+											<!-- wp:column {"verticalAlignment":"top","width":""} -->
+											<div class="wp-block-column is-vertically-aligned-top"><!-- wp:heading {"level":4,"style":{"elements":{"link":{"color":{"text":"var:preset|color|base-heading"}}},"typography":{"fontSize":"22px"},"spacing":{"margin":{"top":"0","bottom":"var:preset|spacing|40"}}},"textColor":"base-heading"} -->
+											<h4 class="wp-block-heading has-base-heading-color has-text-color has-link-color" style="margin-top:0;margin-bottom:var(--wp--preset--spacing--40);font-size:22px">FIND US ONLINE</h4>
+											<!-- /wp:heading -->
+											<!-- wp:social-links {"iconColor":"base-off","iconColorValue":"#f9f9f9","iconBackgroundColor":"contrast-off","iconBackgroundColorValue":"#31313f","openInNewTab":true,"layout":{"type":"flex"}} -->
+											<ul class="wp-block-social-links has-icon-color has-icon-background-color"><!-- wp:social-link {"url":"#","service":"facebook"} /-->
+											<!-- wp:social-link {"url":"#","service":"instagram"} /-->
+											<!-- wp:social-link {"url":"#","service":"x"} /--></ul>
+											<!-- /wp:social-links --></div>
+											<!-- /wp:column --></div>
+											<!-- /wp:columns --></div>
+											<!-- /wp:group -->
+											<!-- wp:group {"align":"full","className":"is-style-top-shadow","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|30"},"blockGap":"0px","margin":{"top":"0","bottom":"0"}},"elements":{"link":{"color":{"text":"var:preset|color|contrast-font"}}},"typography":{"fontSize":"13px"}},"backgroundColor":"base-heading","textColor":"contrast-font","layout":{"type":"constrained","contentSize":""}} -->
+											<div class="wp-block-group alignfull is-style-top-shadow has-contrast-font-color has-base-heading-background-color has-text-color has-background has-link-color" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--30);font-size:13px"><!-- wp:columns {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|30"}}}} -->
+											<div class="wp-block-columns" style="margin-bottom:var(--wp--preset--spacing--30)"><!-- wp:column {"verticalAlignment":"bottom"} -->
+											<div class="wp-block-column is-vertically-aligned-bottom"><!-- wp:paragraph -->
+											<p>© Kairaweb 2025</p>
+											<!-- /wp:paragraph --></div>
+											<!-- /wp:column -->
+											<!-- wp:column {"verticalAlignment":"bottom","style":{"spacing":{"blockGap":"5px"}}} -->
+											<div class="wp-block-column is-vertically-aligned-bottom"><!-- wp:paragraph {"align":"right"} -->
+											<p class="has-text-align-right">Built by <a href="https://kairaweb.com/" target="_blank" rel="noreferrer noopener">Kaira</a></p>
+											<!-- /wp:paragraph --></div>
+											<!-- /wp:column --></div>
+											<!-- /wp:columns --></div>
+											<!-- /wp:group -->' ),
+				)
+			);
+			register_block_pattern(
+				'kwtsk/footer-simple-columns-dark',
+				array(
+					'title'       => __( 'Simple Columns Footer Dark', 'theme-site-kit' ),
+					'description' => _x( 'A dark style footer with simple columns.', 'Block pattern description', 'theme-site-kit' ),
+					'categories'  => array( 'kwtsk-footer' ),
+					'content'     => trim( '<!-- wp:group {"align":"full","className":"is-style-top-shadow","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|70"},"blockGap":"0px","margin":{"top":"0px","bottom":"0px"}},"typography":{"fontSize":"14px"},"elements":{"link":{"color":{"text":"var:preset|color|contrast-font"}}}},"backgroundColor":"base-heading","textColor":"contrast-font","layout":{"type":"constrained","contentSize":""}} -->
+											<div class="wp-block-group alignfull is-style-top-shadow has-contrast-font-color has-base-heading-background-color has-text-color has-background has-link-color" style="margin-top:0px;margin-bottom:0px;padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--70);font-size:14px"><!-- wp:columns {"verticalAlignment":"top","style":{"spacing":{"blockGap":{"left":"var:preset|spacing|70"},"margin":{"top":"0px","bottom":"0px"}}}} -->
+											<div class="wp-block-columns are-vertically-aligned-top" style="margin-top:0px;margin-bottom:0px"><!-- wp:column {"verticalAlignment":"top","width":"","style":{"spacing":{"padding":{"right":"0","left":"0"}}}} -->
+											<div class="wp-block-column is-vertically-aligned-top" style="padding-right:0;padding-left:0"><!-- wp:heading {"level":4,"style":{"elements":{"link":{"color":{"text":"var:preset|color|base-bg"}}},"typography":{"fontSize":"22px"},"spacing":{"margin":{"top":"0","bottom":"var:preset|spacing|40"}}},"textColor":"base-bg"} -->
+											<h4 class="wp-block-heading has-base-bg-color has-text-color has-link-color" style="margin-top:0;margin-bottom:var(--wp--preset--spacing--40);font-size:22px">ABOUT US</h4>
+											<!-- /wp:heading -->
+											<!-- wp:group {"style":{"spacing":{"padding":{"right":"0","left":"0"}}},"layout":{"type":"constrained","contentSize":"300px","justifyContent":"left"}} -->
+											<div class="wp-block-group" style="padding-right:0;padding-left:0"><!-- wp:paragraph -->
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sagittis risus ut tellus sodales, sed eleifend tellus hendrerit.</p>
+											<!-- /wp:paragraph -->
+											<!-- wp:paragraph -->
+											<p>Donec sagittis risus ut tellus sodales, sed eleifend tellus hendrerit.</p>
+											<!-- /wp:paragraph -->
+											<!-- wp:paragraph {"style":{"color":{"text":"#c9c9c9"},"elements":{"link":{"color":{"text":"#c9c9c9"}}}}} -->
+											<p class="has-text-color has-link-color" style="color:#c9c9c9"><a href="#" data-type="page" data-id="8">Read More</a></p>
+											<!-- /wp:paragraph --></div>
+											<!-- /wp:group --></div>
+											<!-- /wp:column -->
+											<!-- wp:column {"verticalAlignment":"top","width":""} -->
+											<div class="wp-block-column is-vertically-aligned-top"><!-- wp:heading {"level":4,"style":{"elements":{"link":{"color":{"text":"var:preset|color|base-bg"}}},"typography":{"fontSize":"22px"},"spacing":{"margin":{"top":"0","bottom":"var:preset|spacing|40"}}},"textColor":"base-bg"} -->
+											<h4 class="wp-block-heading has-base-bg-color has-text-color has-link-color" style="margin-top:0;margin-bottom:var(--wp--preset--spacing--40);font-size:22px">COMPANY</h4>
+											<!-- /wp:heading -->
+											<!-- wp:list {"className":"is-style-unstyled","style":{"spacing":{"margin":{"top":"var:preset|spacing|50"}}}} -->
+											<ul style="margin-top:var(--wp--preset--spacing--50)" class="wp-block-list is-style-unstyled"><!-- wp:list-item -->
+											<li>Home</li>
+											<!-- /wp:list-item -->
+											<!-- wp:list-item -->
+											<li>About Us</li>
+											<!-- /wp:list-item -->
+											<!-- wp:list-item -->
+											<li>Our Services</li>
+											<!-- /wp:list-item -->
+											<!-- wp:list-item -->
+											<li>Meet the Team</li>
+											<!-- /wp:list-item -->
+											<!-- wp:list-item -->
+											<li>Contact Us</li>
+											<!-- /wp:list-item --></ul>
+											<!-- /wp:list --></div>
+											<!-- /wp:column -->
+											<!-- wp:column {"verticalAlignment":"top","width":""} -->
+											<div class="wp-block-column is-vertically-aligned-top"><!-- wp:heading {"level":4,"style":{"elements":{"link":{"color":{"text":"var:preset|color|base-bg"}}},"typography":{"fontSize":"22px"},"spacing":{"margin":{"top":"0","bottom":"var:preset|spacing|40"}}},"textColor":"base-bg"} -->
+											<h4 class="wp-block-heading has-base-bg-color has-text-color has-link-color" style="margin-top:0;margin-bottom:var(--wp--preset--spacing--40);font-size:22px">CONTACT US</h4>
+											<!-- /wp:heading -->
+											<!-- wp:group {"style":{"spacing":{"padding":{"right":"0","left":"0"},"blockGap":"0"}},"layout":{"type":"constrained"}} -->
+											<div class="wp-block-group" style="padding-right:0;padding-left:0"><!-- wp:paragraph -->
+											<p>Telephone: (021) 760 0044</p>
+											<!-- /wp:paragraph -->
+											<!-- wp:paragraph -->
+											<p>Fax: (021) 760 0044</p>
+											<!-- /wp:paragraph -->
+											<!-- wp:paragraph -->
+											<p>Email: email@yourdomain.com</p>
+											<!-- /wp:paragraph --></div>
+											<!-- /wp:group -->
+											<!-- wp:heading {"level":4,"style":{"elements":{"link":{"color":{"text":"var:preset|color|base-bg"}}},"typography":{"fontSize":"22px"},"spacing":{"margin":{"top":"1.8rem","bottom":"var:preset|spacing|40"}}},"textColor":"base-bg"} -->
+											<h4 class="wp-block-heading has-base-bg-color has-text-color has-link-color" style="margin-top:1.8rem;margin-bottom:var(--wp--preset--spacing--40);font-size:22px">ADDRESS</h4>
+											<!-- /wp:heading -->
+											<!-- wp:group {"style":{"spacing":{"padding":{"right":"0","left":"0"},"blockGap":"0"}},"layout":{"type":"constrained"}} -->
+											<div class="wp-block-group" style="padding-right:0;padding-left:0"><!-- wp:paragraph -->
+											<p>28 Youraddress Street</p>
+											<!-- /wp:paragraph -->
+											<!-- wp:paragraph -->
+											<p>Fax: (021) 760 0044</p>
+											<!-- /wp:paragraph -->
+											<!-- wp:paragraph -->
+											<p>Email: email@yourdomain.com</p>
+											<!-- /wp:paragraph --></div>
+											<!-- /wp:group --></div>
+											<!-- /wp:column -->
+											<!-- wp:column {"verticalAlignment":"top","width":""} -->
+											<div class="wp-block-column is-vertically-aligned-top"><!-- wp:heading {"level":4,"style":{"elements":{"link":{"color":{"text":"var:preset|color|base-bg"}}},"typography":{"fontSize":"22px"},"spacing":{"margin":{"top":"0","bottom":"var:preset|spacing|40"}}},"textColor":"base-bg"} -->
+											<h4 class="wp-block-heading has-base-bg-color has-text-color has-link-color" style="margin-top:0;margin-bottom:var(--wp--preset--spacing--40);font-size:22px">FIND US ONLINE</h4>
+											<!-- /wp:heading -->
+											<!-- wp:social-links {"iconColor":"base-heading","iconColorValue":"#222231","iconBackgroundColor":"contrast-font","iconBackgroundColorValue":"#f6f6f6","openInNewTab":true,"layout":{"type":"flex"}} -->
+											<ul class="wp-block-social-links has-icon-color has-icon-background-color"><!-- wp:social-link {"url":"#","service":"facebook"} /-->
+											<!-- wp:social-link {"url":"#","service":"instagram"} /-->
+											<!-- wp:social-link {"url":"#","service":"x"} /--></ul>
+											<!-- /wp:social-links --></div>
+											<!-- /wp:column --></div>
+											<!-- /wp:columns --></div>
+											<!-- /wp:group -->
+											<!-- wp:group {"align":"full","className":"is-style-top-shadow","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|30"},"blockGap":"0px","margin":{"top":"0","bottom":"0"}},"elements":{"link":{"color":{"text":"var:preset|color|contrast-font"}}},"typography":{"fontSize":"13px"}},"backgroundColor":"almost-black-bg","textColor":"contrast-font","layout":{"type":"constrained","contentSize":""}} -->
+											<div class="wp-block-group alignfull is-style-top-shadow has-contrast-font-color has-almost-black-bg-background-color has-text-color has-background has-link-color" style="margin-top:0;margin-bottom:0;padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--30);font-size:13px"><!-- wp:columns {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|30"}}}} -->
+											<div class="wp-block-columns" style="margin-bottom:var(--wp--preset--spacing--30)"><!-- wp:column {"verticalAlignment":"bottom"} -->
+											<div class="wp-block-column is-vertically-aligned-bottom"><!-- wp:paragraph -->
+											<p>© Kairaweb 2025</p>
+											<!-- /wp:paragraph --></div>
+											<!-- /wp:column -->
+											<!-- wp:column {"verticalAlignment":"bottom","style":{"spacing":{"blockGap":"5px"}}} -->
+											<div class="wp-block-column is-vertically-aligned-bottom"><!-- wp:paragraph {"align":"right"} -->
+											<p class="has-text-align-right">Built by <a href="https://kairaweb.com/" target="_blank" rel="noreferrer noopener">Kaira</a></p>
+											<!-- /wp:paragraph --></div>
+											<!-- /wp:column --></div>
+											<!-- /wp:columns --></div>
+											<!-- /wp:group -->' ),
 				)
 			);
 
