@@ -1,17 +1,15 @@
 const { __ } = wp.i18n;
 
-const SettingHeader = ({ title, description, ispro }) => {
+const SettingHeader = ({ title, description, isPro, isPremium }) => {
 	return (
 		<div className="kwtsk-header">
 			{title && (
 				<h3 className="kwtsk-title">
 					{title}{" "}
-					{ispro ? (
+					{isPro && !isPremium && (
 						<span className="probanner">
 							{__("Premium Feature", "theme-site-kit")}
 						</span>
-					) : (
-						""
 					)}
 				</h3>
 			)}

@@ -11,7 +11,7 @@ const ProNote = (props) => {
 
 			{props.upgradeUrl && (
 				<div className="kwtsk-pronote-a">
-					<a href={props.upgradeUrl} className="pronote-btn" target="_blank">
+					<a href={props.upgradeUrl} className="pronote-btn">
 						{__("Purchase Pro", "theme-site-kit")}
 					</a>
 				</div>

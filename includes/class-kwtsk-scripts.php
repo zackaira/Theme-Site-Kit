@@ -160,19 +160,7 @@ class Theme_Site_Kit_Scripts {
 				return ! in_array($post_type_name, $excluded_types);
 			}, ARRAY_FILTER_USE_BOTH);
 		
-			// Get list of all published pages and format as { page_id: page_name, ... }
-			$published_pages = get_posts(array(
-				'post_type'   => 'page',
-				'post_status' => 'publish',
-				'numberposts' => -1,
-				'orderby'     => 'title',
-    			'order'       => 'ASC',
-			));
-			$pages_for_js = array();
-			foreach ($published_pages as $page) {
-				// Use the page ID as key and page title as value
-				$pages_for_js[$page->ID] = $page->post_title;
-			}
+			$pages_for_maintenance_mode = $this->kwtsk_get_maintenance_mode_page();
 		
 			// Get all available user roles and format as { role_slug: Role Name, ... }
 			$user_roles_raw = function_exists('get_editable_roles') ? get_editable_roles() : array();
@@ -191,7 +179,7 @@ class Theme_Site_Kit_Scripts {
 				'kwtskOptions'   => $kwtskOptions,
 				'accountUrl'     => esc_url($kwtsk_fs->get_account_url()),
 				'upgradeUrl'     => esc_url($kwtsk_fs->get_upgrade_url()),
-				'publishedPages' => $pages_for_js,
+				'publishedPages' => $pages_for_maintenance_mode,
 				'userRoles'      => $user_roles,
 			));
 			// wp_enqueue_media();
@@ -228,6 +216,22 @@ class Theme_Site_Kit_Scripts {
 		wp_set_script_translations('kwtsk-admin-settings-script', 'theme-site-kit', KWTSK_PLUGIN_DIR . 'lang');
 		// wp_set_script_translations('kwtsk-dashboard-script', 'theme-site-kit', KWTSK_PLUGIN_DIR . 'lang');
 	} // End kwtsk_admin_scripts ()
+
+	/**
+	 * Get all published pages excluding WooCommerce, static pages, privacy policy, and returns page.
+	 *
+	 * @return array
+	 */
+	public function kwtsk_get_maintenance_mode_page() {
+		$page_id = get_option( 'kwtsk_maintenance_page_id', false );
+		$page = get_page($page_id);
+
+		// Format result
+		$pages_for_js = array();
+		$pages_for_js[$page->ID] = $page->post_title;
+
+		return $page_id ? $pages_for_js : false;
+	}
 
 	/**
 	 * Load Block Editor Scripts & Styles

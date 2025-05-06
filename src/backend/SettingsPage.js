@@ -17,6 +17,7 @@ const SettingsPage = ({ kwtskObj }) => {
 	const isPremium = Boolean(kwtskObj.isPremium);
 	const postTypes = kwtskObj.post_types;
 	const publishedPages = kwtskObj.publishedPages;
+	const [templatePages, setTemplatePages] = useState(publishedPages);
 	const userRoles = kwtskObj.userRoles;
 
 	const [loader, setLoader] = useState(false);
@@ -30,6 +31,8 @@ const SettingsPage = ({ kwtskObj }) => {
 	// const wcActive = Boolean(kwtskObj.wcActive);
 	const [kwtskOptions, setKwtskOptions] = useState({});
 	const [showSocialPreview, setShowSocialPreview] = useState(false);
+
+	const [creatingPage, setCreatingPage] = useState(false);
 
 	const changeTab = (tabId = "general") => {
 		setActiveTab(tabId);
@@ -188,6 +191,36 @@ const SettingsPage = ({ kwtskObj }) => {
 				setLoadSetting(false);
 			});
 	}, []);
+
+	const handleCreateTemplatePage = (e) => {
+		e.preventDefault();
+		setCreatingPage(true);
+
+		axios
+			.post(
+				url + "/create-template-page",
+				{},
+				{ headers: { "X-WP-NONCE": kwtskObj.nonce } },
+			)
+			.then((res) => {
+				const { page_id, page_title } = res.data;
+				// store the new template ID in your state
+				setKwtskOptions((prev) => ({
+					...prev,
+					maintenance: { ...prev.maintenance, template: page_id },
+				}));
+				// 2) add it to the dropdown options
+				setTemplatePages((prev) => ({
+					...prev,
+					[page_id]: page_title,
+				}));
+			})
+			.catch((err) => {
+				console.error(err);
+				alert("Could not create template page.");
+			})
+			.finally(() => setCreatingPage(false));
+	};
 
 	return (
 		<React.Fragment>
@@ -474,7 +507,10 @@ const SettingsPage = ({ kwtskObj }) => {
 															<>
 																{isPremium && (
 																	<SettingRow
-																		title={__("Choose Template", "linkt")}
+																		title={__(
+																			"Choose Template",
+																			"theme-site-kit",
+																		)}
 																		slug="maintenance_template"
 																		value={kwtskOptions.maintenance?.template}
 																		inputType="select"
@@ -483,29 +519,57 @@ const SettingsPage = ({ kwtskObj }) => {
 																			"Default Basic Template",
 																			"theme-site-kit",
 																		)}
-																		options={publishedPages}
+																		options={templatePages}
 																		onChange={handleChange}
 																		note={
 																			kwtskOptions.maintenance?.template ? (
-																				<a
-																					href={`${adminUrl}post.php?post=${kwtskOptions.maintenance?.template}&action=edit`}
-																					target="_blank"
-																				>
-																					{__("Edit Template Page")}
-																				</a>
+																				<>
+																					<a
+																						href={`${adminUrl}post.php?post=${kwtskOptions.maintenance.template}&action=edit`}
+																						target="_blank"
+																						rel="noopener noreferrer"
+																					>
+																						{__(
+																							"Edit Template Page",
+																							"theme-site-kit",
+																						)}
+																					</a>{" "}
+																					<div>
+																						{__(
+																							"This page will be hidden, you can only edit it from here.",
+																							"theme-site-kit",
+																						)}
+																					</div>
+																				</>
 																			) : (
 																				<>
-																					{__(
-																						"There is a default basic template set now. Use that one, or create your own template page.",
-																						"theme-site-kit",
+																					{creatingPage ? (
+																						__(
+																							"Creating page...",
+																							"theme-site-kit",
+																						)
+																					) : (
+																						<>
+																							<a
+																								href="#"
+																								onClick={(e) => {
+																									e.preventDefault();
+																									handleCreateTemplatePage(e);
+																								}}
+																							>
+																								{__(
+																									"Create a New Template Page",
+																									"theme-site-kit",
+																								)}
+																							</a>{" "}
+																							<div>
+																								{__(
+																									"Remember to save your settings afterwards!",
+																									"theme-site-kit",
+																								)}
+																							</div>
+																						</>
 																					)}
-																					<br />
-																					<a
-																						href={`${adminUrl}post-new.php?post_type=page`}
-																						target="_blank"
-																					>
-																						{__("Create a New Template Page")}
-																					</a>
 																				</>
 																			)
 																		}
@@ -519,17 +583,21 @@ const SettingsPage = ({ kwtskObj }) => {
 																			"theme-site-kit",
 																		)}
 																	>
-																		<SettingRow
-																			title={__(
-																				"Background Color",
-																				"theme-site-kit",
-																			)}
-																			slug="maintenance_bgcolor"
-																			value={kwtskOptions.maintenance?.bgcolor}
-																			inputType="colorpicker"
-																			defaultValue="#f5f5f5"
-																			onChange={handleChange}
-																		/>
+																		{isPremium && (
+																			<SettingRow
+																				title={__(
+																					"Background Color",
+																					"theme-site-kit",
+																				)}
+																				slug="maintenance_bgcolor"
+																				value={
+																					kwtskOptions.maintenance?.bgcolor
+																				}
+																				inputType="colorpicker"
+																				defaultValue="#f5f5f5"
+																				onChange={handleChange}
+																			/>
+																		)}
 
 																		<SettingRow
 																			title={__("Title", "theme-site-kit")}
@@ -537,20 +605,31 @@ const SettingsPage = ({ kwtskObj }) => {
 																			value={kwtskOptions.maintenance?.title}
 																			inputType="text"
 																			onChange={handleChange}
-																		/>
-																		<SettingRow
-																			title={__(
-																				"Title Color",
-																				"theme-site-kit",
-																			)}
-																			slug="maintenance_titlecolor"
-																			value={
-																				kwtskOptions.maintenance?.titlecolor
+																			placeholder={
+																				kwtskOptions.maintenance?.mode ===
+																				"coming_soon"
+																					? __("Coming Soon", "theme-site-kit")
+																					: __(
+																							"Maintenance Mode",
+																							"theme-site-kit",
+																						)
 																			}
-																			inputType="colorpicker"
-																			defaultValue="#333"
-																			onChange={handleChange}
 																		/>
+																		{isPremium && (
+																			<SettingRow
+																				title={__(
+																					"Title Color",
+																					"theme-site-kit",
+																				)}
+																				slug="maintenance_titlecolor"
+																				value={
+																					kwtskOptions.maintenance?.titlecolor
+																				}
+																				inputType="colorpicker"
+																				defaultValue="#333"
+																				onChange={handleChange}
+																			/>
+																		)}
 
 																		<SettingRow
 																			title={__("Text", "theme-site-kit")}
@@ -558,20 +637,34 @@ const SettingsPage = ({ kwtskObj }) => {
 																			value={kwtskOptions.maintenance?.text}
 																			inputType="text"
 																			onChange={handleChange}
-																		/>
-																		<SettingRow
-																			title={__(
-																				"Background Color",
-																				"theme-site-kit",
-																			)}
-																			slug="maintenance_textcolor"
-																			value={
-																				kwtskOptions.maintenance?.textcolor
+																			placeholder={
+																				kwtskOptions.maintenance?.mode ===
+																				"coming_soon"
+																					? __(
+																							"Our website is launching soon. Stay tuned!",
+																							"theme-site-kit",
+																						)
+																					: __(
+																							"We are currently performing scheduled maintenance. Please check back soon.",
+																							"theme-site-kit",
+																						)
 																			}
-																			inputType="colorpicker"
-																			defaultValue="#666"
-																			onChange={handleChange}
 																		/>
+																		{isPremium && (
+																			<SettingRow
+																				title={__(
+																					"Text Color",
+																					"theme-site-kit",
+																				)}
+																				slug="maintenance_textcolor"
+																				value={
+																					kwtskOptions.maintenance?.textcolor
+																				}
+																				inputType="colorpicker"
+																				defaultValue="#666"
+																				onChange={handleChange}
+																			/>
+																		)}
 																	</SettingGroup>
 																)}
 
@@ -609,17 +702,21 @@ const SettingsPage = ({ kwtskObj }) => {
 																)}
 															</>
 														)}
-														<br />
-														<br />
-														<SettingRow
-															slug="maintenance_pronote"
-															desc={__(
-																"Build your own Maintenance Mode template or Import our pre-built layouts in Theme Site Kit Pro.",
-																"theme-site-kit",
-															)}
-															inputType="pronote"
-															upgradeUrl={upgradeUrl}
-														/>
+														{!isPremium && (
+															<>
+																<br />
+																<br />
+																<SettingRow
+																	slug="maintenance_pronote"
+																	desc={__(
+																		"Unlock full design control with Theme Site Kit Pro - customize default template colors, build your own Maintenance Mode page using the intuitive WordPress block editor, or instantly import our pre-designed page layouts to use for your 'Maintenance Mode' template.",
+																		"theme-site-kit",
+																	)}
+																	inputType="pronote"
+																	upgradeUrl={upgradeUrl}
+																/>
+															</>
+														)}
 													</>
 												)}
 											</tbody>
@@ -867,7 +964,8 @@ const SettingsPage = ({ kwtskObj }) => {
 												"Upgrade your site's mobile experience with an enhanced core Navigation Block extension. This feature creates a smooth, modern slide-out menu that looks great and works even better on mobile devices.",
 												"theme-site-kit",
 											)}
-											ispro
+											isPro
+											isPremium={isPremium}
 										/>
 
 										<table className="form-table" role="presentation">
@@ -969,7 +1067,8 @@ const SettingsPage = ({ kwtskObj }) => {
 												"Create and Manage custom Post Types on your WordPress site.",
 												"theme-site-kit",
 											)}
-											ispro
+											isPro
+											isPremium={isPremium}
 										/>
 
 										<table className="form-table" role="presentation">
@@ -983,20 +1082,18 @@ const SettingsPage = ({ kwtskObj }) => {
 													value={kwtskOptions.cpts?.enabled}
 													inputType="toggle"
 													onChange={handleChange}
+													note={
+														kwtskOptions.cpts?.enabled &&
+														__(
+															"Once you've added your custom Post Type(s), you will need to refresh the page to view them in your WordPress admin.",
+															"theme-site-kit",
+														)
+													}
 												/>
 												{kwtskOptions.cpts?.enabled && (
 													<>
 														{isPremium ? (
 															<>
-																<SettingRow
-																	slug="cpts_note"
-																	desc={__(
-																		"Once you've added your custom Post Type(s), you will need to refresh the page to view them in your WordPress admin.",
-																		"theme-site-kit",
-																	)}
-																	inputType="pronote"
-																/>
-
 																<SettingRow
 																	title={__(
 																		"Custom Post Types",
@@ -1007,6 +1104,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																	inputType="cptsoptions"
 																	onChange={handleChange}
 																	apiUrl={url}
+																	adminUrl={adminUrl}
 																/>
 															</>
 														) : (
@@ -1058,17 +1156,18 @@ const SettingsPage = ({ kwtskObj }) => {
 													}
 												/>
 
-												{/* <SettingRow
-													title={__("Enable Code Snippets", "theme-site-kit")}
-													slug={`code_enabled`}
-													value={kwtskOptions.code?.enabled}
+												<SettingRow
+													title={__("Code Snippets", "theme-site-kit")}
+													slug={`code_comingsoon`}
+													value={kwtskOptions.code?.comingsoon}
 													inputType="toggle"
 													onChange={handleChange}
-													note={__(
-														"Once you've enabled this, refresh the page to then view and access Code Snippets in your Dashboard sidebar.",
-														"theme-site-kit",
-													)}
-												/> */}
+													comingSoon
+													// note={__(
+													// 	"Once you've enabled this, refresh the page to then view and access Code Snippets in your Dashboard sidebar.",
+													// 	"theme-site-kit",
+													// )}
+												/>
 											</tbody>
 										</table>
 									</div>

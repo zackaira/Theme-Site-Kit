@@ -3,7 +3,7 @@ const { __ } = wp.i18n;
 import SettingRow from "../SettingRow";
 import { kwtskConvertToSlug, kwtskCapitalizeWords } from "../../helpers";
 
-const CptsSelect = ({ title, slug, value, onChange, apiUrl }) => {
+const CptsSelect = ({ title, slug, value, onChange, apiUrl, adminUrl }) => {
 	const repeaterInputId = kwtskConvertToSlug(slug || title);
 	const [newCptName, setNewCptName] = useState("");
 	const [newSingularName, setNewSingularName] = useState("");
@@ -50,6 +50,8 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl }) => {
 				singular: trimmedSingular,
 				enable_categories: false,
 				enable_tags: false,
+				has_archive: true,
+				template: "",
 			},
 		};
 
@@ -68,7 +70,7 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl }) => {
 	const handleToggleChange = (event) => {
 		const { name, checked } = event.target;
 		const match = name.match(
-			/^cpts_post_types_(.+?)_(enable_categories|enable_tags)$/,
+			/^cpts_post_types_(.+?)_(enable_categories|enable_tags|has_archive)$/,
 		);
 		if (!match) return;
 
@@ -98,7 +100,10 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl }) => {
 			...postTypes,
 			[key]: {
 				...postTypes[key],
-				[field]: value,
+				[field]:
+					field === "template"
+						? value.replace(/^wp-custom-template-/, "")
+						: value,
 			},
 		};
 
@@ -203,73 +208,125 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl }) => {
 					{__("No custom post types added yet.", "theme-site-kit")}
 				</p>
 			) : (
-				<table className="form-table inner-setting-table" role="presentation">
-					<thead>
-						<tr>
-							<th>{__("Post Type Name", "theme-site-kit")}</th>
-							<th>{__("Singular Name", "theme-site-kit")}</th>
-							<th className="cpts-slug">{__("Slug", "theme-site-kit")}</th>
-							<th className="cpts-cats">
-								{__("Add Categories", "theme-site-kit")}
-							</th>
-							<th className="cpts-tags">{__("Add Tags", "theme-site-kit")}</th>
-							<th className="cpts-delete"></th>
-						</tr>
-					</thead>
-					<tbody>
-						{Object.entries(postTypes).map(([key, settings], index) => (
-							<tr
-								key={key}
-								className={`cpts-row ${index % 2 === 0 ? "even" : ""}`}
-							>
-								<td>
-									<input
-										type="text"
-										value={settings.label}
-										onChange={(e) =>
-											handleInputChange(key, "label", e.target.value)
-										}
-									/>
-								</td>
-								<td>
-									<input
-										type="text"
-										value={settings.singular || ""}
-										onChange={(e) =>
-											handleInputChange(key, "singular", e.target.value)
-										}
-									/>
-								</td>
-								<td>
-									<code>{settings.slug}</code>
-								</td>
-								<td className="center">
-									<SettingRow
-										slug={`cpts_post_types_${key}_enable_categories`}
-										value={!!settings.enable_categories}
-										inputType="onlytoggle"
-										onChange={handleToggleChange}
-									/>
-								</td>
-								<td className="center">
-									<SettingRow
-										slug={`cpts_post_types_${key}_enable_tags`}
-										value={!!settings.enable_tags}
-										inputType="onlytoggle"
-										onChange={handleToggleChange}
-									/>
-								</td>
-								<td className="center">
-									<span
-										className={`fa-solid fa-xmark cpts-del ${checking[key] ? "checking" : ""}`}
-										onClick={() => handleDelete(key)}
-									></span>
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
+				<>
+					{Object.entries(postTypes).map(([key, settings], index) => (
+						<table
+							key={key}
+							className={`form-table cpts-table ${index % 2 === 0 ? "even" : ""}`}
+							role="presentation"
+						>
+							<tbody>
+								<tr>
+									<th className="cpts-label">{settings.label}</th>
+									<td>
+										<div className="cpts-single-sets">
+											<div className="cpts-single-slug">
+												<div className="cpts-single">
+													{settings.singular}{" "}
+													<span>
+														{"(" + __("Singular", "theme-site-kit") + ")"}
+													</span>
+												</div>
+												<div className="cpts-slug">
+													<code>{settings.slug}</code>
+												</div>
+											</div>
+											<div className="cpts-cats">
+												<SettingRow
+													slug={`cpts_post_types_${key}_enable_categories`}
+													value={!!settings.enable_categories}
+													inputType="onlytoggle"
+													onChange={handleToggleChange}
+												/>{" "}
+												<span>- {__("Has Categories", "theme-site-kit")}</span>
+											</div>
+											<div className="cpts-tags">
+												<SettingRow
+													slug={`cpts_post_types_${key}_enable_tags`}
+													value={!!settings.enable_tags}
+													inputType="onlytoggle"
+													onChange={handleToggleChange}
+												/>{" "}
+												<span>- {__("Has Tags", "theme-site-kit")}</span>
+											</div>
+											<div className="cpts-archive">
+												<SettingRow
+													slug={`cpts_post_types_${key}_has_archive`}
+													value={!!settings.has_archive}
+													inputType="onlytoggle"
+													onChange={handleToggleChange}
+												/>{" "}
+												<span>
+													- {__("Has Archives Page", "theme-site-kit")}
+												</span>
+											</div>
+											{/* <div className="cpts-template">
+												<select
+													value={settings.template || ""}
+													onChange={(e) =>
+														handleInputChange(key, "template", e.target.value)
+													}
+													className="cpts-template-select"
+												>
+													<option value="">
+														{__("Select A Template", "theme-site-kit")}
+													</option>
+													{blockTemplates?.map((template) => (
+														<option key={template.slug} value={template.slug}>
+															{template.title}
+														</option>
+													))}
+												</select>{" "}
+												<span>
+													- {__("Post Type Template", "theme-site-kit")}
+												</span>
+												<div>
+													{__(
+														"Select a template to use for this post type, or create your own one in the Site Editor. ",
+														"theme-site-kit",
+													)}
+													<a
+														href={`${adminUrl}site-editor.php?p=%2Ftemplate`}
+														className="cpts-edit"
+														target="_blank"
+														rel="noopener noreferrer"
+													>
+														{__("Create a New Template", "theme-site-kit")}
+													</a>
+													<br />
+													<small style={{ opacity: 0.8 }}>
+														{__(
+															"To auto-assign this template, name it exactly:",
+															"theme-site-kit",
+														)}{" "}
+														<code>{`single-${settings.slug}`}</code>
+													</small>
+												</div>
+											</div> */}
+
+											<span
+												className={`fa-solid fa-xmark cpts-del ${checking[key] ? "checking" : ""}`}
+												onClick={() => handleDelete(key)}
+												title={__("Delete this post type", "theme-site-kit")}
+											></span>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					))}
+				</>
 			)}
+
+			<p className="cpts-note">
+				{__(
+					"Remember to Save Permalinks after adding or making changes to Custom Post Types.",
+					"theme-site-kit",
+				)}{" "}
+				<a href={`${adminUrl}options-permalink.php`} target="_blank">
+					{__("Go to Permalinks", "theme-site-kit")}
+				</a>
+			</p>
 		</div>
 	);
 };

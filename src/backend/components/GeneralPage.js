@@ -28,10 +28,10 @@ const GeneralPage = ({ adminUrl, changeTab }) => {
 			<div className="kwtsk-gp-features">
 				<div className="kwtsk-gp-feature">
 					<div className="kwtsk-gp-feature-img settings"></div>
-					<h3>{__("Toolkit Settings", "theme-site-kit")}</h3>
+					<h3>{__("Site Kit Settings", "theme-site-kit")}</h3>
 					<p>
 						{__(
-							"This plugin includes a range of helpful tools to improve your site, like disabling comments, a custom mobile menu, floating contact and social links, and more. Head to the top tabs in the plugin settings to explore each feature and adjust the options to suit your site's style and needs.",
+							"This plugin includes a range of helpful tools to improve your site, like disabling comments, maintenance mode while building, safely upload SVG formats, floating contact and social links, and more. Head to the top tabs in the plugin settings to explore each feature and adjust the options to suit your website.",
 							"theme-site-kit",
 						)}
 					</p>

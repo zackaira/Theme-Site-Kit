@@ -17,6 +17,9 @@ class Theme_Site_Kit_Post_Types {
 	public function __construct() {
 		$kwtskSavedOptions = get_option( 'kwtsk_options' );
 		$kwtskOptions      = $kwtskSavedOptions ? json_decode( $kwtskSavedOptions ) : null;
+		$isPremium = (bool) kwtsk_fs()->can_use_premium_code__premium_only();
+
+		if ( ! $isPremium ) return;
 
 		// Check if cpts mode is enabled
 		if ( isset( $kwtskOptions->cpts->enabled ) && $kwtskOptions->cpts->enabled ) {
@@ -47,6 +50,7 @@ class Theme_Site_Kit_Post_Types {
 			$slug     = sanitize_title( $settings->slug );
 			$label    = sanitize_text_field( $settings->label );
 			$singular = ! empty( $settings->singular ) ? sanitize_text_field( $settings->singular ) : $label;
+			$has_archive = isset( $settings->has_archive ) ? $settings->has_archive : true;
 
 			register_post_type( $slug, [
 				'labels' => [
@@ -67,7 +71,7 @@ class Theme_Site_Kit_Post_Types {
 				'show_ui'            => true,
 				'show_in_menu'       => true,
 				'show_in_rest'       => true,
-				'has_archive'        => true,
+				'has_archive'        => $has_archive,
 				'hierarchical'       => false,
 				'rewrite'            => [ 'slug' => $slug ],
 				'supports'           => [ 'title', 'editor', 'thumbnail', 'excerpt', 'revisions' ],
