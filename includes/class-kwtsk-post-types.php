@@ -149,7 +149,7 @@ class Theme_Site_Kit_Post_Types {
 				8  => sprintf( __( '%s submitted.', 'theme-site-kit' ), $singular ),
 				9  => sprintf(
 					// translators: %1$s: Post type singular name, %2$s: Date and time.
-					__( '%s scheduled for: <strong>%1$s</strong>.', 'theme-site-kit' ),
+					__( '%1$s scheduled for: <strong>%2$s</strong>.', 'theme-site-kit' ),
 					$singular,
 					date_i18n( __( 'M j, Y @ G:i', 'theme-site-kit' ), strtotime( $post->post_date ) )
 				),

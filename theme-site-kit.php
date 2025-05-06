@@ -9,6 +9,7 @@
  * Requires at least: 5.0
  * Tested up to: 6.8
  * Text Domain: theme-site-kit
+ * License: GPLv2 or later
  * Domain Path: /lang/
  *
  * @package Theme Site Kit

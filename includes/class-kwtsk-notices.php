@@ -23,7 +23,7 @@ class Theme_Site_Kit_Notices {
 		global $pagenow;
 		global $current_user;
         $user_id = $current_user->ID;
-		$kwtsk_page = isset( $_GET['page'] ) ? $pagenow . '?page=' . sanitize_text_field($_GET['page']) . '&' : sanitize_text_field($pagenow) . '?';
+		$kwtsk_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $pagenow . '?page=' . $_GET['page'] ) ) . '&' : sanitize_text_field( $pagenow ) . '?';
 
 		$notices = $this->kwtsk_notices();
 
@@ -52,7 +52,7 @@ class Theme_Site_Kit_Notices {
 
 								<?php if (isset($notice['link']) && isset($notice['link_text'])) : ?>
 									<a href="<?php echo esc_url($notice['link']); ?>" class="kwtsk-notice-btn">
-										<?php esc_html_e($notice['link_text']); ?>
+										<?php echo esc_html($notice['link_text']); ?>
 									</a>
 								<?php endif; ?>
 							</div>

@@ -222,7 +222,7 @@ class Theme_Site_Kit_Maintenance_Mode {
             <title><?php echo esc_html( $title ); ?></title>
             <style>
                 body {
-                    background-color: <?php esc_attr_e($bgcolor) ?>;
+                    background-color: <?php echo esc_attr($bgcolor) ?>;
                     font-family: Arial, sans-serif;
                     text-align: center;
                     margin: 0;
@@ -240,13 +240,13 @@ class Theme_Site_Kit_Maintenance_Mode {
                 }
                 .kwtsk-mm-template-content h1 {
                     font-size: clamp(34px, 4vw, 48px);
-                    color: <?php esc_attr_e($titlecolor) ?>;
+                    color: <?php echo esc_attr($titlecolor) ?>;
                     margin: 0 0 0.8rem;
                     padding: 0;
                 }
                 .kwtsk-mm-template-content p {
                     font-size: clamp(15px, 2vw, 18px);
-                    color: <?php esc_attr_e($textcolor) ?>;
+                    color: <?php echo esc_attr($textcolor) ?>;
                     margin: 0;
                     padding: 0;
                 }

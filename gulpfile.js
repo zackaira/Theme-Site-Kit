@@ -5,6 +5,7 @@ function bundle() {
 	return gulp
 		.src([
 			"**/*",
+			"!**/.DS_Store",
 			"!node_modules/**",
 			"!_starter-blocks/**",
 			"!blocks/**",

@@ -304,7 +304,8 @@ class Theme_Site_Kit_API_Rest_Routes {
 		// Use raw fields if available.
 		$title = isset($remote_post['title']['raw']) ? $remote_post['title']['raw'] : (isset($remote_post['title']['rendered']) ? $remote_post['title']['rendered'] : 'Imported Layout');
 		$content = isset($remote_post['content']['raw']) ? $remote_post['content']['raw'] : (isset($remote_post['content']['rendered']) ? $remote_post['content']['rendered'] : '');
-		$excerpt = isset($remote_post['excerpt']['raw']) ? strip_tags(trim($remote_post['excerpt']['raw'])) : (isset($remote_post['excerpt']['rendered']) ? strip_tags(trim($remote_post['excerpt']['rendered'])) : '');
+
+		$excerpt = isset($remote_post['excerpt']['raw']) ? wp_strip_all_tags(trim($remote_post['excerpt']['raw'])) : (isset($remote_post['excerpt']['rendered']) ? wp_strip_all_tags(trim($remote_post['excerpt']['rendered'])) : '');
 		
 		// Ensure necessary WP files are loaded.
 		require_once(ABSPATH . 'wp-admin/includes/media.php');
@@ -329,7 +330,7 @@ class Theme_Site_Kit_API_Rest_Routes {
 						);
 						$attachment_id = media_handle_sideload($file_array, 0);
 						if ( is_wp_error($attachment_id) ) {
-							@unlink($file_array['tmp_name']);
+							wp_delete_file($file_array['tmp_name']);
 							continue;
 						}
 						$sideload = wp_get_attachment_url($attachment_id);
