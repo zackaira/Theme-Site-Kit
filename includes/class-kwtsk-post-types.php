@@ -58,13 +58,21 @@ class Theme_Site_Kit_Post_Types {
 					'singular_name'      => $singular,
 					'menu_name'          => $label,
 					'add_new'            => __( 'Add New', 'theme-site-kit' ),
+					// translators: %s: Post type singular name.
 					'add_new_item'       => sprintf( __( 'Add New %s', 'theme-site-kit' ), $singular ),
+					// translators: %s: Post type singular name.
 					'edit_item'          => sprintf( __( 'Edit %s', 'theme-site-kit' ), $singular ),
+					// translators: %s: Post type singular name.
 					'new_item'           => sprintf( __( 'New %s', 'theme-site-kit' ), $singular ),
+					// translators: %s: Post type singular name.
 					'view_item'          => sprintf( __( 'View %s', 'theme-site-kit' ), $singular ),
-					'view_items'         => sprintf( __( 'View %s', 'theme-site-kit' ), $label ),
+					// translators: %s: Post type label.
+					'view_items'         => sprintf( __( 'View All %s', 'theme-site-kit' ), $label ),
+					// translators: %s: Post type label.
 					'search_items'       => sprintf( __( 'Search %s', 'theme-site-kit' ), $label ),
+					// translators: %s: Post type label.
 					'not_found'          => sprintf( __( 'No %s found', 'theme-site-kit' ), $label ),
+					// translators: %s: Post type label.
 					'not_found_in_trash' => sprintf( __( 'No %s found in Trash', 'theme-site-kit' ), $label ),
 				],
 				'public'             => true,
@@ -123,21 +131,29 @@ class Theme_Site_Kit_Post_Types {
 
 			$messages[ $post_type ] = [
 				0  => '',
+				// translators: %s: Post type singular name.
 				1  => sprintf( __( '%s updated.', 'theme-site-kit' ), $singular ),
 				2  => __( 'Custom field updated.', 'theme-site-kit' ),
 				3  => __( 'Custom field deleted.', 'theme-site-kit' ),
+				// translators: %s: Post type singular name.
 				4  => sprintf( __( '%s updated.', 'theme-site-kit' ), $singular ),
 				5  => isset( $_GET['revision'] )
-					? sprintf( __( '%s restored to revision from %s', 'theme-site-kit' ), $singular, wp_post_revision_title( (int) $_GET['revision'], false ) )
+					// translators: %1$s: Post type singular name, %2$s: Revision date.
+					? sprintf( __( '%1$s restored to revision from %2$s', 'theme-site-kit' ), $singular, wp_post_revision_title( (int) $_GET['revision'], false ) )
 					: false,
+				// translators: %s: Post type singular name.
 				6  => sprintf( __( '%s published.', 'theme-site-kit' ), $singular ),
+				// translators: %s: Post type singular name.
 				7  => sprintf( __( '%s saved.', 'theme-site-kit' ), $singular ),
+				// translators: %s: Post type singular name.
 				8  => sprintf( __( '%s submitted.', 'theme-site-kit' ), $singular ),
 				9  => sprintf(
+					// translators: %1$s: Post type singular name, %2$s: Date and time.
 					__( '%s scheduled for: <strong>%1$s</strong>.', 'theme-site-kit' ),
 					$singular,
 					date_i18n( __( 'M j, Y @ G:i', 'theme-site-kit' ), strtotime( $post->post_date ) )
 				),
+				// translators: %s: Post type singular name.
 				10 => sprintf( __( '%s draft updated.', 'theme-site-kit' ), $singular ),
 			];
 		}

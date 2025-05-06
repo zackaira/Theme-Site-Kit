@@ -9,33 +9,46 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easily manage essential site customizations with Theme Site Kit - the Swiss-Army-Knife WordPress plugin for disabling comments, enabling SVG uploads, adding social links, and more.
+Easily manage essential site customizations with Theme Site Kit - the Swiss-Army-Knife WordPress plugin for disabling comments, adding maintenance mode, enabling safe SVG uploads, adding social links, and lots more.
 
 
 == Description ==
 
 [Theme Site Kit](https://kairaweb.com/) is your all-in-one toolkit for essential WordPress site settings, designed to streamline your common WordPress setup and enhance site functionality without installing so many extra plugins.
 
-Whether you’re a theme developer, client site website builder, or DIY user for your own build, Theme Site Kit helps you take control of your website with ease.
+Whether you're a theme developer, client site website builder, or a DIY user for your own build, Theme Site Kit helps you take control of your website with ease.
 
-**NOTE:** Theme Site Kit was built for personal client web development work... And then release into the wild!
+**NOTE:** Theme Site Kit was built for all my personal client web development work... And then release into the wild!
 
 
 ## Theme Site Kit Current Features
 
 &#9989; **Disable Comments**: Easily turn off comments across your entire site or manage them individually on each post or page.
 
-&#9989; **Custom Slide-Out Mobile Navigation**: Extend the WordPress core Navigation block with a slick, mobile-friendly slide-out menu for a better user experience.
+&#9989; **Maintenance Mode for WP**: Hide your website behind a maintenance mode splash page while you're building, allowing access only to logged in users or selected user roles.
 
 &#9989; **Safe SVG Uploads**: Enable and safely upload SVG files to your media library without security risks.
 
 &#9989; **Floating Contact & Social Links**: Add eye-catching floating buttons to the side of your website, to connect users to your social profiles or contact information even quicker.
 
-&#9989; **Import Full Page Layouts**: Quickly build beautiful pages by importing ready-made, professionally designed full-page layouts from our on-growing layouts library.
+&#9989; **Import Full Page Layouts**: Quickly build beautiful pages by importing ready-made, professionally designed full-page layouts from our growing layouts library.
 
-&#9989; **Block Patterns for Faster Site Building**: Access our library of pre-designed Block Patterns to speed up page creation in the WordPress editor.
+&#9989; **Block Patterns for Faster Site Building**: Access our growing library of pre-designed Block Patterns to speed up page creation in the WordPress editor.
 
 &#128312; We're working on adding more features... Send us some ideas and maybe we can on what you need!
+
+
+## Theme Site Kit PRO Features:
+
+&#9989; **Custom Slide-Out Mobile Navigation**: Extend the WordPress core Navigation block with a slick, mobile-friendly slide-out menu for a better user experience.
+
+&#9989; **Custom Post Types**: Add unlimited Custom Post types to your WordPress website such as Case Studies, Projects or any custom post types you need for your clients website.
+
+&#9989; **Custom Maintenance Mode Templates**: Unlock full design control with Theme Site Kit Pro - customize default template colors, build your own Maintenance Mode page using the intuitive WordPress block editor, or instantly import our pre-designed page layouts to use for your 'Maintenance Mode' template.
+
+&#9989; **Unlimited Social / Contact links**: Display any or all of the social links you need to so users can find you online.
+
+&#9989; **Code Snippets coming soon...**:
 
 
 ## Need help? We're here to help!

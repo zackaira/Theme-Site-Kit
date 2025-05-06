@@ -3,7 +3,7 @@
  * Plugin Name: Theme Site Kit
  * Version: 1.0.0
  * Plugin URI: https://kairaweb.com/wordpress-plugins/theme-pro/
- * Description: Easily manage essential site customizations with Theme Site Kit - the Swiss-Army-Knife WordPress plugin for disabling comments, enabling SVG uploads, adding social links, and more.
+ * Description: Easily manage essential site customizations with Theme Site Kit - the Swiss-Army-Knife WordPress plugin for disabling comments, maintenance mode, enabling SVG uploads, adding social links, and more.
  * Author: Kaira
  * Author URI: https://kairaweb.com/
  * Requires at least: 5.0
