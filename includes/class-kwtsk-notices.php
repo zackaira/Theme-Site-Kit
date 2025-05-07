@@ -39,7 +39,9 @@ class Theme_Site_Kit_Notices {
 
 					if ( current_user_can( 'manage_options' ) && !get_user_meta( $user_id, 'kwtsk_notice_' . $notice['id'] . '_dismissed', true ) ) : ?>
 						<div class="kwtsk-admin-notice notice notice-<?php echo isset($notice['type']) ? sanitize_html_class($notice['type']) : 'info'; ?>">
-							<a href="<?php echo esc_url(admin_url($kwtsk_page . 'kwtsk_dismiss_notice&kwtsk-notice-id=' . $notice['id'])); ?>" class="notice-dismiss"></a>
+							<!-- <a href="<?php echo esc_url(admin_url($kwtsk_page . 'kwtsk_dismiss_notice&kwtsk-notice-id=' . $notice['id'])); ?>" class="notice-dismiss"></a> -->
+							<a href="<?php echo esc_url( wp_nonce_url( admin_url( $kwtsk_page . 'kwtsk_dismiss_notice&kwtsk-notice-id=' . $notice['id'] ), 'kwtsk_dismiss_notice_' . $notice['id'] ) ); ?>" class="notice-dismiss"></a>
+
 
 							<div class="kwtsk-notice <?php echo isset($notice['inline']) ? esc_attr( 'inline' ) : ''; ?>">
 								<?php if (isset($notice['title'])) : ?>
@@ -68,12 +70,14 @@ class Theme_Site_Kit_Notices {
 	public function kwtsk_dismiss_notice() {
 		global $current_user;
 		$user_id = $current_user->ID;
-
-		if ( isset( $_GET['kwtsk_dismiss_notice'] ) ) {
-			$kwtsk_notice_id = sanitize_text_field( $_GET['kwtsk-notice-id'] );
-			add_user_meta( $user_id, 'kwtsk_notice_' .$kwtsk_notice_id. '_dismissed', 'true', true );
+	
+		if ( isset( $_GET['kwtsk_dismiss_notice'], $_GET['kwtsk-notice-id'], $_GET['_wpnonce'] ) ) {
+			$kwtsk_notice_id = sanitize_text_field( wp_unslash( $_GET['kwtsk-notice-id'] ) );
+			if ( wp_verify_nonce( wp_unslash( $_GET['_wpnonce'] ), 'kwtsk_dismiss_notice_' . $kwtsk_notice_id ) ) {
+				add_user_meta( $user_id, 'kwtsk_notice_' . $kwtsk_notice_id . '_dismissed', 'true', true );
+			}
 		}
-    }
+	}
 
 	/**
 	 * Build Notices Array
@@ -84,15 +88,15 @@ class Theme_Site_Kit_Notices {
 
 		$settings = array();
 		
-		// $settings['new_blocks_added'] = array(
-		// 	'id'    => 'newblocks_003', // Increment this when adding new blocks
-		// 	'type'  => 'info', // info | error | warning | success
-		// 	'title' => __( 'New Advans,fh vsj dfced Slider & Content Toggler blocks have been added to the Theme Site Kit plugin', 'theme-site-kit' ),
-		// 	'text'  => __( 'To enable the new blocks and start using them in the WordPress editor:', 'theme-site-kit' ),
-		// 	'link'  => admin_url( 'options-general.php?page=kwtsk-settings' ),
-		// 	'link_text' => __( 'Go to the Theme Site Kit settings', 'theme-site-kit' ),
-		// 	'inline' => true, // To display the link & text inline
-		// );
+		$settings['new_features'] = array(
+			'id'    => 'kwtsk_001', // Increment this when adding new blocks
+			'type'  => 'info', // info | error | warning | success
+			'title' => __( 'Thank you for trying out Theme Site Kit!', 'theme-site-kit' ),
+			'text'  => __( 'Get started by selecting which Site Kit features you want to enable on your website:', 'theme-site-kit' ),
+			'link'  => admin_url( 'options-general.php?page=theme-site-kit-settings' ),
+			'link_text' => __( 'View Theme Site Kit Settings', 'theme-site-kit' ),
+			'inline' => true, // To display the link & text inline
+		);
 
 		// $settings['new_settings'] = array(
 		// 	'id'    => '01',

@@ -127,7 +127,7 @@ class Theme_Site_Kit_Scripts {
 	public function kwtsk_admin_scripts( $hook = '') {
 		global $pagenow;
 		global $kwtsk_fs;
-		$adminPage = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : $pagenow;
+		$adminPage = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : $pagenow;
 		$suffix = (defined('WP_DEBUG') && true === WP_DEBUG) ? '' : '.min';
 		$isPro = (boolean)kwtsk_fs()->can_use_premium_code__premium_only();
 

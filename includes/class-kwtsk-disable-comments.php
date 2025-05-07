@@ -245,7 +245,7 @@ class Theme_Site_Kit_Disable_Comments {
         if ($pagenow === 'options-discussion.php' || (isset($_GET['page']) && $_GET['page'] === 'options-discussion.php')) {
             wp_die(
                 '<p>' . esc_html__('Comments have been disabled.', 'theme-site-kit') . '</p>' .
-                '<a href="' . admin_url() . '">' . esc_html__('Back to Dashboard', 'theme-site-kit') . '</a>'
+                '<a href="' . esc_url( admin_url() ) . '">' . esc_html__('Back to Dashboard', 'theme-site-kit') . '</a>'
             );
         }
     }

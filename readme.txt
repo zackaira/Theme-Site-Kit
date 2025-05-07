@@ -1,4 +1,4 @@
-=== Theme Site Kit - The Swiss-Army-Knife plugin for essential site customizations ===
+=== Theme Site Kit ===
 Contributors: Kaira
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFZGBM92T8XSE&source=url
 Tags: customizations, comments, mobile menu, svg upload, theme
@@ -9,7 +9,7 @@ Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easily manage essential site customizations with Theme Site Kit - the Swiss-Army-Knife WordPress plugin for disabling comments, adding maintenance mode, enabling safe SVG uploads, adding social links, and lots more.
+Site Kit, the Swiss-Army-Knife WordPress plugin for disabling comments, adding maintenance mode, enabling safe SVG uploads, social links, and more.
 
 
 == Description ==

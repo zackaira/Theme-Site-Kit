@@ -158,7 +158,8 @@ class Theme_Site_Kit_Maintenance_Mode {
         }
 
         if ( 'maintenance' === $mode ) {
-            header( $_SERVER['SERVER_PROTOCOL'] . ' 503 Service Unavailable', true, 503 );
+            $protocol = isset( $_SERVER['SERVER_PROTOCOL'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PROTOCOL'] ) ) : 'HTTP/1.0';
+            header( $protocol . ' 503 Service Unavailable', true, 503 );
             header( 'Retry-After: 3600' );
         }
 
@@ -184,8 +185,9 @@ class Theme_Site_Kit_Maintenance_Mode {
                 <div class="wp-site-blocks">
                     <div class="entry-content wp-block-post-content is-layout-flow wp-block-post-content-is-layout-flow">
                         <?php
-                        // Render the post content through the content filter
                         // echo apply_filters( 'the_content', $template_post->post_content );
+
+                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- do_blocks() outputs trusted post content
                         echo do_blocks( $template_post->post_content );
                         ?>
                     </div>
@@ -285,7 +287,7 @@ class Theme_Site_Kit_Maintenance_Mode {
         $args = [
             'id'    => 'kwtsk_maintenance_status',
             'title' => $status,
-            'href'  => admin_url( 'options-general.php?page=theme-site-kit-settings&tab=maintenance_mode' ),
+            'href'  => esc_url( admin_url( 'options-general.php?page=theme-site-kit-settings&tab=maintenance_mode' ) ),
             'meta'  => [ 'class' => esc_attr( 'kwtsk-maintenance-mode ' . $additional_class ) ],
         ];
         $wp_admin_bar->add_node( $args );

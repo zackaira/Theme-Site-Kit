@@ -33,10 +33,10 @@ if ( function_exists( 'kwtsk_fs' ) ) {
 		// Create a helper function for easy SDK access.
 		function kwtsk_fs() {
 			global $kwtsk_fs;
-
+	
 			if ( ! isset( $kwtsk_fs ) ) {
 				// Include Freemius SDK.
-				require_once dirname( __FILE__ ) . '/freemius/start.php';
+				require_once dirname( __FILE__ ) . '/vendor/freemius/start.php';
 				$kwtsk_fs = fs_dynamic_init( array(
 					'id'                  => '18427',
 					'slug'                => 'theme-site-kit',
@@ -63,10 +63,10 @@ if ( function_exists( 'kwtsk_fs' ) ) {
 					),
 				) );
 			}
-
+	
 			return $kwtsk_fs;
 		}
-
+	
 		// Init Freemius.
 		kwtsk_fs();
 		// Signal that SDK was initiated.
