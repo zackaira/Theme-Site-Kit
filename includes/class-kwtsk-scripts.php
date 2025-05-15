@@ -7,9 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Main plugin class.
  */
-class Theme_Site_Kit_Scripts {
+class KWTSK_Scripts {
 	/**
-	 * The single instance of Theme_Site_Kit_Scripts {
+	 * The single instance of KWTSK_Scripts {
 	 */
 	private static $_instance = null; //phpcs:ignore
 
@@ -48,8 +48,6 @@ class Theme_Site_Kit_Scripts {
 
 		// Load Editor JS & CSS.
 		add_action( 'enqueue_block_editor_assets', array( $this, 'kwtsk_block_editor_scripts' ), 10, 1 );
-
-		add_action( 'init', array( $this, 'kwtsk_load_plugin_textdomain' ), 10 );
 	} // End __construct ()
 
 	/**
@@ -251,20 +249,8 @@ class Theme_Site_Kit_Scripts {
 	} // End kwtsk_block_editor_scripts ()
 
 	/**
-	 * Load plugin textdomain
-	 *
-	 * @access  public
-	 * @return  void
-	 * @since   1.0.0
-	 */
-	public function kwtsk_load_plugin_textdomain() {
-		$domain = 'theme-site-kit';
-		load_plugin_textdomain($domain, false, KWTSK_PLUGIN_DIR . 'lang/');
-	} // End kwtsk_load_plugin_textdomain ()
-
-	/**
-	 * Main Theme_Site_Kit_Scripts { Instance
-	 * Ensures only one instance of Theme_Site_Kit_Scripts {is loaded or can be loaded.
+	 * Main KWTSK_Scripts { Instance
+	 * Ensures only one instance of KWTSK_Scripts {is loaded or can be loaded.
 	 */
 	public static function instance( $file = '', $version = KWTSK_PLUGIN_VERSION) {
 		if ( is_null( self::$_instance ) ) {

@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) { exit; }
 /**
  * Patterns.
  */
-class Theme_Site_Kit_Patterns {
+class KWTSK_Patterns {
 	/**
 	 * Constructor function.
 	 */
@@ -1108,4 +1108,4 @@ class Theme_Site_Kit_Patterns {
 	}
 
 }
-new Theme_Site_Kit_Patterns();
+new KWTSK_Patterns();

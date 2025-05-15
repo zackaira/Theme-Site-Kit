@@ -1,12 +1,13 @@
 <?php
 /**
  * Plugin Name: Theme Site Kit
- * Version: 1.0.1
- * Plugin URI: https://kairaweb.com/wordpress-plugins/theme-pro/
+ * Version: 1.0.2
+ * Plugin URI: https://kairaweb.com/wordpress-plugins/theme-site-kit/
  * Description: Easily manage essential site customizations with Theme Site Kit - the Swiss-Army-Knife WordPress plugin for disabling comments, maintenance mode, enabling SVG uploads, adding social links, and more.
  * Author: Kaira
  * Author URI: https://kairaweb.com/
  * Requires at least: 5.0
+ * Requires PHP: 7.4
  * Tested up to: 6.8
  * Text Domain: theme-site-kit
  * License: GPLv2 or later
@@ -17,7 +18,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( !defined( 'KWTSK_PLUGIN_VERSION' ) ) {
-	define('KWTSK_PLUGIN_VERSION', '1.0.1');
+	define('KWTSK_PLUGIN_VERSION', '1.0.2');
 }
 if ( !defined( 'KWTSK_PLUGIN_URL' ) ) {
 	define('KWTSK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -85,13 +86,13 @@ if ( function_exists( 'kwtsk_fs' ) ) {
 	require_once 'includes/class-kwtsk-maintenance-mode.php';
 
 	/**
-	 * Main instance of Theme_Site_Kit_Scripts to prevent the need to use globals
+	 * Main instance of KWTSK_Scripts to prevent the need to use globals
 	 *
 	 * @since  1.0.0
-	 * @return object Theme_Site_Kit_Scripts
+	 * @return object KWTSK_Scripts
 	 */
 	function kwtsk() {
-		$instance = Theme_Site_Kit_Scripts::instance( __FILE__, KWTSK_PLUGIN_VERSION );
+		$instance = KWTSK_Scripts::instance( __FILE__, KWTSK_PLUGIN_VERSION );
 		return $instance;
 	}
 	kwtsk();

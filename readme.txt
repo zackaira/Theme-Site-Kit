@@ -3,9 +3,9 @@ Contributors: Kaira
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFZGBM92T8XSE&source=url
 Tags: customizations, comments, mobile menu, svg upload, theme
 Requires at least: 5.0
-Requires PHP: 5.6
+Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,5 +118,5 @@ This could be from the theme you're using, or another plugin. Again, please [con
 
 == Changelog ==
 
-= 1.0.1 =
+= 1.0.2 =
 * Initial release

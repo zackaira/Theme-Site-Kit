@@ -5,12 +5,13 @@
  * @package Theme_Site_Kit
  * @since 1.0.0
  */
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 /**
  * Post Types Class
  * Handles setup of Custom Post Types
  */
-class Theme_Site_Kit_Post_Types {
+class KWTSK_Post_Types {
 	/**
 	 * Constructor function.
 	 */
@@ -162,4 +163,4 @@ class Theme_Site_Kit_Post_Types {
 	}
 }
 
-new Theme_Site_Kit_Post_Types();
+new KWTSK_Post_Types();

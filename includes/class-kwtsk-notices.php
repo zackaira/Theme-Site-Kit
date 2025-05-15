@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Main plugin class.
  */
-class Theme_Site_Kit_Notices {
+class KWTSK_Notices {
 	/**
 	 * Constructor funtion
 	 */
@@ -111,4 +111,4 @@ class Theme_Site_Kit_Notices {
 		return $settings;
 	}
 }
-new Theme_Site_Kit_Notices();
+new KWTSK_Notices();

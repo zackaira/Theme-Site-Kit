@@ -4,12 +4,13 @@
  *
  * @package Theme_Site_Kit
  */
+if (!defined('ABSPATH')) { exit; }
 
 /**
  * Comments Class
  * Handles all comments disable functionality
  */
-class Theme_Site_Kit_Disable_Comments {
+class KWTSK_Disable_Comments {
     /**
      * The disable mode: "everywhere" or "post_types"
      *
@@ -250,4 +251,4 @@ class Theme_Site_Kit_Disable_Comments {
         }
     }
 }
-new Theme_Site_Kit_Disable_Comments();
+new KWTSK_Disable_Comments();

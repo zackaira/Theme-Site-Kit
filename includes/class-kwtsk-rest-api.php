@@ -1,8 +1,16 @@
 <?php
+/**
+ * Rest API Setup
+ *
+ * @package Theme_Site_Kit
+ * @since 1.0.0
+ */
+if ( ! defined( 'ABSPATH' ) ) { exit; }
+
 /*
  * Create Custom Rest API Endpoints
  */
-class Theme_Site_Kit_API_Rest_Routes {
+class KWTSK_API_Rest_Routes {
 	public function __construct() {
 		add_action('rest_api_init', [$this, 'kwtsk_create_rest_routes']);
 	}
@@ -35,7 +43,7 @@ class Theme_Site_Kit_API_Rest_Routes {
 		register_rest_route('kwtsk/v1', '/layouts', [
 			'methods'             => 'GET',
 			'callback'            => [$this, 'kwtsk_get_layouts'],
-			'permission_callback' => '__return_true',
+			'permission_callback' => [$this, 'kwtsk_get_settings_permission'],
 		]);
 		register_rest_route('kwtsk/v1', '/import-layout', [
 			'methods'             => 'POST',
@@ -490,4 +498,4 @@ class Theme_Site_Kit_API_Rest_Routes {
 		return rest_ensure_response( [ 'count' => $total ] );
 	}
 }
-new Theme_Site_Kit_API_Rest_Routes();
+new KWTSK_API_Rest_Routes();

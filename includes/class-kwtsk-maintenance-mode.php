@@ -5,12 +5,13 @@
  * @package Theme_Site_Kit
  * @since 1.0.0
  */
+if (!defined('ABSPATH')) { exit; }
 
 /**
  * Maintenance_Mode Class
  * Handles all frontend-related functionality.
  */
-class Theme_Site_Kit_Maintenance_Mode {
+class KWTSK_Maintenance_Mode {
     /**
      * Holds maintenance mode settings.
      *
@@ -313,4 +314,4 @@ class Theme_Site_Kit_Maintenance_Mode {
     }
 }
 
-new Theme_Site_Kit_Maintenance_Mode();
+new KWTSK_Maintenance_Mode();

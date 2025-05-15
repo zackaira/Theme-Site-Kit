@@ -4,8 +4,12 @@
  * 
  * @package Theme_Site_Kit
  */
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-class Theme_Site_Kit_SVG_Handler {
+/**
+ * SVG Handler class.
+ */
+class KWTSK_SVG_Handler {
     /**
      * Initialize the SVG handler
      */
@@ -151,4 +155,4 @@ class Theme_Site_Kit_SVG_Handler {
         return true;
     }
 }
-new Theme_Site_Kit_SVG_Handler();
+new KWTSK_SVG_Handler();

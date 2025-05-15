@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) { exit; }
 /**
  * Admin class.
  */
-class Theme_Site_Kit_Admin {
+class KWTSK_Admin {
 	/**
 	 * Constructor function.
 	 */
@@ -184,4 +184,4 @@ class Theme_Site_Kit_Admin {
 		echo '<div id="kwtsk-dashboard-widget"></div>';
 	}
 }
-new Theme_Site_Kit_Admin();
+new KWTSK_Admin();

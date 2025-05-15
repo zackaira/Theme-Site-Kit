@@ -5,12 +5,13 @@
  * @package Theme_Site_Kit
  * @since 1.0.0
  */
+if (!defined('ABSPATH')) { exit; }
 
 /**
  * Custom_Code Class
  * Handles all frontend-related functionality
  */
-class Theme_Site_Kit_Custom_Code {
+class KWTSK_Custom_Code {
 	/**
      * Constructor function.
      */

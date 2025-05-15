@@ -1,10 +1,16 @@
 <?php
+/**
+ * Site Frontend Functions
+ *
+ * @package Theme_Site_Kit
+ * @since 1.0.0
+ */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 /**
  * Frontend functions.
  */
-class Theme_Site_Kit_Frontend {
+class KWTSK_Frontend {
     /**
      * Constructor function.
      */
@@ -171,4 +177,4 @@ class Theme_Site_Kit_Frontend {
     }
 }
 
-new Theme_Site_Kit_Frontend();
+new KWTSK_Frontend();
