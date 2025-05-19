@@ -36,12 +36,15 @@ class KWTSK_Notices {
 			if ( $notices ) :
 				// Loop over all notices
 				foreach ($notices as $notice) :
+					$dismiss_url = wp_nonce_url(
+						admin_url( $kwtsk_page . 'kwtsk_dismiss_notice&kwtsk-notice-id=' . $notice['id'] ),
+						'kwtsk_dismiss_notice_' . $notice['id']
+					);
 
 					if ( current_user_can( 'manage_options' ) && !get_user_meta( $user_id, 'kwtsk_notice_' . $notice['id'] . '_dismissed', true ) ) : ?>
 						<div class="kwtsk-admin-notice notice notice-<?php echo isset($notice['type']) ? sanitize_html_class($notice['type']) : 'info'; ?>">
-							<!-- <a href="<?php echo esc_url(admin_url($kwtsk_page . 'kwtsk_dismiss_notice&kwtsk-notice-id=' . $notice['id'])); ?>" class="notice-dismiss"></a> -->
-							<a href="<?php echo esc_url( wp_nonce_url( admin_url( $kwtsk_page . 'kwtsk_dismiss_notice&kwtsk-notice-id=' . $notice['id'] ), 'kwtsk_dismiss_notice_' . $notice['id'] ) ); ?>" class="notice-dismiss"></a>
 
+							<a href="<?php echo esc_url( $dismiss_url ); ?>" class="notice-dismiss"></a>
 
 							<div class="kwtsk-notice <?php echo isset($notice['inline']) ? esc_attr( 'inline' ) : ''; ?>">
 								<?php if (isset($notice['title'])) : ?>
@@ -68,16 +71,22 @@ class KWTSK_Notices {
 	}
 	// Make Notice Dismissable
 	public function kwtsk_dismiss_notice() {
-		global $current_user;
-		$user_id = $current_user->ID;
-	
-		if ( isset( $_GET['kwtsk_dismiss_notice'], $_GET['kwtsk-notice-id'], $_GET['_wpnonce'] ) ) {
-			$kwtsk_notice_id = sanitize_text_field( wp_unslash( $_GET['kwtsk-notice-id'] ) );
-			if ( wp_verify_nonce( wp_unslash( $_GET['_wpnonce'] ), 'kwtsk_dismiss_notice_' . $kwtsk_notice_id ) ) {
-				add_user_meta( $user_id, 'kwtsk_notice_' . $kwtsk_notice_id . '_dismissed', 'true', true );
-			}
-		}
-	}
+		if ( empty( $_GET['kwtsk-notice-id'] ) || empty( $_GET['_wpnonce'] ) ) return;
+
+        $notice_id = sanitize_text_field( wp_unslash( $_GET['kwtsk-notice-id'] ) );
+
+		if ( ! current_user_can( 'manage_options' ) ) return;
+
+        check_admin_referer( 'kwtsk_dismiss_notice_' . $notice_id );
+
+        $user_id = get_current_user_id();
+		add_user_meta( $user_id, "kwtsk_notice_{$notice_id}_dismissed", 'true', true );
+
+		$redirect = wp_get_referer() ?: admin_url();
+		$redirect = remove_query_arg( [ 'action', 'kwtsk-notice-id', '_wpnonce' ], $redirect );
+		wp_safe_redirect( $redirect );
+		exit;
+    }
 
 	/**
 	 * Build Notices Array

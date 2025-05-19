@@ -136,9 +136,9 @@ class KWTSK_Frontend {
     public function kwtsk_add_nav_custom_styles() {
         $kwtskSavedOptions = get_option( 'kwtsk_options' );
         $kwtskOptions      = $kwtskSavedOptions ? json_decode( $kwtskSavedOptions ) : null;
-        $bgcolor          = isset( $kwtskOptions->mobilemenu->bgcolor ) ? $kwtskOptions->mobilemenu->bgcolor : '#1d2327';
-        $textcolor        = isset( $kwtskOptions->mobilemenu->textcolor ) ? $kwtskOptions->mobilemenu->textcolor : '#b4b4b4';
-        $selectedcolor    = isset( $kwtskOptions->mobilemenu->selectedcolor ) ? $kwtskOptions->mobilemenu->selectedcolor : '#FFFFFF';
+        $bgcolor          = isset( $kwtskOptions->mobilemenu->bgcolor ) ? sanitize_hex_color( $kwtskOptions->mobilemenu->bgcolor ) : '#1d2327';
+        $textcolor        = isset( $kwtskOptions->mobilemenu->textcolor ) ? sanitize_hex_color( $kwtskOptions->mobilemenu->textcolor ) : '#b4b4b4';
+        $selectedcolor    = isset( $kwtskOptions->mobilemenu->selectedcolor ) ? sanitize_hex_color( $kwtskOptions->mobilemenu->selectedcolor ) : '#FFFFFF';
     
         // Register a style handle without a file.
         wp_register_style( 'kwtsk-custom-nav-style', false );
@@ -148,9 +148,9 @@ class KWTSK_Frontend {
         $custom_css = "
             .wp-block-navigation.kwtsk-mm.kwtsk-custom.mobile-on
                 .wp-block-navigation__responsive-container {
-                background-color: $bgcolor !important;
-                color: $textcolor !important;
-                fill: $textcolor !important;
+                background-color: " . esc_attr( $bgcolor ) . " !important;
+                color: " . esc_attr( $textcolor ) . " !important;
+                fill: " . esc_attr( $textcolor ) . " !important;
                 box-shadow:
                     inset 1px 0 0 rgb(0 0 0 / 14%),
                     inset 2px 0 15px rgb(0 0 0 / 10%);
@@ -170,7 +170,7 @@ class KWTSK_Frontend {
                 nav.wp-block-navigation.kwtsk-custom
                 .wp-block-navigation__container
                 li.current-menu-item > a {
-                    color: $selectedcolor !important;
+                    color: " . esc_attr( $selectedcolor ) . " !important;
             }
         ";
         wp_add_inline_style( 'kwtsk-custom-nav-style', $custom_css );

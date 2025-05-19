@@ -11,6 +11,7 @@ import { kwtskGroupSettings, kwtskSocialOptions } from "./helpers";
 
 const SettingsPage = ({ kwtskObj }) => {
 	const url = `${kwtskObj.apiUrl}kwtsk/v1`;
+	const nonce = kwtskObj.nonce;
 	const adminUrl = kwtskObj.adminUrl;
 	const accountUrl = kwtskObj.accountUrl;
 	const upgradeUrl = kwtskObj.upgradeUrl;
@@ -116,14 +117,12 @@ const SettingsPage = ({ kwtskObj }) => {
 		axios
 			.post(
 				url + "/settings",
-				{
-					kwtskOptions: JSON.stringify(kwtskOptions),
-				},
+				{ kwtskOptions },
 				{
 					// Add Nonce to prevent this working elsewhere
 					headers: {
 						"content-type": "application/json",
-						"X-WP-NONCE": kwtskObj.nonce,
+						"X-WP-NONCE": nonce,
 					},
 				},
 			)
@@ -154,7 +153,7 @@ const SettingsPage = ({ kwtskObj }) => {
 			axios
 				.delete(url + "/delete", {
 					headers: {
-						"X-WP-NONCE": kwtskObj.nonce,
+						"X-WP-NONCE": nonce,
 					},
 				})
 				.then((res) => {
@@ -200,7 +199,7 @@ const SettingsPage = ({ kwtskObj }) => {
 			.post(
 				url + "/create-template-page",
 				{},
-				{ headers: { "X-WP-NONCE": kwtskObj.nonce } },
+				{ headers: { "X-WP-NONCE": nonce } },
 			)
 			.then((res) => {
 				const { page_id, page_title } = res.data;

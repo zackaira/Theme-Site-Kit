@@ -142,19 +142,37 @@ class KWTSK_Disable_Comments {
      * Close comments on posts for affected post types.
      */
     public function kwtsk_disable_all_comments() {
-        if ($this->disableMode === 'everywhere') {
-            update_option('default_comment_status', 'closed');
-            update_option('default_ping_status', 'closed');
-            global $wpdb;
-            $wpdb->query("UPDATE $wpdb->posts SET comment_status = 'closed', ping_status = 'closed'");
-        } elseif ($this->disableMode === 'post_types') {
-            if (!empty($this->disabled_post_types)) {
-                update_option('default_comment_status', 'closed');
-                update_option('default_ping_status', 'closed');
-                global $wpdb;
-                $types_in = "'" . implode("','", array_map('esc_sql', $this->disabled_post_types)) . "'";
-                $wpdb->query("UPDATE $wpdb->posts SET comment_status = 'closed', ping_status = 'closed' WHERE post_type IN ($types_in)");
-            }
+        global $wpdb;
+
+        // Always close defaults
+        update_option( 'default_comment_status', 'closed' );
+        update_option( 'default_ping_status',    'closed' );
+
+        if ( 'everywhere' === $this->disableMode ) {
+            // Site-wide: close on every post
+            $sql      = "UPDATE {$wpdb->posts} SET comment_status = %s, ping_status = %s";
+            $prepared = $wpdb->prepare( $sql, 'closed', 'closed' );
+            $wpdb->query( $prepared );
+
+        } elseif ( 'post_types' === $this->disableMode && ! empty( $this->disabled_post_types ) ) {
+            // Only on a specific set of post types
+            $count        = count( $this->disabled_post_types );
+            $placeholders = implode( ', ', array_fill( 0, $count, '%s' ) );
+
+            $sql = "
+                UPDATE {$wpdb->posts}
+                SET comment_status = %s, ping_status = %s
+                WHERE post_type IN ( {$placeholders} )
+            ";
+
+            // Merge the status values and the dynamic post_type slugs
+            $args = array_merge(
+                [ 'closed', 'closed' ],
+                $this->disabled_post_types
+            );
+
+            $prepared = $wpdb->prepare( $sql, $args );
+            $wpdb->query( $prepared );
         }
     }
 

@@ -50,6 +50,7 @@ if ( function_exists( 'kwtsk_fs' ) ) {
 					'has_premium_version' => true,
 					'has_addons'          => false,
 					'has_paid_plans'      => true,
+					'is_org_compliant'    => true,
 					'trial'               => array(
 						'days'               => 7,
 						'is_require_payment' => true,

@@ -83,7 +83,7 @@ class KWTSK_Scripts {
 
 		// Editor
 		wp_register_style('kwtsk-admin-editor-style', esc_url(KWTSK_PLUGIN_URL . 'dist/editor' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTSK_PLUGIN_VERSION);
-		wp_register_script('kwtsk-admin-editor-script', esc_url(KWTSK_PLUGIN_URL . 'dist/editor' . $suffix . '.js'), array('wp-edit-post'), KWTSK_PLUGIN_VERSION, true);
+		wp_register_script('kwtsk-admin-editor-script', esc_url(KWTSK_PLUGIN_URL . 'dist/editor' . $suffix . '.js'), array('wp-edit-post', 'lodash'), KWTSK_PLUGIN_VERSION, true);
 
 		// Dashboard Widget
 		// wp_register_style('kwtsk-dashboard-style', esc_url(KWTSK_PLUGIN_URL . 'dist/dashboard' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTSK_PLUGIN_VERSION);

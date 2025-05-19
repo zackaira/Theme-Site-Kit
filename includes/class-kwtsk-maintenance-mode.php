@@ -129,6 +129,61 @@ class KWTSK_Maintenance_Mode {
     }
 
     /**
+     * Register & inject all maintenance-mode CSS.
+     */
+    public function kwtsk_get_maintenance_css() {
+        $css = '';
+
+        if ( (bool) kwtsk_fs()->can_use_premium_code__premium_only()
+             && ! empty( $this->settings->template ) ) {
+            $css .= "
+                :root {
+                    --wp--style--layout--content-size: 1040px;
+                    --wp--style--layout--wide-size:    1240px;
+                }
+            ";
+        } else {
+            $bg   = $this->settings->bgcolor    ?? '#f5f5f5';
+            $tc   = $this->settings->titlecolor ?? '#333';
+            $txtc = $this->settings->textcolor  ?? '#666';
+    
+            $css .= "
+                body {
+                    background-color: {$bg} !important;
+                    font-family: Arial, sans-serif !important;
+                    text-align: center !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    font-size: 18px !important;
+                }
+                .kwtsk-mm-template-content {
+                    height: 100vh;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 25px;
+                    box-sizing: border-box;
+                }
+                .kwtsk-mm-template-content h1 {
+                    font-size: clamp(34px, 4vw, 48px);
+                    color: {$tc};
+                    margin: 0 0 0.8rem;
+                    padding: 0;
+                }
+                .kwtsk-mm-template-content p {
+                    font-size: clamp(15px, 2vw, 18px);
+                    color: {$txtc};
+                    margin: 0;
+                    padding: 0;
+                }
+            ";
+        }
+
+        return $css;
+    }    
+
+    /**
      * Display Maintenance Mode or Coming Soon Page.
      *
      * Intercepts normal page requests and shows a maintenance or coming soon page
@@ -174,12 +229,6 @@ class KWTSK_Maintenance_Mode {
 				<meta charset="<?php bloginfo( 'charset' ); ?>">
 				<meta name="viewport" content="width=device-width, initial-scale=1">
 				<?php wp_head(); // Loads styles and scripts including Gutenberg styles ?>
-                <style id="kwtsk-layout-overrides">
-                    :root {
-                    --wp--style--layout--content-size: 1040px;
-                    --wp--style--layout--wide-size:    1240px;
-                    }
-                </style>
 			</head>
 			<body <?php body_class(); ?>>
                 <?php wp_body_open(); ?>
@@ -187,9 +236,11 @@ class KWTSK_Maintenance_Mode {
                     <div class="entry-content wp-block-post-content is-layout-flow wp-block-post-content-is-layout-flow">
                         <?php
                         // echo apply_filters( 'the_content', $template_post->post_content );
-
+                        $allowed = wp_kses_allowed_html( 'post' );
+                        $allowed['div']['data-*'] = true;
                         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- do_blocks() outputs trusted post content
-                        echo do_blocks( $template_post->post_content );
+                        echo wp_kses( do_blocks( $template_post->post_content ), $allowed );
+                        // echo do_blocks( $template_post->post_content );
                         ?>
                     </div>
                 </div>
@@ -201,21 +252,18 @@ class KWTSK_Maintenance_Mode {
 		}
 
         // Fallback basic default template
-        $bgcolor    = $isPremium && $this->settings->bgcolor ? $this->settings->bgcolor : '#f5f5f5';
-        $title      = ! empty( $this->settings->title )
-                        ? $this->settings->title
-                        : ( 'coming_soon' === $mode
+        $css = $this->kwtsk_get_maintenance_css();
+
+        $title = ! empty( $this->settings->title ) ? $this->settings->title : ( 'coming_soon' === $mode
                             ? esc_html__( 'Coming Soon', 'theme-site-kit' )
                             : esc_html__( 'Maintenance Mode', 'theme-site-kit' )
-                          );
-        $titlecolor = $isPremium && $this->settings->titlecolor ? $this->settings->titlecolor : '#333';
-        $text       = ! empty( $this->settings->text )
-                        ? $this->settings->text
-                        : ( 'coming_soon' === $mode
+                        );
+        $text = ! empty( $this->settings->text ) ? $this->settings->text : ( 'coming_soon' === $mode
                             ? esc_html__( 'Our website is launching soon. Stay tuned!', 'theme-site-kit' )
                             : esc_html__( 'We are currently performing scheduled maintenance. Please check back soon.', 'theme-site-kit' )
-                          );
-        $textcolor  = $isPremium && $this->settings->textcolor ? $this->settings->textcolor : '#666';
+                        );
+        wp_enqueue_style( 'kwtsk-frontend-style', false );
+        wp_add_inline_style( 'kwtsk-frontend-style', $css );
         ?>
         <!DOCTYPE html>
         <html <?php language_attributes(); ?>>
@@ -223,37 +271,7 @@ class KWTSK_Maintenance_Mode {
             <meta charset="<?php bloginfo( 'charset' ); ?>">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title><?php echo esc_html( $title ); ?></title>
-            <style>
-                body {
-                    background-color: <?php echo esc_attr($bgcolor) ?>;
-                    font-family: Arial, sans-serif;
-                    text-align: center;
-                    margin: 0;
-                    padding: 0;
-                    font-size: 18px;
-                }
-                .kwtsk-mm-template-content {
-                    height: 100vh;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 25px;
-                    box-sizing: border-box;
-                }
-                .kwtsk-mm-template-content h1 {
-                    font-size: clamp(34px, 4vw, 48px);
-                    color: <?php echo esc_attr($titlecolor) ?>;
-                    margin: 0 0 0.8rem;
-                    padding: 0;
-                }
-                .kwtsk-mm-template-content p {
-                    font-size: clamp(15px, 2vw, 18px);
-                    color: <?php echo esc_attr($textcolor) ?>;
-                    margin: 0;
-                    padding: 0;
-                }
-            </style>
+            <?php wp_head(); ?>
         </head>
         <body>
             <div class="kwtsk-mm-template-content">

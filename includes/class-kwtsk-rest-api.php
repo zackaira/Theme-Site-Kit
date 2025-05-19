@@ -91,13 +91,21 @@ class KWTSK_API_Rest_Routes {
 	/*
 	 * Save settings as JSON string
 	 */
-	public function kwtsk_save_settings() {
-		$req = file_get_contents('php://input');
-		$reqData = json_decode($req, true);
+	public function kwtsk_save_settings( WP_REST_Request $request ) {
+		$nonce = $request->get_header( 'X-WP-Nonce' );
+		if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			return new WP_Error(
+				'rest_forbidden_nonce',
+				__( 'Invalid or missing REST nonce.', 'theme-site-kit' ),
+				[ 'status' => 403 ]
+			);
+		}
 
-		update_option('kwtsk_options', $reqData['kwtskOptions']);
+		$params = $request->get_json_params();
+		
+		update_option( 'kwtsk_options', wp_json_encode( $params['kwtskOptions'] ) );
 
-		return rest_ensure_response(get_option('kwtsk_options'));
+		return rest_ensure_response( get_option( 'kwtsk_options' ) );
 	}
 
 	/*

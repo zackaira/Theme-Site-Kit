@@ -28,19 +28,19 @@ class KWTSK_SVG_Handler {
         }
 
         // Add SVG to allowed mime types
-        add_filter('upload_mimes', array($this, 'kwtsk_add_svg_mime_type'));
+        add_filter('upload_mimes', [ $this, 'kwtsk_add_svg_mime_type']);
         
         // Basic SVG support
-        add_filter('wp_check_filetype_and_ext', array($this, 'kwtsk_check_svg_filetype'), 10, 4);
-        add_filter('wp_handle_upload_prefilter', array($this, 'kwtsk_sanitize_svg'));
+        add_filter('wp_check_filetype_and_ext', [ $this, 'kwtsk_check_svg_filetype'], 10, 4);
+        add_filter('wp_handle_upload_prefilter', [ $this, 'kwtsk_sanitize_svg']);
         
         // Fix display issues
-        add_filter('wp_get_attachment_image_src', array($this, 'kwtsk_fix_svg_size_attributes'), 10, 4);
-        add_filter('wp_get_attachment_metadata', array($this, 'kwtsk_fix_svg_metadata'), 10, 2);
+        add_filter('wp_get_attachment_image_src', [ $this, 'kwtsk_fix_svg_size_attributes'], 10, 4);
+        add_filter('wp_get_attachment_metadata', [ $this, 'kwtsk_fix_svg_metadata'], 10, 2);
         
-        // Add CSS fixes
-        add_action('admin_head', array($this, 'kwtsk_add_svg_css'));
-        add_action('wp_head', array($this, 'kwtsk_add_svg_css'));
+        // enqueue your SVG CSS on both front and admin
+        add_action( 'wp_enqueue_scripts',   [ $this, 'kwtsk_enqueue_svg_styles' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'kwtsk_enqueue_svg_styles' ] );
     }
 
     /**
@@ -100,8 +100,8 @@ class KWTSK_SVG_Handler {
     /**
      * Add CSS for SVG display
      */
-    public function kwtsk_add_svg_css() {
-        echo '<style>
+    public function kwtsk_enqueue_svg_styles() {
+        $css = '
             .attachment img[src$=".svg"] {
                 width: 100% !important;
                 height: auto !important;
@@ -114,7 +114,9 @@ class KWTSK_SVG_Handler {
                 width: 100% !important;
                 height: auto !important;
             }
-        </style>';
+        ';
+        wp_add_inline_style( 'kwtsk-frontend-style', $css );
+        wp_add_inline_style( 'kwtsk-admin-style', $css );
     }
 
     /**

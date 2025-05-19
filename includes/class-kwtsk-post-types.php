@@ -138,10 +138,8 @@ class KWTSK_Post_Types {
 				3  => __( 'Custom field deleted.', 'theme-site-kit' ),
 				// translators: %s: Post type singular name.
 				4  => sprintf( __( '%s updated.', 'theme-site-kit' ), $singular ),
-				5  => isset( $_GET['revision'] )
-					// translators: %1$s: Post type singular name, %2$s: Revision date.
-					? sprintf( __( '%1$s restored to revision from %2$s', 'theme-site-kit' ), $singular, wp_post_revision_title( (int) $_GET['revision'], false ) )
-					: false,
+				// translators: %s: Post type singular name.
+				5  => sprintf( __( '%s restored to revision', 'theme-site-kit' ), $singular ),
 				// translators: %s: Post type singular name.
 				6  => sprintf( __( '%s published.', 'theme-site-kit' ), $singular ),
 				// translators: %s: Post type singular name.

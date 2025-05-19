@@ -95,6 +95,20 @@ Installing Theme Site Kit can be done either by searching for "Theme Site Kit" v
 3. Activate the plugin through the `Plugins` menu in WordPress
 
 
+== External services ==
+This plugin connects to our own layouts website hosted at [layouts.kaira.co](https://layouts.kaira.co). It is used to view and import WordPress editor layouts (built with Gutenberg) and use them when building website pages.
+
+It simply retrieves the editor layouts from layouts.kaira.co and displays then in the WordPress Dashboard.
+There is no personal data sent over this connection.
+
+Terms of Use: This is our own service built for Theme Site Kit as it is free for anyone to use within the Theme Site Kit plugin.
+
+== Getting Started ==
+All settings include clear, contextual hints and usage notes, and we’ll be publishing full Theme Site Kit documentation shortly.
+
+* [Theme Site Kit's GitHub repository](https://github.com/zackaira/Theme-Site-Kit) – Includes all the uncompressed files.
+
+
 == Screenshots ==
 
 1. **Theme Site Kit Blocks Manager** - Select which blocks to enable or disable
@@ -110,10 +124,10 @@ Yes! Theme Site Kit should work with ALL themes!
 The Theme Site Kit plugin settings are found in the WordPress Dashboard under Dashboard -> Settings -> Theme Site Kit.
 
 = I found a bug... What do I do?
-Please [get in contact](https://kairaweb.com/) so we can post a fix and get it working for you right away.
+Please [get in contact](https://kairaweb.com/contact/) so we can post a fix and get it working for you right away.
 
 = Something doesn't look right or is slightly out in the design?
-This could be from the theme you're using, or another plugin. Again, please [contact us](https://kairaweb.com/) so we can post a fix or give you custom CSS to fix it.
+This could be from the theme you're using, or another plugin. Again, please [contact us](https://kairaweb.com/contact/) so we can post a fix or give you custom CSS to fix it.
 
 
 == Changelog ==
