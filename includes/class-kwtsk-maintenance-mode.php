@@ -239,8 +239,7 @@ class KWTSK_Maintenance_Mode {
                         $allowed = wp_kses_allowed_html( 'post' );
                         $allowed['div']['data-*'] = true;
                         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- do_blocks() outputs trusted post content
-                        echo wp_kses( do_blocks( $template_post->post_content ), $allowed );
-                        // echo do_blocks( $template_post->post_content );
+                        echo do_blocks( $template_post->post_content );
                         ?>
                     </div>
                 </div>

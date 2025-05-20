@@ -5,7 +5,7 @@ Tags: customizations, comments, mobile menu, svg upload, theme
 Requires at least: 5.0
 Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Site Kit, the Swiss-Army-Knife WordPress plugin for disabling comments, adding m
 
 == Description ==
 
-[Theme Site Kit](https://kairaweb.com/) is your all-in-one toolkit for essential WordPress site settings, designed to streamline your common WordPress setup and enhance site functionality without installing so many extra plugins.
+[Theme Site Kit](https://kairaweb.com/wordpress-plugin/theme-site-kit/) is your all-in-one toolkit for essential WordPress site settings, designed to streamline your common WordPress setup and enhance site functionality without installing so many extra plugins.
 
 Whether you're a theme developer, client site website builder, or a DIY user for your own build, Theme Site Kit helps you take control of your website with ease.
 
@@ -103,8 +103,9 @@ There is no personal data sent over this connection.
 
 Terms of Use: This is our own service built for Theme Site Kit as it is free for anyone to use within the Theme Site Kit plugin.
 
+
 == Getting Started ==
-All settings include clear, contextual hints and usage notes, and we’ll be publishing full Theme Site Kit documentation shortly.
+All Theme Site Kit settings include clear, contextual hints and usage notes, and we'll be publishing full Theme Site Kit documentation soon.
 
 * [Theme Site Kit's GitHub repository](https://github.com/zackaira/Theme-Site-Kit) – Includes all the uncompressed files.
 
@@ -132,5 +133,5 @@ This could be from the theme you're using, or another plugin. Again, please [con
 
 == Changelog ==
 
-= 1.0.2 =
+= 1.0.3 =
 * Initial release

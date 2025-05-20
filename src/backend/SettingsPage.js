@@ -43,7 +43,7 @@ const SettingsPage = ({ kwtskObj }) => {
 		window.history.replaceState(null, "", "?" + params.toString());
 	};
 
-	console.log(kwtskOptions);
+	// console.log(kwtskOptions);
 
 	// setState dynamically for each setting
 	const handleChange = ({
@@ -922,7 +922,7 @@ const SettingsPage = ({ kwtskObj }) => {
 														</SettingGroup>
 
 														{!isPremium &&
-															kwtskOptions.social?.icons.length >= 3 && (
+															kwtskOptions.social?.icons.length >= 4 && (
 																<SettingRow
 																	title={__(
 																		"Upgrade to Theme Site Kit Pro",
@@ -944,6 +944,7 @@ const SettingsPage = ({ kwtskObj }) => {
 															options={kwtskSocialOptions}
 															onChange={handleChange}
 															notitle
+															isPro={isPremium}
 														/>
 													</>
 												)}
@@ -1206,7 +1207,9 @@ const SettingsPage = ({ kwtskObj }) => {
 					</form>
 				</div>
 
-				{showSocialPreview && <SocialIcons options={kwtskOptions.social} />}
+				{showSocialPreview && (
+					<SocialIcons options={kwtskOptions.social} isPro={isPremium} />
+				)}
 			</div>
 		</React.Fragment>
 	);

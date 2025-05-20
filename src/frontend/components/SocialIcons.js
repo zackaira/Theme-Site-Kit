@@ -27,7 +27,7 @@ const SocialIcons = ({ options, isPro }) => {
 	};
 	const offsetFrom = positionMap[position] || "top";
 
-	const displayedIcons = isPro ? icons : icons.slice(0, 3);
+	const displayedIcons = isPro ? icons : icons.slice(0, 4);
 
 	return (
 		<div
