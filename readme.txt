@@ -112,8 +112,13 @@ All Theme Site Kit settings include clear, contextual hints and usage notes, and
 
 == Screenshots ==
 
-1. **Theme Site Kit Blocks Manager** - Select which blocks to enable or disable
-2. **Theme Site Kit Site Add-Ons** - Add extra features to your WordPress website
+1. **General Page** - Displaying the features available in Theme Site Kit
+2. **Disable Comments** - Remove website comments everywhere or by post type
+3. **Maintenance Mode** - Hide your website behind a maintenance page while building
+4. **Social & Contact Links** - Add neat floating social profile and contact links to your site 
+5. **Safe SVG Uploads** - Enable SVG image upload on your WordPress website
+6. **Block Patterns** - Import pre-built header and footer block patterns (content patterns coming soon)
+7. **Import Page Layouts** - Import pre-built pages to use as a starting point (more coming soon)
 
 
 == Frequently Asked Questions ==
