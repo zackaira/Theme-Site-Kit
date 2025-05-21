@@ -18,7 +18,7 @@ Site Kit, the Swiss-Army-Knife WordPress plugin for disabling comments, adding m
 
 Whether you're a theme developer, client site website builder, or a DIY user for your own build, Theme Site Kit helps you take control of your website with ease.
 
-**NOTE:** Theme Site Kit was built for all my personal client web development work... And then release into the wild!
+**NOTE:** Theme Site Kit was built for all personal client web development work... And then released into the wild!
 
 
 ## Theme Site Kit Current Features
