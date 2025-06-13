@@ -55,6 +55,7 @@ class KWTSK_Scripts {
 	 */
 	public function kwtsk_register_scripts() {
 		$suffix = (defined('WP_DEBUG') && true === WP_DEBUG) ? '' : '.min';
+		$isPro = (boolean)kwtsk_fs()->can_use_premium_code__premium_only();
 		$kwtskSavedOptions = get_option('kwtsk_options');
 		$kwtskOptions = $kwtskSavedOptions ? json_decode($kwtskSavedOptions) : '';
 
@@ -66,9 +67,11 @@ class KWTSK_Scripts {
 		wp_register_script('kwtsk-frontend-script', esc_url(KWTSK_PLUGIN_URL . 'dist/frontend' . $suffix . '.js'), array('wp-i18n'), KWTSK_PLUGIN_VERSION);
 
 		// Custom Mobile Menu (add custom-mobile-menu class to Nav Block)
-        wp_register_style( 'kwtsk-mobile-menu-style', esc_url(KWTSK_PLUGIN_URL) . 'dist/mobile-menu' . $suffix . '.css', array(), KWTSK_PLUGIN_VERSION );
-        wp_register_script( 'kwtsk-mobile-menu-script', esc_url(KWTSK_PLUGIN_URL) . 'dist/mobile-menu' . $suffix . '.js', array(), KWTSK_PLUGIN_VERSION, true );
-        
+		if ($isPro) {
+			wp_register_style( 'kwtsk-mobile-menu-style', esc_url(KWTSK_PLUGIN_URL) . 'dist/pro/mobile-menu.min.css', array(), KWTSK_PLUGIN_VERSION );
+			wp_register_script( 'kwtsk-mobile-menu-script', esc_url(KWTSK_PLUGIN_URL) . 'dist/pro/mobile-menu.min.js', array(), KWTSK_PLUGIN_VERSION, true );
+		}
+
 		// Admin
 		wp_register_style('kwtsk-admin-style', esc_url(KWTSK_PLUGIN_URL . 'dist/admin' . $suffix . '.css'), array(), KWTSK_PLUGIN_VERSION);
 		wp_register_script('kwtsk-admin-script', esc_url(KWTSK_PLUGIN_URL . 'dist/admin' . $suffix . '.js'), array(), KWTSK_PLUGIN_VERSION, true);
@@ -85,9 +88,11 @@ class KWTSK_Scripts {
 		wp_register_style('kwtsk-admin-editor-style', esc_url(KWTSK_PLUGIN_URL . 'dist/editor' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTSK_PLUGIN_VERSION);
 		wp_register_script('kwtsk-admin-editor-script', esc_url(KWTSK_PLUGIN_URL . 'dist/editor' . $suffix . '.js'), array('wp-edit-post', 'lodash'), KWTSK_PLUGIN_VERSION, true);
 
-		// Dashboard Widget
-		// wp_register_style('kwtsk-dashboard-style', esc_url(KWTSK_PLUGIN_URL . 'dist/dashboard' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTSK_PLUGIN_VERSION);
-		// wp_register_script('kwtsk-dashboard-script', esc_url(KWTSK_PLUGIN_URL . 'dist/dashboard' . $suffix . '.js'), array('wp-element', 'wp-i18n'), KWTSK_PLUGIN_VERSION, true);
+		// Code Snippets
+		if (isset($kwtskOptions->code->enabled) && $kwtskOptions->code->enabled == true) {
+			wp_register_style('kwtsk-code-snippets-style', esc_url(KWTSK_PLUGIN_URL . 'dist/code-snippets' . $suffix . '.css'), array(), KWTSK_PLUGIN_VERSION);
+			wp_register_script('kwtsk-code-snippets-script', esc_url(KWTSK_PLUGIN_URL . 'dist/code-snippets' . $suffix . '.js'), array(), KWTSK_PLUGIN_VERSION, true);
+		}
 	} // End kwtsk_register_scripts ()
 
 	/**
@@ -198,17 +203,16 @@ class KWTSK_Scripts {
 			// wp_enqueue_media();
 		}
 
-		// Dashboard Widget
-		// if ('index.php' === $adminPage) {
-		// 	wp_enqueue_style('kwtsk-dashboard-style');
-		// 	wp_enqueue_script('kwtsk-dashboard-script');
-		// 	wp_localize_script('kwtsk-dashboard-script', 'kwtskDObj', array(
-		// 		'apiUrl' => esc_url(get_rest_url()),
-		// 		'adminUrl' => esc_url(admin_url()),
-		// 		'nonce' => wp_create_nonce('wp_rest'),
-		// 		'kwtskOptions' => $kwtskOptions->settings,
-		// 	));
-		// }
+		// Code Snippets
+		if (
+			( 'edit.php' === $pagenow || 'post-new.php' === $pagenow || 'post.php' === $pagenow ) &&
+			( 'kwtsk_code_snippet' === get_post_type((int) $_GET['post']) )
+		) {
+			if ( isset( $kwtskOptions->code->enabled ) && $kwtskOptions->code->enabled == true ) {
+				wp_enqueue_style('kwtsk-code-snippets-style');
+				wp_enqueue_script('kwtsk-code-snippets-script');
+			}
+		}
 		
 		// Update the language file with this line in the terminal - "wp i18n make-pot ./ lang/theme-site-kit.pot"
 		wp_set_script_translations('kwtsk-admin-settings-script', 'theme-site-kit', KWTSK_PLUGIN_DIR . 'lang');

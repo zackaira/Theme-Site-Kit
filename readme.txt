@@ -35,7 +35,7 @@ Whether you're a theme developer, client site website builder, or a DIY user for
 
 &#9989; **Block Patterns for Faster Site Building**: Access our growing library of pre-designed Block Patterns to speed up page creation in the WordPress editor.
 
-&#128312; We're working on adding more features... Send us some ideas and maybe we can on what you need!
+&#128312; We're working on adding more features... Send us some ideas and maybe we can add on the features you need!
 
 
 ## Theme Site Kit PRO Features:
@@ -124,7 +124,7 @@ All Theme Site Kit settings include clear, contextual hints and usage notes, and
 == Frequently Asked Questions ==
 
 = Will Theme Site Kit work with my theme?
-Yes! Theme Site Kit should work with ALL themes!
+Yes! Theme Site Kit should work with ALL themes that enable the block editor!
 
 = Where are the Theme Site Kit settings?
 The Theme Site Kit plugin settings are found in the WordPress Dashboard under Dashboard -> Settings -> Theme Site Kit.
@@ -137,6 +137,12 @@ This could be from the theme you're using, or another plugin. Again, please [con
 
 
 == Changelog ==
+
+= 1.0.4 =
+* Styling tweaks/fixes
+* Fix Maintenance Mode defaults bug with logged in users
+* 
+* Updated the language .pot file
 
 = 1.0.3 =
 * Initial release

@@ -17,19 +17,16 @@ const config = {
 		"frontend.min": "./src/frontend/frontend.js",
 		editor: "./src/backend/editor/editor.js",
 		"editor.min": "./src/backend/editor/editor.js",
-		"mobile-menu": "./src/frontend/mobile-menu/mobile-menu.js",
 		"mobile-menu.min": "./src/frontend/mobile-menu/mobile-menu.js",
+		"code-snippets": "./src/backend/admin/code-snippets.js",
+		"code-snippets.min": "./src/backend/admin/code-snippets.js",
 	},
 	output: {
-		filename: "[name].js", // Uses the name of the file
-		// filename: (pathData) => {
-		// 	return pathData.chunk.name === "search-pro.min" ||
-		// 		pathData.chunk.name === "cart-pro.min" ||
-		// 		pathData.chunk.name === "imagegallery-pro.min"
-		// 		? "pro/[name].js"
-		// 		: "[name].js";
-		// },
-		// path: path.resolve(process.cwd(), "dist"),
+		filename: (pathData) => {
+			return pathData.chunk.name === "mobile-menu.min"
+				? "pro/[name].js"
+				: "[name].js";
+		},
 		path: path.resolve(__dirname, "dist"),
 		library: ["theme-site-kit", "[name]"],
 		libraryTarget: "this",
@@ -50,12 +47,12 @@ const config = {
 	plugins: [
 		// new CleanWebpackPlugin(),
 		new MiniCSSExtractPlugin({
-			filename: "[name].css",
-			// filename: (pathData) => {
-			// 	return pathData.chunk.name === "cart-pro.min"
-			// 		? "pro/[name].css"
-			// 		: "[name].css";
-			// },
+			// filename: "[name].css",
+			filename: (pathData) => {
+				return pathData.chunk.name === "mobile-menu.min"
+					? "pro/[name].css"
+					: "[name].css";
+			},
 		}),
 	],
 	devtool: false, // "cheap-module-source-map", // https://webpack.js.org/configuration/devtool/

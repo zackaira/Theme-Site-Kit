@@ -193,16 +193,18 @@ class KWTSK_Maintenance_Mode {
         $isPremium = (bool) kwtsk_fs()->can_use_premium_code__premium_only();
 
         // Bypass logic...
-        if ( is_user_logged_in() && isset( $this->settings->access ) ) {
-            if ( 'loggedin' === $this->settings->access ) {
+        if ( is_user_logged_in() ) {
+            $access = $this->settings->access ?? 'loggedin';
+
+            if ( 'loggedin' === $access ) {
                 return;
-            } elseif ( 'custom' === $this->settings->access ) {
-                if ( ! empty( $this->settings->userroles ) && is_array( $this->settings->userroles ) ) {
-                    $current_user = wp_get_current_user();
-                    foreach ( $current_user->roles as $role ) {
-                        if ( in_array( $role, $this->settings->userroles, true ) ) {
-                            return;
-                        }
+            }
+
+            if ( 'custom' === $access && ! empty( $this->settings->userroles ) && is_array( $this->settings->userroles ) ) {
+                $current_user = wp_get_current_user();
+                foreach ( $current_user->roles as $role ) {
+                    if ( in_array( $role, $this->settings->userroles, true ) ) {
+                        return;
                     }
                 }
             }

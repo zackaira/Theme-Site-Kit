@@ -478,7 +478,6 @@ body.kwtsk-free a.kwtsk-account {
 	padding: 5px 10px;
 	width: 100%;
 	max-width: 440px;
-	-webkit-transition: border 0.3s;
 	transition: border 0.3s;
 }
 .kwtsk-row .regular-text:hover,

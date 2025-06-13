@@ -43,7 +43,7 @@ const SettingsPage = ({ kwtskObj }) => {
 		window.history.replaceState(null, "", "?" + params.toString());
 	};
 
-	// console.log(kwtskOptions);
+	console.log(kwtskOptions);
 
 	// setState dynamically for each setting
 	const handleChange = ({
@@ -1158,8 +1158,20 @@ const SettingsPage = ({ kwtskObj }) => {
 
 												<SettingRow
 													title={__("Code Snippets", "theme-site-kit")}
-													slug={`code_comingsoon`}
-													value={kwtskOptions.code?.comingsoon}
+													slug={`code_enabled`}
+													value={kwtskOptions.code?.enabled}
+													inputType="toggle"
+													onChange={handleChange}
+													note={__(
+														"Once you've enabled this, refresh the page to then view and access Code Snippets in your Dashboard sidebar.",
+														"theme-site-kit",
+													)}
+												/>
+
+												<SettingRow
+													title={__("Duplicate Posts", "theme-site-kit")}
+													slug={`duplicate_comingsoon`}
+													value={kwtskOptions.duplicate?.comingsoon}
 													inputType="toggle"
 													onChange={handleChange}
 													comingSoon

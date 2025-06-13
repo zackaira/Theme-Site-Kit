@@ -1,0 +1,110 @@
+/* - Hide Post Visibility Setting - */
+#minor-publishing .misc-pub-section.misc-pub-visibility {
+	display: none !important;
+}
+
+/* - Settings - */
+#kwtsk_specific_pages,
+.kwtsk-code-settings > br,
+#kwtsk_minify_opt {
+	display: none;
+}
+.kwtsk-code-settings {
+	padding: 15px 0;
+}
+.kwtsk-code-setting-cols {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+.kwtsk-code-setting-col {
+	flex: 1;
+}
+.kwtsk-code-setting-col.right {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+.kwtsk-code-editor {
+	box-shadow: 0 0 0 1px rgb(0 0 0 / 20%);
+	margin: 25px 0;
+}
+.kwtsk-code-editor > pre.css,
+.kwtsk-code-editor > pre.javascript {
+	background-color: #f7f7f7;
+	margin: 0;
+	padding: 5px 35px;
+}
+.kwtsk-code-settings .label {
+	display: block;
+	font-weight: 600;
+	margin: 0 0 5px;
+}
+.kwtsk-code-settings select,
+.kwtsk-code-settings input[type="number"] {
+	border: 1px solid #ccc;
+	padding: 5px 10px;
+	width: 100%;
+	max-width: 320px;
+	transition: border 0.3s;
+}
+.kwtsk-code-settings input[type="number"] {
+	width: 95px;
+}
+.kwtsk-code-settings #kwtsk_code {
+	width: 100%;
+	min-height: 200px;
+}
+.kwtsk-select-pages {
+	margin: 20px 0 0;
+}
+.kwtsk-code-pages-opts {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin: 10px 0 0;
+}
+.kwtsk-code-pages-opts label {
+	width: fit-content;
+}
+
+/* - Toggle Settings - */
+.kwtsk-toggle-wrapper {
+	position: relative;
+	display: inline-block;
+	width: 50px;
+	height: 24px;
+}
+.kwtsk-toggle-wrapper input.kwtsk-toggle {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+.kwtsk-slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	transition: 0.4s;
+	border-radius: 24px;
+}
+.kwtsk-slider::before {
+	position: absolute;
+	content: "";
+	height: 18px;
+	width: 18px;
+	left: 3px;
+	bottom: 3px;
+	background-color: white;
+	transition: 0.4s;
+	border-radius: 50%;
+}
+.kwtsk-toggle-wrapper input:checked + .kwtsk-slider {
+	background-color: #2271b1;
+}
+.kwtsk-toggle-wrapper input:checked + .kwtsk-slider::before {
+	transform: translateX(26px);
+}
