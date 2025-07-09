@@ -372,3 +372,15 @@ body.kwtsk-hide-icons .kwtsk-social-icons.kwtsk-si-bottom-right {
 .kwtsk-social-icons.kwtsk-colorig .kwtsk-icon.fa-ethereum {
 	color: #3c3c3d !important;
 }
+
+/* -- Maintenance Mode in Admin Bar -- */
+#wpadminbar ul#wp-admin-bar-root-default li.kwtsk-maintenance-mode.enabled {
+	background-color: #d63638;
+}
+#wpadminbar
+	ul#wp-admin-bar-root-default
+	li.kwtsk-maintenance-mode.enabled:hover
+	a.ab-item {
+	background-color: #bc2022;
+	color: #fff;
+}

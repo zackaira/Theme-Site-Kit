@@ -5,7 +5,7 @@ Tags: customizations, comments, mobile menu, svg upload, theme
 Requires at least: 5.0
 Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -142,6 +142,7 @@ This could be from the theme you're using, or another plugin. Again, please [con
 * Styling tweaks/fixes
 * Fix Maintenance Mode defaults bug with logged in users
 * 
+* NEW: Custom Code Snippets - Add custom code to WordPress
 * Updated the language .pot file
 
 = 1.0.3 =

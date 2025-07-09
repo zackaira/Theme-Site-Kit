@@ -157,7 +157,7 @@ class KWTSK_Scripts {
 			wp_enqueue_style('kwtsk-admin-settings-style');
 		
 			$all_post_types = get_post_types(array('public' => true), 'objects');
-			$excluded_types = array('product', 'attachment', 'media', 'revision', 'nav_menu_item', 'linkt');
+			$excluded_types = array('product', 'attachment', 'media', 'revision', 'nav_menu_item', 'linkt', 'elementor_library');
 			// Filter out the excluded post types
 			$filtered_post_types = array_filter($all_post_types, function($post_type, $post_type_name) use ($excluded_types) {
 				return ! in_array($post_type_name, $excluded_types);

@@ -1,23 +1,68 @@
+import 'choices.js/public/assets/styles/choices.min.css';
+import Choices from 'choices.js'; 
 import "./code-snippets.css";
 const { __ } = wp.i18n;
 
 document.addEventListener("DOMContentLoaded", () => {
-	// Show/Hide select pages setting
-	const whereSetting = document.getElementById("kwtsk_where");
-	const specificPages = document.getElementById("kwtsk_specific_pages");
-
-	if (whereSetting && specificPages) {
-		const show = ["specific", "all_exclude"].includes(whereSetting.value);
-
-		specificPages.style.display = show ? "block" : "none";
-
-		whereSetting.addEventListener("change", () => {
-			const newShow = ["specific", "all_exclude"].includes(whereSetting.value);
-			specificPages.style.display = newShow ? "block" : "none";
+	/* <fs_premium_only> */
+	// Initialize Choices.js for all select elements
+	const selects = document.querySelectorAll('#kwtsk_selected_pages, #kwtsk_selected_posts, #kwtsk_selected_wc_pages, #kwtsk_selected_wc_products');
+	selects.forEach(select => {
+		// Make sure the select has the multiple attribute
+		select.setAttribute('multiple', 'multiple');
+		
+		new Choices(select, {
+			removeItemButton: true,
+			removeItemIconText: () => `x`,
+			searchEnabled: true,
+			searchPlaceholderValue: __("Search...", "theme-site-kit"),
+			placeholder: true,
+			placeholderValue: __("Search...", "theme-site-kit"),
+			classNames: {
+				containerOuter: 'kwtsk-choices',
+			},
+			maxItemCount: -1, // Allow unlimited selections
+			position: 'bottom'
 		});
+	});
+
+	// Show/hide selectors based on where option
+	function toggleSelectors() {
+		const where = document.getElementById('kwtsk_where')?.value;
+		
+		// Get all select containers
+		const containers = {
+			pages: document.getElementById('kwtsk_pages_select'),
+			posts: document.getElementById('kwtsk_posts_select'),
+			woocommerce_pages: document.getElementById('kwtsk_wc_pages_select'),
+			woocommerce_products: document.getElementById('kwtsk_wc_products_select')
+		};
+		
+		// Hide all containers first
+		Object.values(containers).forEach(container => {
+			if (container) {
+				container.style.display = 'none';
+			}
+		});
+		
+		// Show the appropriate container based on selection
+		if (where && containers[where]) {
+			containers[where].style.display = 'block';
+		}
 	}
 
-	// Code Editor
+	// Add event listener for change event
+	const whereSelect = document.getElementById('kwtsk_where');
+	if (whereSelect) {
+		whereSelect.addEventListener('change', toggleSelectors);
+		toggleSelectors(); // Initial state
+	}
+
+	/* </fs_premium_only> */
+
+	/**
+	 * Code Editor
+	 */
 	const textarea = document.getElementById("kwtsk_code");
 	const langSelect = document.getElementById("kwtsk_code_language");
 

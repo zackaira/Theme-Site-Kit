@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Theme Site Kit
- * Version: 1.0.3
+ * Version: 1.0.31
  * Plugin URI: https://kairaweb.com/wordpress-plugin/theme-site-kit/
  * Description: Easily manage essential site customizations with Theme Site Kit - the Swiss-Army-Knife WordPress plugin for disabling comments, maintenance mode, enabling SVG uploads, adding social links, and more.
  * Author: Kaira
@@ -20,7 +20,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( !defined( 'KWTSK_PLUGIN_VERSION' ) ) {
-	define('KWTSK_PLUGIN_VERSION', '1.0.3');
+	define('KWTSK_PLUGIN_VERSION', '1.0.31');
 }
 if ( !defined( 'KWTSK_PLUGIN_URL' ) ) {
 	define('KWTSK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

@@ -56,6 +56,14 @@ class KWTSK_Disable_Comments {
             add_action('after_setup_theme', array($this, 'kwtsk_disable_all_comments'));
             // For dynamically registered post types.
             add_filter('register_post_type_args', array($this, 'kwtsk_filter_post_type_args'), 99, 2);
+
+            // If both posts and pages are disabled, remove admin UI elements
+            if (in_array('post', $this->disabled_post_types) && in_array('page', $this->disabled_post_types)) {
+                add_action('admin_menu', array($this, 'kwtsk_remove_comments_admin_menu'));
+                add_action('wp_before_admin_bar_render', array($this, 'kwtsk_remove_comments_admin_bar'));
+                add_action('admin_menu', array($this, 'kwtsk_remove_discussion_settings'), 999);
+                add_action('admin_init', array($this, 'kwtsk_block_discussion_access'));
+            }
         } elseif ($this->disableMode === 'everywhere') {
             // Full site‑wide disable: add all hooks.
             add_action('init', array($this, 'kwtsk_remove_comment_support'), 100);
@@ -96,13 +104,21 @@ class KWTSK_Disable_Comments {
         if ($this->disableMode === 'everywhere') {
             $post_types = get_post_types(array('public' => true), 'names');
             foreach ($post_types as $post_type) {
+                // Skip WooCommerce products to preserve reviews
+                if ($post_type === 'product') {
+                    continue;
+                }
                 if (post_type_supports($post_type, 'comments')) {
                     remove_post_type_support($post_type, 'comments');
                     remove_post_type_support($post_type, 'trackbacks');
                 }
             }
-            // For post types registered later.
+            // For post types registered later
             add_filter('register_post_type_args', function($args, $post_type) {
+                // Skip WooCommerce products to preserve reviews
+                if ($post_type === 'product') {
+                    return $args;
+                }
                 if (isset($args['supports']) && is_array($args['supports'])) {
                     $args['supports'] = array_diff($args['supports'], array('comments', 'trackbacks'));
                 }
@@ -149,8 +165,8 @@ class KWTSK_Disable_Comments {
         update_option( 'default_ping_status',    'closed' );
 
         if ( 'everywhere' === $this->disableMode ) {
-            // Site-wide: close on every post
-            $sql      = "UPDATE {$wpdb->posts} SET comment_status = %s, ping_status = %s";
+            // Site-wide: close on every post except WooCommerce products
+            $sql      = "UPDATE {$wpdb->posts} SET comment_status = %s, ping_status = %s WHERE post_type != 'product'";
             $prepared = $wpdb->prepare( $sql, 'closed', 'closed' );
             $wpdb->query( $prepared );
 
