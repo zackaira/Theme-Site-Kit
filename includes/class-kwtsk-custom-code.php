@@ -385,7 +385,7 @@ class KWTSK_Custom_Code {
                 return !$is_admin;
 
             case 'pages':
-                if (!$is_admin && is_page()) {
+                if (!$is_admin && (is_page() || is_front_page() || (is_home() && !is_front_page()))) {
                     // If no pages are selected, run on all pages
                     if (empty($selected_items)) {
                         return true;
