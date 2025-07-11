@@ -24,14 +24,14 @@ class KWTSK_Post_Types {
 
 		// Check if cpts mode is enabled
 		if ( isset( $kwtskOptions->cpts->enabled ) && $kwtskOptions->cpts->enabled ) {
-			$this->init_hooks();
+			$this->kwtsk_init_post_type_hooks();
 		}
 	}
 
 	/**
 	 * Initialize hooks
 	 */
-	private function init_hooks() {
+	private function kwtsk_init_post_type_hooks() {
 		add_action( 'init', [$this, 'kwtsk_register_custom_post_types'] );
 		add_filter( 'post_updated_messages', [$this, 'kwtsk_custom_post_type_messages'] );
 	}

@@ -18,37 +18,57 @@ Site Kit, the Swiss-Army-Knife WordPress plugin for disabling comments, adding m
 
 Whether you're a theme developer, client site website builder, or a DIY user for your own build, Theme Site Kit helps you take control of your website with ease.
 
+Every feature above is lightweight, toggle-able, and built for the modern WordPress block editor—helping you launch faster, rank better, and keep your site secure. Install Theme Site Kit today and streamline your workflow!
+
 **NOTE:** Theme Site Kit was built for all personal client web development work... And then released into the wild!
 
 
 ## Theme Site Kit Current Features
 
-&#9989; **Disable Comments**: Easily turn off comments across your entire site or manage them individually on each post or page.
+&#9989; **Disable Comments**:
+Instantly disable comments in WordPress across your whole site, or simply turn off comments on selected posts and pages or custom post types. This lightweight comment-control plugin keeps spam away and creates a cleaner experience for posts, pages, portfolios, landing pages, and more - No code needed!
 
-&#9989; **Maintenance Mode for WP**: Hide your website behind a maintenance mode splash page while you're building, allowing access only to logged in users or selected user roles.
+&#9989; **Maintenance Mode for WordPress**:
+Flip a switch to activate a simple maintenance mode plugin for WordPress. Select whether isitors see a site "under construction" page or a "coming soon" page, while logged-in admins (or any role you choose) can keep working on the website in the background until you turn off maintenance mode.
 
-&#9989; **Safe SVG Uploads**: Enable and safely upload SVG files to your media library without security risks.
+&#9989; **Safe SVG Uploads**:
+Easily upload SVG images to WordPress without worrying about vulnerabilities. Our SVG uploader sanitizes and cleans every file, giving you crisp, scalable logos and icons in both the Block Editor or the older Classic Editor. Enjoy full SVG support in WordPress with zero security headaches.
 
-&#9989; **Floating Contact & Social Links**: Add eye-catching floating buttons to the side of your website, to connect users to your social profiles or contact information even quicker.
+&#9989; **Floating Contact & Social Links**:
+Add eye-catching floating social icons in WordPress that stick to the side of the screen on desktop and mobile. Create sticky icons like WhatsApp chat link, quick-call phone icon, or a full social sidebar for Instagram, Facebook, and X, all fully customizable and animated in.
 
-&#9989; **Import Full Page Layouts**: Quickly build beautiful pages by importing ready-made, professionally designed full-page layouts from our growing layouts library.
+&#9989; **Import Full Page Layouts**:
+Kick-start any project by importing neatly designed full-page templates for WordPress. Each layout is 100% Gutenberg and mobile-friendly. With our Gutenberg page importer, launch beautiful landing pages, service pages, or blog homepages in seconds, and edit them to fit your content, no design skills required.
 
-&#9989; **Block Patterns for Faster Site Building**: Access our growing library of pre-designed Block Patterns to speed up page creation in the WordPress editor.
+&#9989; **Block Patterns for Faster Site Building**:
+Speed up site creation with our expanding collection of WordPress block patterns. Drop in polished hero banners, pricing tables, call-to-action banners and more straight from our growing Gutenberg pattern library, perfect for anyone who wants pre-designed blocks to make your own and faster publishing.
+
+&#9989; **Custom Code Snippets**:
+Easily add your own custom code snippets to WordPress. Select to add custom PHP code, WordPress hooks or filters, add custom CSS for extra styling, or add your own custom JavaScript code to your site. Toggle each snippet on or off with one click, choose whether it runs on the front-end, in wp-admin, or both, and keep your site lean without editing functions.php or needing to create a child theme. A safer, faster way to apply lightweight styling tweaks, custom hooks or filters, or tracking scripts.
+
+&#9989; **Duplicate Posts & Pages - One-Click Clone (Coming Soon)**:
+We'll soon be adding the abolity to instantly duplicate any post, page, CPT, or WooCommerce products. All content, images, and blocks copy into a draft, ready to edit and publish.
+
 
 &#128312; We're working on adding more features... Send us some ideas and maybe we can add on the features you need!
 
 
 ## Theme Site Kit PRO Features:
 
-&#9989; **Custom Slide-Out Mobile Navigation**: Extend the WordPress core Navigation block with a slick, mobile-friendly slide-out menu for a better user experience.
+&#9989; **Custom Slide-Out Mobile Navigation**:
+Replace the default WordPress mobile modal menu with a sleek, slide-out mobile navigation that glides in from the side for fingertip control. Built on top of the core Navigation block, this upgrade delivers a fast, app-like experience on phones and tablets while staying fully accessible on desktop.
 
-&#9989; **Custom Post Types**: Add unlimited Custom Post types to your WordPress website such as Case Studies, Projects or any custom post types you need for your clients website.
+&#9989; **Custom Post Types**:
+Spin up limitless WordPress custom post types, for Case Studies, Projects, Portfolios, Recipes, or anything your client needs, right from the Theme Site Kit dashboard settings. Each Custom Post Type can include its own archive page, single-post page, categories, and tags for clean content organization and easier SEO.
 
-&#9989; **Custom Maintenance Mode Templates**: Unlock full design control with Theme Site Kit Pro - customize default template colors, build your own Maintenance Mode page using the intuitive WordPress block editor, or instantly import our pre-designed page layouts to use for your 'Maintenance Mode' template.
+&#9989; **Custom Maintenance Mode Templates**:
+With Theme Site Kit PRO you can design your own "maintenance mode" or "coming soon" page in the Block Editor, tweak colors and typography, or instantly import our pre-built layout templates. Launch a branded coming-soon template in minutes, keeping visitors informed while your team works behind the scenes.
 
-&#9989; **Unlimited Social / Contact links**: Display any or all of the social links you need to so users can find you online.
+&#9989; **Unlimited Social / Contact links**:
+Add as many social icons and contact buttons as you need - WhatsApp chat, phone, email, Instagram, Facebook, X, LinkedIn, and lots more. Rearrange, style, and animate your floating sidebar so users can reach you on every channel.
 
-&#9989; **Code Snippets coming soon...**:
+&#9989; **Custom Code Snippets**:
+Unlock precision control over your WordPress custom code snippets. Apply PHP, custom CSS, or JavaScript to specific pages or posts, or individual WooCommerce page, products and checkout pages, all from the same intuitive dashboard. Turn on CSS and JavaScript minification for extra site performance, and disable or edit it anytime without touching theme files. Fine-tune exactly where your custom code runs while keeping your website blazing fast.
 
 
 ## Need help? We're here to help!
@@ -142,7 +162,7 @@ This could be from the theme you're using, or another plugin. Again, please [con
 * Styling tweaks/fixes
 * Fix Maintenance Mode defaults bug with logged in users
 * 
-* NEW: Custom Code Snippets - Add custom code to WordPress
+* NEW: Custom Code Snippets - Easily add custom code to WordPress
 * Updated the language .pot file
 
 = 1.0.3 =

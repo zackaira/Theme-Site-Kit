@@ -23,11 +23,11 @@ class KWTSK_Custom_Code {
         $kwtskOptions      = $kwtskSavedOptions ? json_decode($kwtskSavedOptions) : null;
 
         if (isset($kwtskOptions->code->enabled) && $kwtskOptions->code->enabled) {
-            $this->kwtsk_init_hooks();
+            $this->kwtsk_init_code_hooks();
         }
     }
 
-    private function kwtsk_init_hooks() {
+    private function kwtsk_init_code_hooks() {
         add_action('init', array($this, 'kwtsk_register_code_snippets_post_types'));
         add_action('admin_menu', array($this, 'kwtsk_add_snippets_admin_menu'));
         add_action('add_meta_boxes', array($this, 'kwtsk_add_code_metabox'));

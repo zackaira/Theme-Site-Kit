@@ -1162,10 +1162,17 @@ const SettingsPage = ({ kwtskObj }) => {
 													value={kwtskOptions.code?.enabled}
 													inputType="toggle"
 													onChange={handleChange}
-													note={__(
-														"Once you've enabled this, refresh the page to then view and access Code Snippets in your Dashboard sidebar.",
-														"theme-site-kit",
-													)}
+													note={
+														kwtskOptions.code?.enabled
+															? __(
+																	"You can now add custom code snippets to your site.",
+																	"theme-site-kit",
+																)
+															: __(
+																"Once enabled, refresh the page to see Code Snippets in your Dashboard sidebar.",
+																"theme-site-kit",
+															)
+													}
 												/>
 
 												<SettingRow

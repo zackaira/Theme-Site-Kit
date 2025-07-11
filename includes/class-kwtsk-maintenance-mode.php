@@ -33,12 +33,12 @@ class KWTSK_Maintenance_Mode {
         }
 
         // Initialize admin-related hooks (for admin bar and post states).
-        $this->init_admin_hooks();
+        $this->kwtsk_init_maintenance_admin_hooks();
 
         // If maintenance mode is enabled, ensure page/template and front-end hook.
         if ( isset( $this->settings->enabled ) && $this->settings->enabled ) {
             add_action( 'init', [ $this, 'kwtsk_ensure_maintenance_page' ], 20 );
-            $this->init_hooks();
+            $this->kwtsk_init_maintenance_frontend_hooks();
         }
 
         add_action( 'rest_api_init', [ $this, 'kwtsk_register_rest_routes' ] );
@@ -47,14 +47,14 @@ class KWTSK_Maintenance_Mode {
     /**
      * Initialize hooks.
      */
-    private function init_hooks() {
+    private function kwtsk_init_maintenance_frontend_hooks() {
         add_action( 'template_redirect', [ $this, 'kwtsk_display_maintenance_mode' ] );
     }
 
     /**
      * Initialize admin hooks.
      */
-    private function init_admin_hooks() {
+    private function kwtsk_init_maintenance_admin_hooks() {
         add_action( 'admin_bar_menu',      [ $this, 'kwtsk_add_admin_bar_status' ], 100 );
         add_filter( 'display_post_states', [ $this, 'kwtsk_add_page_post_state' ], 10, 2 );
         add_action( 'pre_get_posts',       [ $this, 'kwtsk_hide_maintenance_page_in_admin' ], 10 );
