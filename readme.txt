@@ -160,8 +160,8 @@ This could be from the theme you're using, or another plugin. Again, please [con
 
 = 1.0.4 =
 * Styling tweaks/fixes
+* Minor code refactoring
 * Fix Maintenance Mode defaults bug with logged in users
-* 
 * NEW: Custom Code Snippets - Easily add custom code to WordPress
 * Updated the language .pot file
 
