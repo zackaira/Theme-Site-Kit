@@ -18,6 +18,7 @@ const SettingsPage = ({ kwtskObj }) => {
 	const isPremium = Boolean(kwtskObj.isPremium);
 	const postTypes = kwtskObj.post_types;
 	const publishedPages = kwtskObj.publishedPages;
+	// const pageTemplates = kwtskObj.pageTemplates;
 	const [templatePages, setTemplatePages] = useState(publishedPages);
 	const userRoles = kwtskObj.userRoles;
 
@@ -964,6 +965,8 @@ const SettingsPage = ({ kwtskObj }) => {
 												"Upgrade your site's mobile experience with an enhanced core Navigation Block extension. This feature creates a smooth, modern slide-out menu that looks great and works even better on mobile devices.",
 												"theme-site-kit",
 											)}
+											// link={"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
+											// linkText={__("Watch Video", "theme-site-kit")}
 											isPro
 											isPremium={isPremium}
 										/>
@@ -1105,6 +1108,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																	onChange={handleChange}
 																	apiUrl={url}
 																	adminUrl={adminUrl}
+																	// pageTemplates={pageTemplates}
 																/>
 															</>
 														) : (

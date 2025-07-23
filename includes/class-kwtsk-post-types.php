@@ -34,6 +34,87 @@ class KWTSK_Post_Types {
 	private function kwtsk_init_post_type_hooks() {
 		add_action( 'init', [$this, 'kwtsk_register_custom_post_types'] );
 		add_filter( 'post_updated_messages', [$this, 'kwtsk_custom_post_type_messages'] );
+		add_filter( 'get_block_template', [$this, 'kwtsk_ensure_cpt_template'], 10, 3 );
+		add_filter( 'default_template_types', [$this, 'kwtsk_register_cpt_template_types'], 10, 1 );
+	}
+
+	/**
+	 * Register template types for our CPTs
+	 * 
+	 * @param array $default_template_types The default template types.
+	 * @return array Modified template types.
+	 */
+	public function kwtsk_register_cpt_template_types( $default_template_types ) {
+		$kwtskSavedOptions = get_option( 'kwtsk_options' );
+		$kwtskOptions      = $kwtskSavedOptions ? json_decode( $kwtskSavedOptions ) : null;
+
+		if ( empty( $kwtskOptions->cpts->post_types ) || ! is_object( $kwtskOptions->cpts->post_types ) ) {
+			return $default_template_types;
+		}
+
+		foreach ( $kwtskOptions->cpts->post_types as $settings ) {
+			$post_type = sanitize_title( $settings->slug );
+			$label     = sanitize_text_field( $settings->label );
+			$singular  = ! empty( $settings->singular ) ? sanitize_text_field( $settings->singular ) : $label;
+
+			$default_template_types["single-{$post_type}"] = array(
+				'title'       => sprintf( __( 'Single %s', 'theme-site-kit' ), $singular ),
+				'description' => sprintf( __( 'Displays a single %s.', 'theme-site-kit' ), strtolower( $singular ) ),
+			);
+		}
+
+		return $default_template_types;
+	}
+
+	/**
+	 * Ensure WordPress uses our custom template for CPTs
+	 * 
+	 * @param WP_Block_Template|null $template  The found block template.
+	 * @param string                 $id        Template unique identifier (example: theme_slug//template_slug).
+	 * @param string                 $template_type wp_template or wp_template_part.
+	 * @return WP_Block_Template|null Block template.
+	 */
+	public function kwtsk_ensure_cpt_template( $template, $id, $template_type ) {
+		if ( ! is_singular() || 'wp_template' !== $template_type ) {
+			return $template;
+		}
+
+		$post_type = get_post_type();
+		if ( ! $post_type ) {
+			return $template;
+		}
+
+		// Check if this is one of our CPTs
+		$kwtskSavedOptions = get_option( 'kwtsk_options' );
+		$kwtskOptions      = $kwtskSavedOptions ? json_decode( $kwtskSavedOptions ) : null;
+
+		if ( empty( $kwtskOptions->cpts->post_types ) || ! is_object( $kwtskOptions->cpts->post_types ) ) {
+			return $template;
+		}
+
+		$is_our_cpt = false;
+		foreach ( $kwtskOptions->cpts->post_types as $settings ) {
+			if ( sanitize_title( $settings->slug ) === $post_type ) {
+				$is_our_cpt = true;
+				break;
+			}
+		}
+
+		if ( ! $is_our_cpt ) {
+			return $template;
+		}
+
+		// Try to find our custom template
+		$theme_slug = wp_get_theme()->get_stylesheet();
+		$template_slug = "single-{$post_type}";
+		$template_path = "{$theme_slug}//{$template_slug}";
+
+		$found = get_block_template( $template_path, 'wp_template' );
+		if ( ! $found ) {
+			$found = get_page_by_path( $template_path, OBJECT, 'wp_template' );
+		}
+		
+		return $found ? ( $found instanceof WP_Block_Template ? $found : _build_block_template_result_from_post( $found ) ) : $template;
 	}
 
 	/**
@@ -83,11 +164,20 @@ class KWTSK_Post_Types {
 				'has_archive'        => $has_archive,
 				'hierarchical'       => false,
 				'rewrite'            => [ 'slug' => $slug ],
-				'supports'           => [ 'title', 'editor', 'thumbnail', 'excerpt', 'revisions' ],
+				'supports'           => [ 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'page-attributes', 'custom-fields' ],
 				'menu_icon'          => 'dashicons-admin-post',
+				'template' => array(
+					array( 'core/paragraph', array(
+						'content' => __( 'Start building your page!', 'theme-site-kit' ),
+					) ),
+				),
 			] );
 
 			if ( isset( $settings->enable_categories ) && $settings->enable_categories ) {
+				$category_slug = isset( $settings->category_slug ) && ! empty( $settings->category_slug )
+					? sanitize_title( $settings->category_slug )
+					: "{$slug}-category";
+
 				register_taxonomy( "{$slug}-category", $slug, [
 					'labels' => [
 						'name'          => _x( 'Categories', 'taxonomy general name', 'theme-site-kit' ),
@@ -97,11 +187,15 @@ class KWTSK_Post_Types {
 					'public'            => true,
 					'show_ui'           => true,
 					'show_in_rest'      => true,
-					'rewrite'           => [ 'slug' => "{$slug}-category" ],
+					'rewrite'           => [ 'slug' => $category_slug ],
 				] );
 			}
 
 			if ( isset( $settings->enable_tags ) && $settings->enable_tags ) {
+				$tag_slug = isset( $settings->tag_slug ) && ! empty( $settings->tag_slug )
+					? sanitize_title( $settings->tag_slug )
+					: "{$slug}-tag";
+
 				register_taxonomy( "{$slug}-tag", $slug, [
 					'labels' => [
 						'name'          => _x( 'Tags', 'taxonomy general name', 'theme-site-kit' ),
@@ -111,7 +205,7 @@ class KWTSK_Post_Types {
 					'public'            => true,
 					'show_ui'           => true,
 					'show_in_rest'      => true,
-					'rewrite'           => [ 'slug' => "{$slug}-tag" ],
+					'rewrite'           => [ 'slug' => $tag_slug ],
 				] );
 			}
 		}

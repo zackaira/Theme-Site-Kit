@@ -67,6 +67,24 @@ class KWTSK_API_Rest_Routes {
 			'callback'            => [$this, 'kwtsk_check_post_type_post_count'],
 			'permission_callback' => [$this, 'kwtsk_get_settings_permission'],
 		]);
+
+		register_rest_route('kwtsk/v1', '/delete-post-type', [
+			'methods'             => 'POST',
+			'callback'            => [$this, 'kwtsk_delete_post_type'],
+			'permission_callback' => [$this, 'kwtsk_save_settings_permission'],
+		]);
+
+		register_rest_route('kwtsk/v1', '/create-cpt-template', [
+			'methods'             => 'POST',
+			'callback'            => [$this, 'kwtsk_create_cpt_template'],
+			'permission_callback' => [$this, 'kwtsk_save_settings_permission'],
+		]);
+
+		register_rest_route('kwtsk/v1', '/check-template', [
+			'methods'             => 'GET',
+			'callback'            => [$this, 'kwtsk_check_template_exists'],
+			'permission_callback' => [$this, 'kwtsk_get_settings_permission'],
+		]);
 	}
 
 	/*
@@ -504,6 +522,208 @@ class KWTSK_API_Rest_Routes {
 		$total = array_sum( (array) $count );
 	
 		return rest_ensure_response( [ 'count' => $total ] );
+	}
+
+	/**
+	 * Delete a post type and optionally all its posts
+	 *
+	 * @param WP_REST_Request $request The request object.
+	 * @return WP_REST_Response|WP_Error Response object or WP_Error.
+	 */
+	public function kwtsk_delete_post_type( WP_REST_Request $request ) {
+		$params = $request->get_json_params();
+		$post_type = sanitize_key( $params['post_type'] );
+		$force_delete = isset( $params['force_delete'] ) ? (bool) $params['force_delete'] : false;
+
+		if ( ! post_type_exists( $post_type ) ) {
+			return new WP_Error( 'invalid_post_type', 'Post type not found', [ 'status' => 404 ] );
+		}
+
+		if ( $force_delete ) {
+			// Delete all posts of this type first
+			$posts = get_posts( array(
+				'post_type'      => $post_type,
+				'posts_per_page' => -1,
+				'post_status'    => 'any',
+				'fields'         => 'ids',
+			) );
+
+			foreach ( $posts as $post_id ) {
+				wp_delete_post( $post_id, true );
+			}
+
+			// Delete the template if it exists
+			$theme_slug = wp_get_theme()->get_stylesheet();
+			$template_slug = "single-{$post_type}";
+			$template_path = "{$theme_slug}//{$template_slug}";
+			$existing_template = get_page_by_path( $template_path, OBJECT, 'wp_template' );
+			if ( $existing_template ) {
+				wp_delete_post( $existing_template->ID, true );
+			}
+		}
+
+		// Unregister the post type
+		unregister_post_type( $post_type );
+
+		return rest_ensure_response( array(
+			'success' => true,
+			'message' => __( 'Post type deleted successfully.', 'theme-site-kit' ),
+		) );
+	}
+
+	/**
+	 * Create a block template for a custom post type
+	 *
+	 * @param WP_REST_Request $request The request object.
+	 * @return WP_REST_Response|WP_Error Response object or WP_Error.
+	 */
+	public function kwtsk_create_cpt_template( WP_REST_Request $request ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return new WP_Error( 'rest_forbidden', __( 'You do not have permissions to create templates.', 'theme-site-kit' ), array( 'status' => 401 ) );
+		}
+	
+		$params = $request->get_json_params();
+		if ( ! $params ) {
+			return new WP_Error( 'invalid_params', __( 'Invalid request parameters.', 'theme-site-kit' ), array( 'status' => 400 ) );
+		}
+	
+		$post_type = isset( $params['post_type'] ) ? sanitize_text_field( $params['post_type'] ) : '';
+		$label     = isset( $params['label'] ) ? sanitize_text_field( $params['label'] ) : '';
+	
+		if ( empty( $post_type ) || empty( $label ) ) {
+			return new WP_Error( 'missing_params', __( 'Missing required parameters.', 'theme-site-kit' ), array( 'status' => 400 ) );
+		}
+	
+		$theme_slug     = wp_get_theme()->get_stylesheet();
+		$template_slug  = "single-{$post_type}";
+		$template_title = sprintf( __( 'Single %s', 'theme-site-kit' ), $label );
+	
+		// Delete existing template if it exists
+		$existing_template = get_page_by_path( $template_slug, OBJECT, 'wp_template' );
+		if ( $existing_template ) {
+			wp_delete_post( $existing_template->ID, true );
+		}
+	
+		// Create new block template content
+		$post_content = serialize_blocks( array(
+			array(
+				'blockName'    => 'core/template-part',
+				'attrs'        => array(
+					'slug'      => 'header',
+					'theme'     => $theme_slug,
+					'className' => 'nomargin',
+				),
+				'innerBlocks'  => array(),
+				'innerHTML'    => '',
+				'innerContent' => array(),
+			),
+			array(
+				'blockName'    => 'core/post-content',
+				'attrs'        => array(
+					'style' => array(
+						'spacing' => array(
+							'margin' => array(
+								'top'    => '0',
+								'bottom' => '0',
+							),
+						),
+					),
+				),
+				'innerBlocks'  => array(),
+				'innerHTML'    => '',
+				'innerContent' => array(),
+			),
+			array(
+				'blockName'    => 'core/template-part',
+				'attrs'        => array(
+					'slug'      => 'footer',
+					'theme'     => $theme_slug,
+					'className' => 'nomargin',
+				),
+				'innerBlocks'  => array(),
+				'innerHTML'    => '',
+				'innerContent' => array(),
+			),
+		) );
+	
+		// Create the template post
+		$template_id = wp_insert_post( array(
+			'post_name'    => $template_slug,
+			'post_title'   => $template_title,
+			'post_type'    => 'wp_template',
+			'post_status'  => 'publish',
+			'post_content' => $post_content,
+		), true );
+	
+		if ( is_wp_error( $template_id ) ) {
+			error_log( 'Theme Site Kit - Template Creation Error: ' . $template_id->get_error_message() );
+			return new WP_Error(
+				'template_creation_failed',
+				$template_id->get_error_message(),
+				array( 'status' => 500 )
+			);
+		}
+	
+		try {
+			// Assign theme taxonomy
+			wp_set_object_terms( $template_id, $theme_slug, 'wp_theme' );
+	
+			// Set template meta
+			update_post_meta( $template_id, 'origin', $theme_slug );
+			update_post_meta( $template_id, 'theme', $theme_slug );
+			update_post_meta( $template_id, 'is_custom', true );
+			update_post_meta( $template_id, 'template_type', 'wp_template' );
+			update_post_meta( $template_id, 'area', 'uncategorized' );
+	
+			// Assign the template to existing posts
+			$existing_posts = get_posts( array(
+				'post_type'      => $post_type,
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+			) );
+	
+			foreach ( $existing_posts as $post_id ) {
+				update_post_meta( $post_id, '_wp_page_template', $template_slug );
+			}
+	
+			// Clear caches
+			wp_cache_delete( 'wp_template_' . $template_slug, 'theme_templates' );
+			wp_cache_delete( $post_type, 'post_templates' );
+	
+			return rest_ensure_response( array(
+				'success'     => true,
+				'message'     => __( 'Template created successfully.', 'theme-site-kit' ),
+				'template_id' => $template_id,
+			) );
+	
+		} catch ( Exception $e ) {
+			error_log( 'Theme Site Kit - Template Creation Error: ' . $e->getMessage() );
+			return new WP_Error(
+				'template_creation_failed',
+				__( 'Error creating template: ', 'theme-site-kit' ) . $e->getMessage(),
+				array( 'status' => 500 )
+			);
+		}
+	}
+
+	/**
+	 * Check if a template exists for a post type
+	 *
+	 * @param WP_REST_Request $request The request object.
+	 * @return WP_REST_Response|WP_Error Response object or WP_Error.
+	 */
+	public function kwtsk_check_template_exists( WP_REST_Request $request ) {
+		$post_type = sanitize_key( $request->get_param( 'post_type' ) );
+		if ( empty( $post_type ) ) {
+			return new WP_Error( 'missing_post_type', __( 'Post type parameter is required.', 'theme-site-kit' ), array( 'status' => 400 ) );
+		}
+
+		$template_slug = "single-{$post_type}";
+		$existing_template = get_page_by_path( $template_slug, OBJECT, 'wp_template' );
+
+		return rest_ensure_response( array(
+			'exists' => $existing_template !== null,
+		) );
 	}
 }
 new KWTSK_API_Rest_Routes();

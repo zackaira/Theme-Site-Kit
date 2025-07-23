@@ -5,7 +5,7 @@ Tags: customizations, comments, mobile menu, svg upload, theme
 Requires at least: 5.0
 Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -135,7 +135,7 @@ All Theme Site Kit settings include clear, contextual hints and usage notes, and
 1. **General Page** - Displaying the features available in Theme Site Kit
 2. **Disable Comments** - Remove website comments everywhere or by post type
 3. **Maintenance Mode** - Hide your website behind a maintenance page while building
-4. **Social & Contact Links** - Add neat floating social profile and contact links to your site 
+4. **Social & Contact Links** - Add neat floating social profile and contact links to your site
 5. **Safe SVG Uploads** - Enable SVG image upload on your WordPress website
 6. **Block Patterns** - Import pre-built header and footer block patterns (content patterns coming soon)
 7. **Import Page Layouts** - Import pre-built pages to use as a starting point (more coming soon)
@@ -157,6 +157,13 @@ This could be from the theme you're using, or another plugin. Again, please [con
 
 
 == Changelog ==
+
+= 1.0.5 =
+* Styling tweaks/fixes
+* 
+* PRO: Added Custom Post Type page (auto-generate) templates
+* PRO: Added ability to customize CPT Permalink URLS
+* Updated the language .pot file
 
 = 1.0.4 =
 * Styling tweaks/fixes

@@ -1,6 +1,6 @@
 const { __ } = wp.i18n;
 
-const SettingHeader = ({ title, description, isPro, isPremium }) => {
+const SettingHeader = ({ title, description, link, linkText, isPro, isPremium }) => {
 	return (
 		<div className="kwtsk-header">
 			{title && (
@@ -14,6 +14,11 @@ const SettingHeader = ({ title, description, isPro, isPremium }) => {
 				</h3>
 			)}
 			{description && <p>{description}</p>}
+			{link && linkText && (
+				<a href={link} target="_blank" rel="noopener noreferrer">
+					{linkText}
+				</a>
+			)}
 		</div>
 	);
 };

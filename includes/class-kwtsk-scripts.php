@@ -156,13 +156,27 @@ class KWTSK_Scripts {
 			wp_enqueue_style('kwtsk-frontend-style');
 			wp_enqueue_style('kwtsk-admin-settings-style');
 		
+			// Get all post types
 			$all_post_types = get_post_types(array('public' => true), 'objects');
 			$excluded_types = array('product', 'attachment', 'media', 'revision', 'nav_menu_item', 'linkt', 'elementor_library');
 			// Filter out the excluded post types
 			$filtered_post_types = array_filter($all_post_types, function($post_type, $post_type_name) use ($excluded_types) {
 				return ! in_array($post_type_name, $excluded_types);
 			}, ARRAY_FILTER_USE_BOTH);
-		
+
+			// Get all page templates
+			// $templates = get_page_templates();
+			// Filter out unwanted templates
+			// $templates = array_filter($templates, function($template_file, $template_name) {
+			// 	$excluded_terms = ['elementor', 'archive', 'order-confirmation', 'single-product'];
+			// 	foreach ($excluded_terms as $term) {
+			// 		if (stripos($template_file, $term) !== false || stripos($template_name, $term) !== false) {
+			// 			return false;
+			// 		}
+			// 	}
+			// 	return true;
+			// }, ARRAY_FILTER_USE_BOTH);
+			
 			$pages_for_maintenance_mode = $this->kwtsk_get_maintenance_mode_page();
 		
 			// Get all available user roles and format as { role_slug: Role Name, ... }

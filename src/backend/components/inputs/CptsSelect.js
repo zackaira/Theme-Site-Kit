@@ -1,5 +1,6 @@
 const { useState } = wp.element;
 const { __ } = wp.i18n;
+import axios from "axios";
 import SettingRow from "../SettingRow";
 import { kwtskConvertToSlug, kwtskCapitalizeWords } from "../../helpers";
 
@@ -9,10 +10,77 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl, adminUrl }) => {
 	const [newSingularName, setNewSingularName] = useState("");
 	const [validation, setValidation] = useState({ name: "", singular: "" });
 	const [checking, setChecking] = useState({});
+	const [creatingTemplate, setCreatingTemplate] = useState({});
+	const [existingTemplates, setExistingTemplates] = useState({});
 
 	const postTypes = value || {};
 
+	const checkExistingTemplate = async (key, settings) => {
+		try {
+			const response = await axios.get(
+				`${apiUrl}/check-template?post_type=${settings.slug}`,
+				{
+					headers: {
+						'X-WP-Nonce': window.kwtskSObj.nonce
+					}
+				}
+			);
+			setExistingTemplates(prev => ({
+				...prev,
+				[key]: response.data.exists
+			}));
+		} catch (error) {
+			console.error("Error checking template:", error);
+		}
+	};
+
+	// Check for existing templates when post types change
+	React.useEffect(() => {
+		Object.entries(postTypes).forEach(([key, settings]) => {
+			checkExistingTemplate(key, settings);
+		});
+	}, [postTypes]);
+
 	const validateText = (text) => /^[a-zA-Z ]+$/.test(text);
+
+	const handleCreateTemplate = async (key, settings) => {
+		setCreatingTemplate(prev => ({ ...prev, [key]: true }));
+
+		try {
+			const response = await axios.post(
+				`${apiUrl}/create-cpt-template`,
+				{
+					post_type: settings.slug,
+					label: settings.label
+				},
+				{
+					headers: {
+						'X-WP-Nonce': window.kwtskSObj.nonce
+					}
+				}
+			);
+
+			if (response.data.success) {
+				alert(__("Template created successfully!", "theme-site-kit"));
+				// Update the existingTemplates state
+				setExistingTemplates(prev => ({
+					...prev,
+					[key]: true
+				}));
+			} else {
+				throw new Error(response.data.message || "Failed to create template");
+			}
+		} catch (error) {
+			console.error("Error creating template:", error);
+			alert(__("Failed to create template. Please try again.", "theme-site-kit"));
+		} finally {
+			setCreatingTemplate(prev => {
+				const updated = { ...prev };
+				delete updated[key];
+				return updated;
+			});
+		}
+	};
 
 	const handleAddPostType = () => {
 		const trimmedName = newCptName.trim();
@@ -51,7 +119,9 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl, adminUrl }) => {
 				enable_categories: false,
 				enable_tags: false,
 				has_archive: true,
-				template: "",
+				category_slug: "",
+				tag_slug: "",
+				template: "default",
 			},
 		};
 
@@ -119,7 +189,6 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl, adminUrl }) => {
 		const postType = postTypes[key];
 		if (!postType) return;
 
-		// Set checking state for this key.
 		setChecking((prev) => ({ ...prev, [key]: true }));
 
 		try {
@@ -135,24 +204,48 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl, adminUrl }) => {
 			const total = data.count;
 
 			if (total > 0) {
-				alert(
+				const forceDelete = window.confirm(
 					__(
-						`Let's keep the database clean and make sure you delete all ${total} post(s) in "${postType.label}" before removing this post type from the Dashboard.`,
+						`This post type has posts or meta data still saved. Would you like to delete the post type and all its posts? This cannot be undone.`,
 						"theme-site-kit",
 					),
 				);
-				return;
+
+				if (!forceDelete) {
+					return;
+				}
+			} else {
+				// If no posts exist, just confirm normal deletion
+				if (
+					!window.confirm(
+						__(
+							"Are you sure you want to delete this post type?",
+							"theme-site-kit",
+						),
+					)
+				)
+					return;
 			}
 
-			if (
-				!window.confirm(
-					__(
-						"Are you sure you want to delete this post type?",
-						"theme-site-kit",
-					),
-				)
-			)
-				return;
+			// Delete the post type and its posts if any
+			const deleteResponse = await fetch(
+				`${apiUrl}/delete-post-type`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-WP-Nonce': window.kwtskSObj.nonce
+					},
+					body: JSON.stringify({
+						post_type: postType.slug,
+						force_delete: total > 0
+					})
+				}
+			);
+
+			if (!deleteResponse.ok) {
+				throw new Error("Failed to delete post type");
+			}
 
 			const updated = { ...postTypes };
 			delete updated[key];
@@ -167,7 +260,6 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl, adminUrl }) => {
 			console.error("Error checking post count:", err);
 			alert(__("An error occurred while checking posts.", "theme-site-kit"));
 		} finally {
-			// Remove checking state for this key.
 			setChecking((prev) => {
 				const updated = { ...prev };
 				delete updated[key];
@@ -239,6 +331,18 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl, adminUrl }) => {
 													onChange={handleToggleChange}
 												/>{" "}
 												<span>- {__("Has Categories", "theme-site-kit")}</span>
+
+												{settings.enable_categories && (
+													<div className="cpts-permalink-input">
+														<span>{__("URL:", "theme-site-kit")}{" "}</span>
+														<input
+															type="text"
+															placeholder={`${settings.slug}-category`}
+															value={settings.category_slug || ""}
+															onChange={(e) => handleInputChange(key, "category_slug", e.target.value)}
+														/>
+													</div>
+												)}
 											</div>
 											<div className="cpts-tags">
 												<SettingRow
@@ -248,6 +352,18 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl, adminUrl }) => {
 													onChange={handleToggleChange}
 												/>{" "}
 												<span>- {__("Has Tags", "theme-site-kit")}</span>
+												
+												{settings.enable_tags && (
+													<div className="cpts-permalink-input">
+														<span>{__("URL:", "theme-site-kit")}{" "}</span>
+														<input
+															type="text"
+															placeholder={`${settings.slug}-tag`}
+															value={settings.tag_slug || ""}
+															onChange={(e) => handleInputChange(key, "tag_slug", e.target.value)}
+														/>
+													</div>
+												)}
 											</div>
 											<div className="cpts-archive">
 												<SettingRow
@@ -260,49 +376,26 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl, adminUrl }) => {
 													- {__("Has Archives Page", "theme-site-kit")}
 												</span>
 											</div>
-											{/* <div className="cpts-template">
-												<select
-													value={settings.template || ""}
-													onChange={(e) =>
-														handleInputChange(key, "template", e.target.value)
-													}
-													className="cpts-template-select"
+											<div className="cpts-template">
+												<button
+													type="button"
+													className={`button ${existingTemplates[key] ? 'has-template' : ''}`}
+													onClick={() => handleCreateTemplate(key, settings)}
+													disabled={creatingTemplate[key]}
 												>
-													<option value="">
-														{__("Select A Template", "theme-site-kit")}
-													</option>
-													{blockTemplates?.map((template) => (
-														<option key={template.slug} value={template.slug}>
-															{template.title}
-														</option>
-													))}
-												</select>{" "}
-												<span>
-													- {__("Post Type Template", "theme-site-kit")}
-												</span>
-												<div>
-													{__(
-														"Select a template to use for this post type, or create your own one in the Site Editor. ",
-														"theme-site-kit",
-													)}
-													<a
-														href={`${adminUrl}site-editor.php?p=%2Ftemplate`}
-														className="cpts-edit"
-														target="_blank"
-														rel="noopener noreferrer"
-													>
-														{__("Create a New Template", "theme-site-kit")}
-													</a>
-													<br />
-													<small style={{ opacity: 0.8 }}>
-														{__(
-															"To auto-assign this template, name it exactly:",
-															"theme-site-kit",
-														)}{" "}
-														<code>{`single-${settings.slug}`}</code>
-													</small>
-												</div>
-											</div> */}
+													{creatingTemplate[key]
+														? __("Creating Template...", "theme-site-kit")
+														: existingTemplates[key]
+														? __("Recreate Template", "theme-site-kit")
+														: __("Create Template", "theme-site-kit")}
+												</button>
+												{existingTemplates[key] && (
+													<span className="template-exists">
+														<i className="fa-solid fa-check"></i>
+														{__("Template exists", "theme-site-kit")}
+													</span>
+												)}
+											</div>
 
 											<span
 												className={`fa-solid fa-xmark cpts-del ${checking[key] ? "checking" : ""}`}
@@ -320,11 +413,11 @@ const CptsSelect = ({ title, slug, value, onChange, apiUrl, adminUrl }) => {
 
 			<p className="cpts-note">
 				{__(
-					"Remember to Save Permalinks after adding or making changes to Custom Post Types.",
+					"Remember to Save Settings below, and then Save Permalinks after editing your Custom Post Types.",
 					"theme-site-kit",
 				)}{" "}
 				<a href={`${adminUrl}options-permalink.php`} target="_blank">
-					{__("Go to Permalinks", "theme-site-kit")}
+					{__("Update Permalinks", "theme-site-kit")}
 				</a>
 			</p>
 		</div>
