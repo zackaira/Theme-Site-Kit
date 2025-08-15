@@ -197,7 +197,7 @@ body.kwtsk-mmenu.menu-open-left
 .wp-block-navigation.kwtsk-mm.mobile-on
 	.wp-block-navigation__responsive-container
 	ul.wp-block-navigation__container
-	li {
+	li.wp-block-navigation-link {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
@@ -206,7 +206,7 @@ body.kwtsk-mmenu.menu-open-left
 .wp-block-navigation.kwtsk-mm.mobile-on
 	.wp-block-navigation__responsive-container
 	ul.wp-block-navigation__container
-	li
+	li.wp-block-navigation-link
 	a {
 	padding: 5px 0;
 	display: block;
