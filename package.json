@@ -17,7 +17,7 @@
 		"@wordpress/scripts": "^30.21.0",
 		"copy-webpack-plugin": "^10.2.4",
 		"eslint-plugin-prettier": "^4.0.0",
-		"gulp": "^4.0.2",
+		"gulp": "^5.0.1",
 		"gulp-zip": "^5.1.0",
 		"prettier": "^2.7.1"
 	},
