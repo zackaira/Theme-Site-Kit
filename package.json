@@ -14,7 +14,7 @@
 		"@wordpress/data": "^9.20.0",
 		"@wordpress/env": "^9.2.0",
 		"@wordpress/i18n": "^4.50.0",
-		"@wordpress/scripts": "^27.1.0",
+		"@wordpress/scripts": "^30.21.0",
 		"copy-webpack-plugin": "^10.2.4",
 		"eslint-plugin-prettier": "^4.0.0",
 		"gulp": "^4.0.2",
