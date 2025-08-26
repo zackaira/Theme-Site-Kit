@@ -28,10 +28,7 @@ body.kwtsk-mmenu.menu-open-right .wp-site-blocks {
 	background-color: #1d2327 !important;
 	color: #b4b4b4 !important;
 	fill: #b4b4b4;
-	box-shadow:
-		inset 1px 0 0 #000000,
-		inset -1px 0 0 #000000,
-		inset 15px 0 15px rgb(255 255 255 / 5%);
+	box-shadow: inset 1px 0 0 rgb(0 0 0 / 14%);
 	width: var(--kwtsk-mmenu-width);
 	animation: none;
 	display: block !important;
@@ -48,10 +45,6 @@ body.kwtsk-mmenu.menu-open-right .wp-site-blocks {
 	background-color: #f9f9f9 !important;
 	color: #6e6e6e !important;
 	fill: #6e6e6e !important;
-	box-shadow:
-		inset 1px 0 0 #c8cbcd,
-		inset -1px 0 0 #c8cbcd,
-		inset 2px 0 15px rgb(0 0 0 / 10%);
 }
 
 /* -- Padding for Admin Bar -- */
@@ -163,7 +156,6 @@ body.kwtsk-mmenu.menu-open-left
 	align-items: flex-start;
 	justify-content: flex-start;
 	width: 100%;
-	gap: 10px;
 	color: inherit !important;
 }
 .wp-block-navigation.kwtsk-mm.mobile-on
@@ -208,10 +200,9 @@ body.kwtsk-mmenu.menu-open-left
 	ul.wp-block-navigation__container
 	li.wp-block-navigation-link
 	a {
-	padding: 5px 0;
+	padding: 0;
 	display: block;
 	width: calc(100% - 30px);
-	font-size: 14px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

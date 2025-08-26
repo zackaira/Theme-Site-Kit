@@ -120,6 +120,7 @@ class KWTSK_Scripts {
 			wp_enqueue_script( 'kwtsk-mobile-menu-script' );
 			wp_localize_script('kwtsk-mobile-menu-script', 'kwtskMMObj', array(
 				'isPremium' => $isPro,
+				'menuWidth' => isset($kwtskOptions->mobilemenu->width) ? $kwtskOptions->mobilemenu->width : '250px',
 			));
         }
 	} // End kwtsk_frontend_scripts ()
@@ -291,6 +292,7 @@ class KWTSK_Scripts {
 					"bgcolor" => "#1d2327",
 					"textcolor" => "#b4b4b4",
 					"selectedcolor" => "#ffffff",
+					"width" => "250px",
 				),
 				"svgupload" => array(
 					"enabled" => true,

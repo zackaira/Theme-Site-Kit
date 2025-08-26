@@ -12,7 +12,7 @@
 	],
 	"devDependencies": {
 		"@wordpress/data": "^9.20.0",
-		"@wordpress/env": "^9.2.0",
+		"@wordpress/env": "^10.28.0",
 		"@wordpress/i18n": "^4.50.0",
 		"@wordpress/scripts": "^30.21.0",
 		"copy-webpack-plugin": "^10.2.4",
@@ -24,7 +24,8 @@
 	"scripts": {
 		"start": "NODE_ENV=development wp-scripts start --mode=development --webpack-copy-php --webpack-src-dir=blocks",
 		"build": "NODE_ENV=production wp-scripts build --mode=production --webpack-copy-php --webpack-src-dir=blocks && gulp bundle",
-		"packages-update": "wp-scripts packages-update"
+		"packages-update": "wp-scripts packages-update",
+		"make-pot": "wp i18n make-pot . lang/theme-site-kit.pot --slug=theme-site-kit --exclude=node_modules,dist,vendor,.git,tests,build"
 	},
 	"dependencies": {
 		"axios": "^1.11.0",

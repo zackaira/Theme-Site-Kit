@@ -1010,7 +1010,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																				"theme-site-kit",
 																			)}
 																			slug="mobilemenu_bgcolor"
-																			value={kwtskOptions.social?.bgcolor}
+																			value={kwtskOptions.mobilemenu?.bgcolor}
 																			inputType="colorpicker"
 																			defaultValue="#1d2327"
 																			onChange={handleChange}
@@ -1018,7 +1018,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																		<SettingRow
 																			title={__("Text Color", "theme-site-kit")}
 																			slug="mobilemenu_textcolor"
-																			value={kwtskOptions.social?.textcolor}
+																			value={kwtskOptions.mobilemenu?.textcolor}
 																			inputType="colorpicker"
 																			defaultValue="#b4b4b4"
 																			onChange={handleChange}
@@ -1030,13 +1030,22 @@ const SettingsPage = ({ kwtskObj }) => {
 																				"theme-site-kit",
 																			)}
 																			slug="mobilemenu_selectedcolor"
-																			value={kwtskOptions.social?.selectedcolor}
+																			value={kwtskOptions.mobilemenu?.selectedcolor}
 																			inputType="colorpicker"
 																			defaultValue="#FFF"
 																			onChange={handleChange}
 																		/>
 																	</>
 																)}
+
+																<SettingRow
+																	title={__("Menu Width", "theme-site-kit")}
+																	slug="mobilemenu_width"
+																	value={kwtskOptions.mobilemenu?.width}
+																	inputType="text"
+																	onChange={handleChange}
+																	placeholder="250px"
+																/>
 															</>
 														) : (
 															<SettingRow

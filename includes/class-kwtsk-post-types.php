@@ -58,7 +58,9 @@ class KWTSK_Post_Types {
 			$singular  = ! empty( $settings->singular ) ? sanitize_text_field( $settings->singular ) : $label;
 
 			$default_template_types["single-{$post_type}"] = array(
+				// translators: %s: Post type singular name.
 				'title'       => sprintf( __( 'Single %s', 'theme-site-kit' ), $singular ),
+				// translators: %s: Post type singular name.
 				'description' => sprintf( __( 'Displays a single %s.', 'theme-site-kit' ), strtolower( $singular ) ),
 			);
 		}

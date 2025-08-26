@@ -2,6 +2,7 @@ import "./mobile-menu.css";
 
 document.addEventListener("DOMContentLoaded", function () {
 	const isPremium = kwtskMMObj?.isPremium;
+	const menuWidth = kwtskMMObj?.menuWidth;
 
 	if (!isPremium) return;
 
@@ -11,8 +12,21 @@ document.addEventListener("DOMContentLoaded", function () {
 	const body = document.querySelector("body");
 	body.classList.add("kwtsk-mmenu");
 
+	// Set the menu width CSS custom property globally if width is provided and not default
+	if (menuWidth && menuWidth !== '250px') {
+		let formattedWidth = menuWidth;
+		
+		// If it's just a number (like 500), add 'px'
+		if (!isNaN(menuWidth) && !menuWidth.toString().includes('%') && !menuWidth.toString().includes('px')) {
+			formattedWidth = menuWidth + 'px';
+		}
+		
+		document.documentElement.style.setProperty('--kwtsk-mmenu-width', formattedWidth);
+	}
+
 	if (customMobileMenus.length > 0) {
 		customMobileMenus.forEach((menu) => {
+
 			const menuButton = menu.querySelector(
 				".wp-block-navigation__responsive-container-open",
 			);

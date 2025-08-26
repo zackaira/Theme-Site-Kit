@@ -151,9 +151,6 @@ class KWTSK_Frontend {
                 background-color: " . esc_attr( $bgcolor ) . " !important;
                 color: " . esc_attr( $textcolor ) . " !important;
                 fill: " . esc_attr( $textcolor ) . " !important;
-                box-shadow:
-                    inset 1px 0 0 rgb(0 0 0 / 14%),
-                    inset 2px 0 15px rgb(0 0 0 / 10%);
             }
             body.kwtsk-mmenu
                 header.wp-block-template-part

@@ -1,38 +1,43 @@
 # Copyright (C) 2025 Kaira
-# This file is distributed under the same license as the Theme Site Kit plugin.
+# This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Theme Site Kit 1.0.0\n"
+"Project-Id-Version: Theme Site Kit 1.0.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/theme-site-kit\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-06T10:23:56+00:00\n"
+"POT-Creation-Date: 2025-08-26T09:12:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.8.1\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: theme-site-kit\n"
 
 #. Plugin Name of the plugin
+#: theme-site-kit.php
 #: includes/class-kwtsk-admin.php:56
 #: includes/class-kwtsk-admin.php:57
 msgid "Theme Site Kit"
 msgstr ""
 
 #. Plugin URI of the plugin
-msgid "https://kairaweb.com/wordpress-plugins/theme-pro/"
+#: theme-site-kit.php
+msgid "https://kairaweb.com/wordpress-plugin/theme-site-kit/"
 msgstr ""
 
 #. Description of the plugin
+#: theme-site-kit.php
 msgid "Easily manage essential site customizations with Theme Site Kit - the Swiss-Army-Knife WordPress plugin for disabling comments, maintenance mode, enabling SVG uploads, adding social links, and more."
 msgstr ""
 
 #. Author of the plugin
+#: theme-site-kit.php
 msgid "Kaira"
 msgstr ""
 
 #. Author URI of the plugin
+#: theme-site-kit.php
 msgid "https://kairaweb.com/"
 msgstr ""
 
@@ -167,7 +172,7 @@ msgstr ""
 #: includes/class-kwtsk-block-patterns.php:988
 #: includes/class-kwtsk-block-patterns.php:1028
 #: includes/class-kwtsk-block-patterns.php:1074
-#: includes/class-kwtsk-maintenance-mode.php:206
+#: includes/class-kwtsk-maintenance-mode.php:260
 #: src/backend/SettingsPage.js:278
 #: src/backend/SettingsPage.js:444
 #: src/backend/SettingsPage.js:474
@@ -183,163 +188,419 @@ msgctxt "Block pattern description"
 msgid "A Maintenance Mode Template."
 msgstr ""
 
-#: includes/class-kwtsk-disable-comments.php:188
+#: includes/class-kwtsk-custom-code.php:46
+#: includes/class-kwtsk-custom-code.php:84
+#: includes/class-kwtsk-custom-code.php:85
+#: src/backend/SettingsPage.js:1173
+msgid "Code Snippets"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:47
+#: includes/class-kwtsk-custom-code.php:112
+msgid "Code Snippet"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:48
+#: includes/class-kwtsk-post-types.php:144
+msgid "Add New"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:49
+msgid "Add New Code Snippet"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:50
+msgid "Edit Code Snippet"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:51
+msgid "New Code Snippet"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:52
+msgid "View Code Snippet"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:53
+msgid "Search Code Snippets"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:54
+msgid "No Code Snippets found"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:95
+#: includes/class-kwtsk-custom-code.php:96
+msgid "Import Snippets"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:104
+msgid "Import Code Snippets"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:105
+msgid "Upload or paste your code snippets here to import."
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:146
+msgid "Shop Page"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:147
+msgid "Cart Page"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:148
+msgid "Checkout Page"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:149
+msgid "My Account Page"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:163
+msgid "Everywhere (Admin & Frontend)"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:164
+msgid "Admin"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:165
+msgid "Frontend"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:166
+msgid "Select Pages"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:167
+msgid "Select Posts"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:172
+msgid "Select WooCommerce Pages"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:173
+msgid "Select WooCommerce Products"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:180
+msgid "Code Language:"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:191
+msgid "Priority:"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:197
+msgid "Enable Snippet:"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:216
+msgid "Where to add this code:"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:218
+msgid "Select where to add this code"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:232
+msgid "Minify code when placed:"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:244
+msgid "Select Pages:"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:245
+msgid "If no pages selected, the code will be added to all pages."
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:257
+msgid "Select Posts:"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:258
+msgid "If no posts selected, the code will be added to all posts."
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:272
+msgid "Select WooCommerce Pages:"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:273
+msgid "If no pages selected, the code will be added to all WooCommerce pages."
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:285
+msgid "Select WooCommerce Products:"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:286
+msgid "If no products selected, the code will be added to all WooCommerce products."
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:300
+msgid "Upgrade to Theme Site Kit Pro to unlock more advanced features!"
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:301
+msgid "Load your custom code only on the pages you choose!, Select posts, pages, or specificWooCommerce screens, and optimize your site even more with the added feature of minifying CSS and JavaScript file on the page."
+msgstr ""
+
+#: includes/class-kwtsk-custom-code.php:302
+#: src/backend/layouts/LayoutItem.js:49
+#: src/backend/layouts/LayoutsPage.js:486
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: includes/class-kwtsk-disable-comments.php:223
 msgid "Comments are disabled on this site."
 msgstr ""
 
-#: includes/class-kwtsk-disable-comments.php:247
+#: includes/class-kwtsk-disable-comments.php:282
 msgid "Comments have been disabled."
 msgstr ""
 
-#: includes/class-kwtsk-disable-comments.php:248
+#: includes/class-kwtsk-disable-comments.php:283
 msgid "Back to Dashboard"
 msgstr ""
 
-#: includes/class-kwtsk-maintenance-mode.php:205
+#: includes/class-kwtsk-duplicate-posts.php:59
+msgid "Duplicate this item"
+msgstr ""
+
+#: includes/class-kwtsk-duplicate-posts.php:59
+msgid "Duplicate"
+msgstr ""
+
+#: includes/class-kwtsk-duplicate-posts.php:71
+msgid "Invalid request."
+msgstr ""
+
+#: includes/class-kwtsk-duplicate-posts.php:76
+msgid "You are not allowed to duplicate this item."
+msgstr ""
+
+#: includes/class-kwtsk-maintenance-mode.php:259
 #: src/backend/SettingsPage.js:478
 #: src/backend/SettingsPage.js:611
 msgid "Coming Soon"
 msgstr ""
 
-#: includes/class-kwtsk-maintenance-mode.php:212
+#: includes/class-kwtsk-maintenance-mode.php:263
 #: src/backend/SettingsPage.js:643
 msgid "Our website is launching soon. Stay tuned!"
 msgstr ""
 
-#: includes/class-kwtsk-maintenance-mode.php:213
+#: includes/class-kwtsk-maintenance-mode.php:264
 #: src/backend/SettingsPage.js:647
 msgid "We are currently performing scheduled maintenance. Please check back soon."
 msgstr ""
 
-#: includes/class-kwtsk-maintenance-mode.php:279
+#: includes/class-kwtsk-maintenance-mode.php:301
 msgid "Maintenance Mode: ON"
 msgstr ""
 
-#: includes/class-kwtsk-maintenance-mode.php:282
+#: includes/class-kwtsk-maintenance-mode.php:304
 msgid "Maintenance Mode: OFF"
 msgstr ""
 
-#: includes/class-kwtsk-maintenance-mode.php:305
+#: includes/class-kwtsk-maintenance-mode.php:327
 msgid "Coming Soon Page"
 msgstr ""
 
-#: includes/class-kwtsk-maintenance-mode.php:307
+#: includes/class-kwtsk-maintenance-mode.php:329
 msgid "Maintenance Mode Page"
 msgstr ""
 
-#: includes/class-kwtsk-post-types.php:60
-msgid "Add New"
+#: includes/class-kwtsk-notices.php:103
+msgid "Thank you for trying out Theme Site Kit!"
+msgstr ""
+
+#: includes/class-kwtsk-notices.php:104
+msgid "Get started by selecting which Site Kit features you want to enable on your website:"
+msgstr ""
+
+#: includes/class-kwtsk-notices.php:106
+msgid "View Theme Site Kit Settings"
 msgstr ""
 
 #. translators: %s: Post type singular name.
 #: includes/class-kwtsk-post-types.php:62
-msgid "Add New %s"
+#: includes/class-kwtsk-rest-api.php:599
+#, php-format
+msgid "Single %s"
 msgstr ""
 
 #. translators: %s: Post type singular name.
 #: includes/class-kwtsk-post-types.php:64
+#, php-format
+msgid "Displays a single %s."
+msgstr ""
+
+#. translators: %s: Post type singular name.
+#: includes/class-kwtsk-post-types.php:146
+#, php-format
+msgid "Add New %s"
+msgstr ""
+
+#. translators: %s: Post type singular name.
+#: includes/class-kwtsk-post-types.php:148
+#, php-format
 msgid "Edit %s"
 msgstr ""
 
 #. translators: %s: Post type singular name.
-#: includes/class-kwtsk-post-types.php:66
+#: includes/class-kwtsk-post-types.php:150
+#, php-format
 msgid "New %s"
 msgstr ""
 
 #. translators: %s: Post type singular name.
-#: includes/class-kwtsk-post-types.php:68
+#: includes/class-kwtsk-post-types.php:152
+#, php-format
 msgid "View %s"
 msgstr ""
 
 #. translators: %s: Post type label.
-#: includes/class-kwtsk-post-types.php:70
+#: includes/class-kwtsk-post-types.php:154
+#, php-format
 msgid "View All %s"
 msgstr ""
 
 #. translators: %s: Post type label.
-#: includes/class-kwtsk-post-types.php:72
+#: includes/class-kwtsk-post-types.php:156
+#, php-format
 msgid "Search %s"
 msgstr ""
 
 #. translators: %s: Post type label.
-#: includes/class-kwtsk-post-types.php:74
+#: includes/class-kwtsk-post-types.php:158
+#, php-format
 msgid "No %s found"
 msgstr ""
 
 #. translators: %s: Post type label.
-#: includes/class-kwtsk-post-types.php:76
+#: includes/class-kwtsk-post-types.php:160
+#, php-format
 msgid "No %s found in Trash"
 msgstr ""
 
-#: includes/class-kwtsk-post-types.php:92
+#: includes/class-kwtsk-post-types.php:173
+msgid "Start building your page!"
+msgstr ""
+
+#: includes/class-kwtsk-post-types.php:185
 msgctxt "taxonomy general name"
 msgid "Categories"
 msgstr ""
 
-#: includes/class-kwtsk-post-types.php:93
+#: includes/class-kwtsk-post-types.php:186
 msgctxt "taxonomy singular name"
 msgid "Category"
 msgstr ""
 
-#: includes/class-kwtsk-post-types.php:106
+#: includes/class-kwtsk-post-types.php:203
 msgctxt "taxonomy general name"
 msgid "Tags"
 msgstr ""
 
-#: includes/class-kwtsk-post-types.php:107
+#: includes/class-kwtsk-post-types.php:204
 msgctxt "taxonomy singular name"
 msgid "Tag"
 msgstr ""
 
 #. translators: %s: Post type singular name.
-#: includes/class-kwtsk-post-types.php:135
-#: includes/class-kwtsk-post-types.php:139
+#: includes/class-kwtsk-post-types.php:232
+#: includes/class-kwtsk-post-types.php:236
+#, php-format
 msgid "%s updated."
 msgstr ""
 
-#: includes/class-kwtsk-post-types.php:136
+#: includes/class-kwtsk-post-types.php:233
 msgid "Custom field updated."
 msgstr ""
 
-#: includes/class-kwtsk-post-types.php:137
+#: includes/class-kwtsk-post-types.php:234
 msgid "Custom field deleted."
 msgstr ""
 
-#. translators: %1$s: Post type singular name, %2$s: Revision date.
-#: includes/class-kwtsk-post-types.php:142
-msgid "%1$s restored to revision from %2$s"
+#. translators: %s: Post type singular name.
+#: includes/class-kwtsk-post-types.php:238
+#, php-format
+msgid "%s restored to revision"
 msgstr ""
 
 #. translators: %s: Post type singular name.
-#: includes/class-kwtsk-post-types.php:145
+#: includes/class-kwtsk-post-types.php:240
+#, php-format
 msgid "%s published."
 msgstr ""
 
 #. translators: %s: Post type singular name.
-#: includes/class-kwtsk-post-types.php:147
+#: includes/class-kwtsk-post-types.php:242
+#, php-format
 msgid "%s saved."
 msgstr ""
 
 #. translators: %s: Post type singular name.
-#: includes/class-kwtsk-post-types.php:149
+#: includes/class-kwtsk-post-types.php:244
+#, php-format
 msgid "%s submitted."
 msgstr ""
 
 #. translators: %1$s: Post type singular name, %2$s: Date and time.
-#: includes/class-kwtsk-post-types.php:152
-msgid "%s scheduled for: <strong>%1$s</strong>."
+#: includes/class-kwtsk-post-types.php:247
+#, php-format
+msgid "%1$s scheduled for: <strong>%2$s</strong>."
 msgstr ""
 
-#: includes/class-kwtsk-post-types.php:154
+#: includes/class-kwtsk-post-types.php:249
 msgid "M j, Y @ G:i"
 msgstr ""
 
 #. translators: %s: Post type singular name.
-#: includes/class-kwtsk-post-types.php:157
+#: includes/class-kwtsk-post-types.php:252
+#, php-format
 msgid "%s draft updated."
 msgstr ""
 
-#: includes/class-kwtsk-svg-handler.php:122
+#: includes/class-kwtsk-rest-api.php:117
+msgid "Invalid or missing REST nonce."
+msgstr ""
+
+#: includes/class-kwtsk-rest-api.php:570
+msgid "Post type deleted successfully."
+msgstr ""
+
+#: includes/class-kwtsk-rest-api.php:582
+msgid "You do not have permissions to create templates."
+msgstr ""
+
+#: includes/class-kwtsk-rest-api.php:587
+msgid "Invalid request parameters."
+msgstr ""
+
+#: includes/class-kwtsk-rest-api.php:594
+msgid "Missing required parameters."
+msgstr ""
+
+#: includes/class-kwtsk-rest-api.php:695
+msgid "Template created successfully."
+msgstr ""
+
+#: includes/class-kwtsk-rest-api.php:703
+msgid "Error creating template: "
+msgstr ""
+
+#: includes/class-kwtsk-rest-api.php:718
+msgid "Post type parameter is required."
+msgstr ""
+
+#: includes/class-kwtsk-svg-handler.php:128
 msgid "Sorry, this file could not be uploaded for security reasons."
 msgstr ""
 
@@ -365,6 +626,15 @@ msgstr ""
 
 #: blocks/disclosure/edit.js:92
 msgid "Horizontal Padding"
+msgstr ""
+
+#: src/backend/admin/code-snippets.js:18
+#: src/backend/admin/code-snippets.js:20
+msgid "Search..."
+msgstr ""
+
+#: src/backend/admin/code-snippets.js:150
+msgid "Changing the language will clear the code editor. Click OK to continue, or Cancel to keep the current language."
 msgstr ""
 
 #: src/backend/components/GeneralPage.js:8
@@ -470,56 +740,89 @@ msgstr ""
 msgid "Select Color"
 msgstr ""
 
-#: src/backend/components/inputs/CptsSelect.js:149
-msgid "Are you sure you want to delete this post type?"
+#: src/backend/components/inputs/CptsSelect.js:64
+msgid "Template created successfully!"
 msgstr ""
 
-#: src/backend/components/inputs/CptsSelect.js:168
-msgid "An error occurred while checking posts."
-msgstr ""
-
-#: src/backend/components/inputs/CptsSelect.js:186
-msgid "Post Type Name (e.g. Case Studies)"
-msgstr ""
-
-#: src/backend/components/inputs/CptsSelect.js:196
-msgid "Singular Name (e.g. Case Study)"
-msgstr ""
-
-#: src/backend/components/inputs/CptsSelect.js:202
-msgid "Add Post Type"
+#: src/backend/components/inputs/CptsSelect.js:75
+msgid "Failed to create template. Please try again."
 msgstr ""
 
 #: src/backend/components/inputs/CptsSelect.js:208
+msgid "This post type has posts or meta data still saved. Would you like to delete the post type and all its posts? This cannot be undone."
+msgstr ""
+
+#: src/backend/components/inputs/CptsSelect.js:221
+msgid "Are you sure you want to delete this post type?"
+msgstr ""
+
+#: src/backend/components/inputs/CptsSelect.js:261
+msgid "An error occurred while checking posts."
+msgstr ""
+
+#: src/backend/components/inputs/CptsSelect.js:278
+msgid "Post Type Name (e.g. Case Studies)"
+msgstr ""
+
+#: src/backend/components/inputs/CptsSelect.js:288
+msgid "Singular Name (e.g. Case Study)"
+msgstr ""
+
+#: src/backend/components/inputs/CptsSelect.js:294
+msgid "Add Post Type"
+msgstr ""
+
+#: src/backend/components/inputs/CptsSelect.js:300
 msgid "No custom post types added yet."
 msgstr ""
 
-#: src/backend/components/inputs/CptsSelect.js:227
+#: src/backend/components/inputs/CptsSelect.js:319
 msgid "Singular"
 msgstr ""
 
-#: src/backend/components/inputs/CptsSelect.js:241
+#: src/backend/components/inputs/CptsSelect.js:333
 msgid "Has Categories"
 msgstr ""
 
-#: src/backend/components/inputs/CptsSelect.js:250
+#: src/backend/components/inputs/CptsSelect.js:337
+#: src/backend/components/inputs/CptsSelect.js:358
+msgid "URL:"
+msgstr ""
+
+#: src/backend/components/inputs/CptsSelect.js:354
 msgid "Has Tags"
 msgstr ""
 
-#: src/backend/components/inputs/CptsSelect.js:260
+#: src/backend/components/inputs/CptsSelect.js:376
 msgid "Has Archives Page"
 msgstr ""
 
-#: src/backend/components/inputs/CptsSelect.js:310
+#: src/backend/components/inputs/CptsSelect.js:387
+msgid "Creating Template..."
+msgstr ""
+
+#: src/backend/components/inputs/CptsSelect.js:389
+msgid "Recreate Template"
+msgstr ""
+
+#: src/backend/components/inputs/CptsSelect.js:390
+msgid "Create Template"
+msgstr ""
+
+#: src/backend/components/inputs/CptsSelect.js:395
+msgid "Template exists"
+msgstr ""
+
+#: src/backend/components/inputs/CptsSelect.js:403
 msgid "Delete this post type"
 msgstr ""
 
-#: src/backend/components/inputs/CptsSelect.js:322
-msgid "Remember to Save Permalinks after adding or making changes to Custom Post Types."
+#: src/backend/components/inputs/CptsSelect.js:415
+msgid "Remember to Save Settings below, and then Save Permalinks after editing your Custom Post Types."
 msgstr ""
 
-#: src/backend/components/inputs/CptsSelect.js:327
-msgid "Go to Permalinks"
+#: src/backend/components/inputs/CptsSelect.js:420
+msgid "Update Permalinks"
 msgstr ""
 
 #: src/backend/components/inputs/InputRadioSelect.js:68
@@ -805,11 +1108,6 @@ msgstr ""
 msgid "Import Layout"
 msgstr ""
 
-#: src/backend/layouts/LayoutItem.js:49
-#: src/backend/layouts/LayoutsPage.js:486
-msgid "Upgrade to Pro"
-msgstr ""
-
 #: src/backend/layouts/LayoutsPage.js:68
 msgid "Loading layouts..."
 msgstr ""
@@ -910,8 +1208,8 @@ msgid "Mobile Menu"
 msgstr ""
 
 #: src/backend/SettingsPage.js:305
-#: src/backend/SettingsPage.js:1065
-#: src/backend/SettingsPage.js:1098
+#: src/backend/SettingsPage.js:1077
+#: src/backend/SettingsPage.js:1110
 msgid "Custom Post Types"
 msgstr ""
 
@@ -990,7 +1288,7 @@ msgstr ""
 
 #: src/backend/SettingsPage.js:588
 #: src/backend/SettingsPage.js:860
-#: src/backend/SettingsPage.js:1005
+#: src/backend/SettingsPage.js:1008
 msgid "Background Color"
 msgstr ""
 
@@ -1008,7 +1306,7 @@ msgstr ""
 
 #: src/backend/SettingsPage.js:655
 #: src/backend/SettingsPage.js:898
-#: src/backend/SettingsPage.js:1016
+#: src/backend/SettingsPage.js:1019
 msgid "Text Color"
 msgstr ""
 
@@ -1017,7 +1315,7 @@ msgid "Logged In Users"
 msgstr ""
 
 #: src/backend/SettingsPage.js:681
-#: src/backend/SettingsPage.js:996
+#: src/backend/SettingsPage.js:999
 msgid "Custom"
 msgstr ""
 
@@ -1138,7 +1436,7 @@ msgid "Use original brand colors in Theme Site Kit Pro."
 msgstr ""
 
 #: src/backend/SettingsPage.js:928
-#: src/backend/SettingsPage.js:1040
+#: src/backend/SettingsPage.js:1052
 msgid "Upgrade to Theme Site Kit Pro"
 msgstr ""
 
@@ -1146,79 +1444,91 @@ msgstr ""
 msgid "Unlock unlimited social icons and more features with Theme Site Kit Pro."
 msgstr ""
 
-#: src/backend/SettingsPage.js:962
+#: src/backend/SettingsPage.js:963
 msgid "Custom Mobile Menu"
 msgstr ""
 
-#: src/backend/SettingsPage.js:963
+#: src/backend/SettingsPage.js:964
 msgid "Upgrade your site's mobile experience with an enhanced core Navigation Block extension. This feature creates a smooth, modern slide-out menu that looks great and works even better on mobile devices."
 msgstr ""
 
-#: src/backend/SettingsPage.js:974
+#: src/backend/SettingsPage.js:977
 msgid "Enable Custom Mobile Menu"
 msgstr ""
 
-#: src/backend/SettingsPage.js:994
+#: src/backend/SettingsPage.js:997
 msgid "Dark"
 msgstr ""
 
-#: src/backend/SettingsPage.js:995
+#: src/backend/SettingsPage.js:998
 msgid "Light"
 msgstr ""
 
-#: src/backend/SettingsPage.js:1025
+#: src/backend/SettingsPage.js:1028
 msgid "Selected Text Color"
 msgstr ""
 
-#: src/backend/SettingsPage.js:1044
+#: src/backend/SettingsPage.js:1042
+msgid "Menu Width"
+msgstr ""
+
+#: src/backend/SettingsPage.js:1056
 msgid "Theme Site Kit Pro introduces a refined slide-out mobile navigation design for the core editor's Navigation block, offering a cleaner and more intuitive user experience."
 msgstr ""
 
-#: src/backend/SettingsPage.js:1066
+#: src/backend/SettingsPage.js:1078
 msgid "Create and Manage custom Post Types on your WordPress site."
 msgstr ""
 
-#: src/backend/SettingsPage.js:1077
+#: src/backend/SettingsPage.js:1089
 msgid "Enable Custom Post Types"
 msgstr ""
 
-#: src/backend/SettingsPage.js:1087
+#: src/backend/SettingsPage.js:1099
 msgid "Once you've added your custom Post Type(s), you will need to refresh the page to view them in your WordPress admin."
 msgstr ""
 
-#: src/backend/SettingsPage.js:1131
+#: src/backend/SettingsPage.js:1144
 msgid "Extra Useful Features"
 msgstr ""
 
-#: src/backend/SettingsPage.js:1132
+#: src/backend/SettingsPage.js:1145
 msgid "A few thoughtful Extra's to improve your workflow and enhance your frontend experience - small details that make a big difference."
 msgstr ""
 
-#: src/backend/SettingsPage.js:1141
+#: src/backend/SettingsPage.js:1154
 msgid "Enable SVG Uploads"
 msgstr ""
 
-#: src/backend/SettingsPage.js:1148
+#: src/backend/SettingsPage.js:1161
 msgid "You can now safely upload SVG files."
 msgstr ""
 
-#: src/backend/SettingsPage.js:1152
+#: src/backend/SettingsPage.js:1165
 msgid "Allow SVG uploads in the Media Library. SVG files are XML-based vector images that can be scaled to any size without losing quality. They are often used for logos, icons, and other graphics on the web."
 msgstr ""
 
-#: src/backend/SettingsPage.js:1160
-msgid "Code Snippets"
+#: src/backend/SettingsPage.js:1180
+msgid "You can now add custom code snippets to your site."
 msgstr ""
 
-#: src/backend/SettingsPage.js:1182
+#: src/backend/SettingsPage.js:1184
+msgid "Once enabled, refresh the page to see Code Snippets in your Dashboard sidebar."
+msgstr ""
+
+#: src/backend/SettingsPage.js:1192
+msgid "Duplicate Posts"
+msgstr ""
+
+#: src/backend/SettingsPage.js:1214
 msgid "Save Settings"
 msgstr ""
 
-#: src/backend/SettingsPage.js:1191
+#: src/backend/SettingsPage.js:1223
 msgid "Reset Settings"
 msgstr ""
 
-#: src/backend/SettingsPage.js:1196
+#: src/backend/SettingsPage.js:1228
 msgid "Confirm... Reset All Settings!"
 msgstr ""
 

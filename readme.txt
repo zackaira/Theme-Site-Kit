@@ -160,7 +160,10 @@ This could be from the theme you're using, or another plugin. Again, please [con
 
 = 1.0.5 =
 * Styling tweaks/fixes
-* 
+* Fixed Color setting bug in Plugin Settings page
+* Added missing translator comments for strings with placeholders
+* PRO: Slide-Out Mobile Menu adjust li elements styling
+* PRO: Set custom widht to Slide-Out Mobile Menu
 * PRO: Added Custom Post Type page (auto-generate) templates
 * PRO: Added ability to customize CPT Permalink URLS
 * Updated the language .pot file
