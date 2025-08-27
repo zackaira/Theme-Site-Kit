@@ -86,6 +86,13 @@ const config = {
 					},
 				],
 			},
+			{
+				test: /\.(png|jpg|jpeg|gif|svg)$/i,
+				type: 'asset/resource',
+				generator: {
+					filename: '[hash][ext][query]'
+				}
+			},
 		],
 	},
 	externals: {

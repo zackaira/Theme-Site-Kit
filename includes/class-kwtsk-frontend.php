@@ -154,17 +154,17 @@ class KWTSK_Frontend {
             }
             body.kwtsk-mmenu
                 header.wp-block-template-part
-                nav.wp-block-navigation.kwtsk-custom
+                nav.wp-block-navigation.kwtsk-custom.mobile-on
                 .wp-block-navigation__container
                 li:hover > a,
             body.kwtsk-mmenu
                 header.wp-block-template-part
-                nav.wp-block-navigation.kwtsk-custom
+                nav.wp-block-navigation.kwtsk-custom.mobile-on
                 .wp-block-navigation__container
                 li a.current-menu-ancestor,
             body.kwtsk-mmenu
                 header.wp-block-template-part
-                nav.wp-block-navigation.kwtsk-custom
+                nav.wp-block-navigation.kwtsk-custom.mobile-on
                 .wp-block-navigation__container
                 li.current-menu-item > a {
                     color: " . esc_attr( $selectedcolor ) . " !important;

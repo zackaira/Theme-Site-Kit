@@ -20,7 +20,7 @@ function bundle() {
 			"!.editorconfig",
 			"!.gitignore",
 			"!build/**",
-		])
+		], { encoding: false })
 		.pipe(zip("theme-site-kit.zip"))
 		.pipe(gulp.dest("bundled"));
 }
