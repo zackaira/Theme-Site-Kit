@@ -5,7 +5,7 @@ Tags: customizations, comments, mobile menu, svg upload, theme
 Requires at least: 5.0
 Requires PHP: 7.4
 Tested up to: 6.8
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,12 @@ Speed up site creation with our expanding collection of WordPress block patterns
 &#9989; **Custom Code Snippets**:
 Easily add your own custom code snippets to WordPress. Select to add custom PHP code, WordPress hooks or filters, add custom CSS for extra styling, or add your own custom JavaScript code to your site. Toggle each snippet on or off with one click, choose whether it runs on the front-end, in wp-admin, or both, and keep your site lean without editing functions.php or needing to create a child theme. A safer, faster way to apply lightweight styling tweaks, custom hooks or filters, or tracking scripts.
 
+&#9989; **Disable Emails for Plugin Auto Updates**:
+Tired of seeing the “Some plugins were automatically updated” emails from WordPress? With Theme Site Kit, you can now easily turn off these automatic update notifications. Simply head to Theme Site Kit Settings -> Extras, and choose whether to disable the “... were automatically updated” emails for plugins and themes.
+
+&#9989; **Smooth Scroll Animation** for page anchor links:
+Enhance your site’s navigation experience with smooth scrolling. Instead of the default “jump” to an anchor link, this feature adds a sleek scroll animation that gently guides visitors to the section they clicked. A simple touch that makes your site feel more modern and user-friendly.
+
 &#9989; **Duplicate Posts & Pages - One-Click Clone (Coming Soon)**:
 We'll soon be adding the abolity to instantly duplicate any post, page, CPT, or WooCommerce products. All content, images, and blocks copy into a draft, ready to edit and publish.
 
@@ -68,7 +74,7 @@ With Theme Site Kit PRO you can design your own "maintenance mode" or "coming so
 Add as many social icons and contact buttons as you need - WhatsApp chat, phone, email, Instagram, Facebook, X, LinkedIn, and lots more. Rearrange, style, and animate your floating sidebar so users can reach you on every channel.
 
 &#9989; **Custom Code Snippets**:
-Unlock precision control over your WordPress custom code snippets. Apply PHP, custom CSS, or JavaScript to specific pages or posts, or individual WooCommerce page, products and checkout pages, all from the same intuitive dashboard. Turn on CSS and JavaScript minification for extra site performance, and disable or edit it anytime without touching theme files. Fine-tune exactly where your custom code runs while keeping your website blazing fast.
+Unlock precision control over your WordPress custom code snippets. Apply PHP, custom CSS, or JavaScript to specific pages or posts, or individual WooCommerce page, products and checkout page... As well as selecting specific hooks, all from the same intuitive dashboard. Turn on CSS and JavaScript minification for extra site performance, and disable or edit it anytime without touching theme files. Fine-tune exactly where your custom code runs while keeping your website blazing fast.
 
 
 ## Need help? We're here to help!
@@ -157,6 +163,15 @@ This could be from the theme you're using, or another plugin. Again, please [con
 
 
 == Changelog ==
+
+= 1.0.6 =
+* Styling tweaks/fixes
+* Updated Freemius SDK
+* Added NEW options to enable smooth scrolling for anchor links
+* Added NEW options to disable Plugin & Theme 'Auto Update' emails
+* Updated the language .pot file
+* PREMIUM: Added option to add PHP Code Snippets to custom hooks
+* PREMIUM: Fixed new CPT's included in SEO Sitemaps
 
 = 1.0.5 =
 * Styling tweaks/fixes

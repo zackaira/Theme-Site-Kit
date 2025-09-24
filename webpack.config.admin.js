@@ -20,6 +20,8 @@ const config = {
 		"mobile-menu.min": "./src/frontend/mobile-menu/mobile-menu.js",
 		"code-snippets": "./src/backend/admin/code-snippets.js",
 		"code-snippets.min": "./src/backend/admin/code-snippets.js",
+		"scroll-animation.min":
+			"./src/frontend/scroll-animation/scroll-animation.js",
 	},
 	output: {
 		filename: (pathData) => {
@@ -88,10 +90,10 @@ const config = {
 			},
 			{
 				test: /\.(png|jpg|jpeg|gif|svg)$/i,
-				type: 'asset/resource',
+				type: "asset/resource",
 				generator: {
-					filename: '[hash][ext][query]'
-				}
+					filename: "[hash][ext][query]",
+				},
 			},
 		],
 	},

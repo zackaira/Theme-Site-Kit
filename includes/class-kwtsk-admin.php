@@ -12,9 +12,10 @@ class KWTSK_Admin {
 	 * Constructor function.
 	 */
 	public function __construct() {
-		// Load blocks
-		// add_action('init', array( $this, 'kwtsk_load_blocks' ));
-		
+		$kwtskSavedOptions = get_option('kwtsk_options');
+		$kwtskOptions = $kwtskSavedOptions ? json_decode($kwtskSavedOptions) : '';
+
+		// Create admin menu.
 		add_action('admin_menu', array( $this, 'kwtsk_create_admin_menu' ), 10, 1);
 		add_filter('plugin_action_links_theme-site-kit/theme-site-kit.php', array($this, 'kwtsk_add_plugins_settings_link'));
 
@@ -22,7 +23,16 @@ class KWTSK_Admin {
 
 		add_filter('admin_body_class', array($this, 'kwtsk_admin_body_classes'));
 
-		// Add Dashboard Widget
+		// Disable auto-update email notifications for plugins.
+		if (isset($kwtskOptions->emails->plugin_updates) && $kwtskOptions->emails->plugin_updates === true ) {
+			add_filter( 'auto_plugin_update_send_email', '__return_false' );
+		}
+		// Disable auto-update email notifications for themes.
+		if (isset($kwtskOptions->emails->theme_updates) && $kwtskOptions->emails->theme_updates === true) {
+			add_filter( 'auto_theme_update_send_email', '__return_false' );
+		}
+
+		// Add Dashboard Widget 
 		// add_action('wp_dashboard_setup', array( $this, 'kwtsk_dashboard_widget' ));
 	}
 

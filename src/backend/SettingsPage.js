@@ -60,7 +60,7 @@ const SettingsPage = ({ kwtskObj }) => {
 
 		// Match pattern: cpts_post_types_{slug}_{setting}
 		const cptMatch = name.match(
-			/^cpts_post_types_(.+)_(enable_categories|enable_tags)$/,
+			/^cpts_post_types_(.+)_(enable_categories|enable_tags)$/
 		);
 
 		if (cptMatch) {
@@ -125,7 +125,7 @@ const SettingsPage = ({ kwtskObj }) => {
 						"content-type": "application/json",
 						"X-WP-NONCE": nonce,
 					},
-				},
+				}
 			)
 			.then((res) => {
 				// console.log(res.data);
@@ -146,7 +146,7 @@ const SettingsPage = ({ kwtskObj }) => {
 		e.preventDefault();
 		if (
 			window.confirm(
-				__("Are you sure you want to delete all settings?", "theme-site-kit"),
+				__("Are you sure you want to delete all settings?", "theme-site-kit")
 			)
 		) {
 			setLoader(true);
@@ -200,7 +200,7 @@ const SettingsPage = ({ kwtskObj }) => {
 			.post(
 				url + "/create-template-page",
 				{},
-				{ headers: { "X-WP-NONCE": nonce } },
+				{ headers: { "X-WP-NONCE": nonce } }
 			)
 			.then((res) => {
 				const { page_id, page_title } = res.data;
@@ -246,7 +246,9 @@ const SettingsPage = ({ kwtskObj }) => {
 				</div>
 
 				<div
-					className={`kwtsk-settings-content ${activeTab === "general" ? "hide-save" : ""}`}
+					className={`kwtsk-settings-content ${
+						activeTab === "general" ? "hide-save" : ""
+					}`}
 				>
 					<form id="kwtsk-settings-form" onSubmit={(e) => handleSubmit(e)}>
 						<div className="kwtsk-tabs">
@@ -254,7 +256,9 @@ const SettingsPage = ({ kwtskObj }) => {
 								<li>
 									<a
 										id="kwtsktab-general"
-										className={`kwtsk-tab ${activeTab === "general" ? "active" : ""}`}
+										className={`kwtsk-tab ${
+											activeTab === "general" ? "active" : ""
+										}`}
 										onClick={() => changeTab("general")}
 									>
 										{__("General", "theme-site-kit")}
@@ -263,7 +267,9 @@ const SettingsPage = ({ kwtskObj }) => {
 								<li>
 									<a
 										id="kwtsktab-disable_comments"
-										className={`kwtsk-tab ${activeTab === "disable_comments" ? "active" : ""}`}
+										className={`kwtsk-tab ${
+											activeTab === "disable_comments" ? "active" : ""
+										}`}
 										onClick={() => changeTab("disable_comments")}
 									>
 										{__("Disable Comments", "theme-site-kit")}
@@ -272,7 +278,9 @@ const SettingsPage = ({ kwtskObj }) => {
 								<li>
 									<a
 										id="kwtsktab-maintenance_mode"
-										className={`kwtsk-tab ${activeTab === "maintenance_mode" ? "active" : ""}`}
+										className={`kwtsk-tab ${
+											activeTab === "maintenance_mode" ? "active" : ""
+										}`}
 										onClick={() => changeTab("maintenance_mode")}
 									>
 										{__("Maintenance Mode", "theme-site-kit")}
@@ -281,7 +289,9 @@ const SettingsPage = ({ kwtskObj }) => {
 								<li>
 									<a
 										id="kwtsktab-social_links"
-										className={`kwtsk-tab ${activeTab === "social_links" ? "active" : ""}`}
+										className={`kwtsk-tab ${
+											activeTab === "social_links" ? "active" : ""
+										}`}
 										onClick={() => changeTab("social_links")}
 									>
 										{__("Social Links", "theme-site-kit")}
@@ -290,7 +300,9 @@ const SettingsPage = ({ kwtskObj }) => {
 								<li>
 									<a
 										id="kwtsktab-mobile_menu"
-										className={`kwtsk-tab ${activeTab === "mobile_menu" ? "active" : ""}`}
+										className={`kwtsk-tab ${
+											activeTab === "mobile_menu" ? "active" : ""
+										}`}
 										onClick={() => changeTab("mobile_menu")}
 									>
 										{__("Mobile Menu", "theme-site-kit")}
@@ -299,7 +311,9 @@ const SettingsPage = ({ kwtskObj }) => {
 								<li>
 									<a
 										id="kwtsktab-cpts"
-										className={`kwtsk-tab ${activeTab === "cpts" ? "active" : ""}`}
+										className={`kwtsk-tab ${
+											activeTab === "cpts" ? "active" : ""
+										}`}
 										onClick={() => changeTab("cpts")}
 									>
 										{__("Custom Post Types", "theme-site-kit")}
@@ -308,7 +322,9 @@ const SettingsPage = ({ kwtskObj }) => {
 								<li>
 									<a
 										id="kwtsktab-extras"
-										className={`kwtsk-tab ${activeTab === "extras" ? "active" : ""}`}
+										className={`kwtsk-tab ${
+											activeTab === "extras" ? "active" : ""
+										}`}
 										onClick={() => changeTab("extras")}
 									>
 										{__("Extras", "theme-site-kit")}
@@ -342,7 +358,7 @@ const SettingsPage = ({ kwtskObj }) => {
 											title={__("Disable Comments", "theme-site-kit")}
 											description={__(
 												"Easily turn off comments across your entire site or selectively disable them per post or page. Keep your content clean and focused, without unnecessary clutter or spam.",
-												"theme-site-kit",
+												"theme-site-kit"
 											)}
 										/>
 
@@ -377,7 +393,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																	<h4>
 																		{__(
 																			"Disable Comments on:",
-																			"theme-site-kit",
+																			"theme-site-kit"
 																		)}
 																	</h4>
 																</th>
@@ -395,7 +411,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																						slug="disablecomments_post_types"
 																						value={
 																							kwtskOptions.disablecomments?.post_types?.includes(
-																								postType.name,
+																								postType.name
 																							) || false
 																						}
 																						inputType="toggle"
@@ -410,7 +426,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																								];
 																							} else {
 																								updated = updated.filter(
-																									(pt) => pt !== postType.name,
+																									(pt) => pt !== postType.name
 																								);
 																							}
 																							handleChange({
@@ -421,7 +437,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																							});
 																						}}
 																					/>
-																				),
+																				)
 																			)}
 																		</tbody>
 																	</table>
@@ -444,7 +460,7 @@ const SettingsPage = ({ kwtskObj }) => {
 											title={__("Maintenance Mode", "theme-site-kit")}
 											description={__(
 												"Enable maintenance mode to temporarily hide your site from visitors while you build your website or make needed updates.",
-												"theme-site-kit",
+												"theme-site-kit"
 											)}
 										/>
 
@@ -453,7 +469,7 @@ const SettingsPage = ({ kwtskObj }) => {
 												<SettingRow
 													title={__(
 														"Enable Maintenance Mode",
-														"theme-site-kit",
+														"theme-site-kit"
 													)}
 													slug={`maintenance_enabled`}
 													value={kwtskOptions.maintenance?.enabled}
@@ -473,30 +489,30 @@ const SettingsPage = ({ kwtskObj }) => {
 															options={{
 																maintenance: __(
 																	"Maintenance Mode",
-																	"theme-site-kit",
+																	"theme-site-kit"
 																),
 																coming_soon: __(
 																	"Coming Soon",
-																	"theme-site-kit",
+																	"theme-site-kit"
 																),
 															}}
 															onChange={handleChange}
 															note={
 																kwtskOptions.maintenance?.mode
 																	? kwtskOptions.maintenance?.mode ===
-																		"maintenance"
+																	  "maintenance"
 																		? __(
 																				"Maintenance Mode (returning HTTP 503 code)",
-																				"theme-site-kit",
-																			)
+																				"theme-site-kit"
+																		  )
 																		: __(
 																				"Coming Soon mode (returning HTTP 200 code)",
-																				"theme-site-kit",
-																			)
+																				"theme-site-kit"
+																		  )
 																	: __(
 																			"Choose between Coming Soon mode (returning HTTP 200 code) or Maintenance Mode (returning HTTP 503 code).",
-																			"theme-site-kit",
-																		)
+																			"theme-site-kit"
+																	  )
 															}
 														/>
 
@@ -509,7 +525,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																	<SettingRow
 																		title={__(
 																			"Choose Template",
-																			"theme-site-kit",
+																			"theme-site-kit"
 																		)}
 																		slug="maintenance_template"
 																		value={kwtskOptions.maintenance?.template}
@@ -517,7 +533,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																		emptyOption={true}
 																		emptyLabel={__(
 																			"Default Basic Template",
-																			"theme-site-kit",
+																			"theme-site-kit"
 																		)}
 																		options={templatePages}
 																		onChange={handleChange}
@@ -531,13 +547,13 @@ const SettingsPage = ({ kwtskObj }) => {
 																					>
 																						{__(
 																							"Edit Template Page",
-																							"theme-site-kit",
+																							"theme-site-kit"
 																						)}
 																					</a>{" "}
 																					<div>
 																						{__(
 																							"This page will be hidden, you can only edit it from here.",
-																							"theme-site-kit",
+																							"theme-site-kit"
 																						)}
 																					</div>
 																				</>
@@ -546,7 +562,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																					{creatingPage ? (
 																						__(
 																							"Creating page...",
-																							"theme-site-kit",
+																							"theme-site-kit"
 																						)
 																					) : (
 																						<>
@@ -559,13 +575,13 @@ const SettingsPage = ({ kwtskObj }) => {
 																							>
 																								{__(
 																									"Create a New Template Page",
-																									"theme-site-kit",
+																									"theme-site-kit"
 																								)}
 																							</a>{" "}
 																							<div>
 																								{__(
 																									"Remember to save your settings afterwards!",
-																									"theme-site-kit",
+																									"theme-site-kit"
 																								)}
 																							</div>
 																						</>
@@ -580,14 +596,14 @@ const SettingsPage = ({ kwtskObj }) => {
 																	<SettingGroup
 																		label={__(
 																			"Edit Template Page",
-																			"theme-site-kit",
+																			"theme-site-kit"
 																		)}
 																	>
 																		{isPremium && (
 																			<SettingRow
 																				title={__(
 																					"Background Color",
-																					"theme-site-kit",
+																					"theme-site-kit"
 																				)}
 																				slug="maintenance_bgcolor"
 																				value={
@@ -611,15 +627,15 @@ const SettingsPage = ({ kwtskObj }) => {
 																					? __("Coming Soon", "theme-site-kit")
 																					: __(
 																							"Maintenance Mode",
-																							"theme-site-kit",
-																						)
+																							"theme-site-kit"
+																					  )
 																			}
 																		/>
 																		{isPremium && (
 																			<SettingRow
 																				title={__(
 																					"Title Color",
-																					"theme-site-kit",
+																					"theme-site-kit"
 																				)}
 																				slug="maintenance_titlecolor"
 																				value={
@@ -642,19 +658,19 @@ const SettingsPage = ({ kwtskObj }) => {
 																				"coming_soon"
 																					? __(
 																							"Our website is launching soon. Stay tuned!",
-																							"theme-site-kit",
-																						)
+																							"theme-site-kit"
+																					  )
 																					: __(
 																							"We are currently performing scheduled maintenance. Please check back soon.",
-																							"theme-site-kit",
-																						)
+																							"theme-site-kit"
+																					  )
 																			}
 																		/>
 																		{isPremium && (
 																			<SettingRow
 																				title={__(
 																					"Text Color",
-																					"theme-site-kit",
+																					"theme-site-kit"
 																				)}
 																				slug="maintenance_textcolor"
 																				value={
@@ -676,7 +692,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																	options={{
 																		loggedin: __(
 																			"Logged In Users",
-																			"theme-site-kit",
+																			"theme-site-kit"
 																		),
 																		custom: __("Custom", "theme-site-kit"),
 																	}}
@@ -688,7 +704,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																		<SettingRow
 																			title={__(
 																				"Select User Roles",
-																				"theme-site-kit",
+																				"theme-site-kit"
 																			)}
 																			slug="maintenance_userroles"
 																			value={
@@ -710,7 +726,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																	slug="maintenance_pronote"
 																	desc={__(
 																		"Unlock full design control with Theme Site Kit Pro - customize default template colors, build your own Maintenance Mode page using the intuitive WordPress block editor, or instantly import our pre-designed page layouts to use for your 'Maintenance Mode' template.",
-																		"theme-site-kit",
+																		"theme-site-kit"
 																	)}
 																	inputType="pronote"
 																	upgradeUrl={upgradeUrl}
@@ -733,7 +749,7 @@ const SettingsPage = ({ kwtskObj }) => {
 											title={__("Social Links", "theme-site-kit")}
 											description={__(
 												"Add slick, always-visible floating icons for your social media profiles and contact options. Positioned neatly along the side of your site, they make it easy for visitors to connect with you anytime.",
-												"theme-site-kit",
+												"theme-site-kit"
 											)}
 										/>
 
@@ -768,24 +784,24 @@ const SettingsPage = ({ kwtskObj }) => {
 																"right-top": __("Right Top", "theme-site-kit"),
 																"right-bottom": __(
 																	"Right Bottom",
-																	"theme-site-kit",
+																	"theme-site-kit"
 																),
 																"left-top": __("Left Top", "theme-site-kit"),
 																"left-bottom": __(
 																	"Left Bottom",
-																	"theme-site-kit",
+																	"theme-site-kit"
 																),
 																"bottom-left": __(
 																	"Bottom Left",
-																	"theme-site-kit",
+																	"theme-site-kit"
 																),
 																"bottom-center": __(
 																	"Bottom Center",
-																	"theme-site-kit",
+																	"theme-site-kit"
 																),
 																"bottom-right": __(
 																	"Bottom Right",
-																	"theme-site-kit",
+																	"theme-site-kit"
 																),
 															}}
 															onChange={handleChange}
@@ -859,7 +875,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																<SettingRow
 																	title={__(
 																		"Background Color",
-																		"theme-site-kit",
+																		"theme-site-kit"
 																	)}
 																	slug="social_iconbgcolor"
 																	value={kwtskOptions.social?.iconbgcolor}
@@ -880,7 +896,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																<SettingRow
 																	title={__(
 																		"Icon Original Color",
-																		"theme-site-kit",
+																		"theme-site-kit"
 																	)}
 																	slug="social_iconorigcolor"
 																	value={kwtskOptions.social?.iconorigcolor}
@@ -898,8 +914,8 @@ const SettingsPage = ({ kwtskObj }) => {
 																			? __("Text Color", "theme-site-kit")
 																			: __(
 																					"Icon & Text Color",
-																					"theme-site-kit",
-																				)
+																					"theme-site-kit"
+																			  )
 																	}
 																	slug="social_iconcolor"
 																	value={kwtskOptions.social?.iconcolor}
@@ -914,7 +930,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																	slug="social_mini_pronote"
 																	desc={__(
 																		"Use original brand colors in Theme Site Kit Pro.",
-																		"theme-site-kit",
+																		"theme-site-kit"
 																	)}
 																	inputType="pronote"
 																	mini
@@ -927,11 +943,11 @@ const SettingsPage = ({ kwtskObj }) => {
 																<SettingRow
 																	title={__(
 																		"Upgrade to Theme Site Kit Pro",
-																		"theme-site-kit",
+																		"theme-site-kit"
 																	)}
 																	desc={__(
 																		"Unlock unlimited social icons and more features with Theme Site Kit Pro.",
-																		"theme-site-kit",
+																		"theme-site-kit"
 																	)}
 																	upgradeUrl={upgradeUrl}
 																	inputType="pronote"
@@ -963,7 +979,7 @@ const SettingsPage = ({ kwtskObj }) => {
 											title={__("Custom Mobile Menu", "theme-site-kit")}
 											description={__(
 												"Upgrade your site's mobile experience with an enhanced core Navigation Block extension. This feature creates a smooth, modern slide-out menu that looks great and works even better on mobile devices.",
-												"theme-site-kit",
+												"theme-site-kit"
 											)}
 											// link={"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
 											// linkText={__("Watch Video", "theme-site-kit")}
@@ -976,7 +992,7 @@ const SettingsPage = ({ kwtskObj }) => {
 												<SettingRow
 													title={__(
 														"Enable Custom Mobile Menu",
-														"theme-site-kit",
+														"theme-site-kit"
 													)}
 													slug={`mobilemenu_enabled`}
 													value={kwtskOptions.mobilemenu?.enabled}
@@ -1007,7 +1023,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																		<SettingRow
 																			title={__(
 																				"Background Color",
-																				"theme-site-kit",
+																				"theme-site-kit"
 																			)}
 																			slug="mobilemenu_bgcolor"
 																			value={kwtskOptions.mobilemenu?.bgcolor}
@@ -1027,10 +1043,12 @@ const SettingsPage = ({ kwtskObj }) => {
 																		<SettingRow
 																			title={__(
 																				"Selected Text Color",
-																				"theme-site-kit",
+																				"theme-site-kit"
 																			)}
 																			slug="mobilemenu_selectedcolor"
-																			value={kwtskOptions.mobilemenu?.selectedcolor}
+																			value={
+																				kwtskOptions.mobilemenu?.selectedcolor
+																			}
 																			inputType="colorpicker"
 																			defaultValue="#FFF"
 																			onChange={handleChange}
@@ -1051,11 +1069,11 @@ const SettingsPage = ({ kwtskObj }) => {
 															<SettingRow
 																title={__(
 																	"Upgrade to Theme Site Kit Pro",
-																	"theme-site-kit",
+																	"theme-site-kit"
 																)}
 																desc={__(
 																	"Theme Site Kit Pro introduces a refined slide-out mobile navigation design for the core editor's Navigation block, offering a cleaner and more intuitive user experience.",
-																	"theme-site-kit",
+																	"theme-site-kit"
 																)}
 																inputType="pronote"
 																upgradeUrl={upgradeUrl}
@@ -1077,7 +1095,7 @@ const SettingsPage = ({ kwtskObj }) => {
 											title={__("Custom Post Types", "theme-site-kit")}
 											description={__(
 												"Create and Manage custom Post Types on your WordPress site.",
-												"theme-site-kit",
+												"theme-site-kit"
 											)}
 											isPro
 											isPremium={isPremium}
@@ -1088,7 +1106,7 @@ const SettingsPage = ({ kwtskObj }) => {
 												<SettingRow
 													title={__(
 														"Enable Custom Post Types",
-														"theme-site-kit",
+														"theme-site-kit"
 													)}
 													slug={`cpts_enabled`}
 													value={kwtskOptions.cpts?.enabled}
@@ -1098,7 +1116,7 @@ const SettingsPage = ({ kwtskObj }) => {
 														kwtskOptions.cpts?.enabled &&
 														__(
 															"Once you've added your custom Post Type(s), you will need to refresh the page to view them in your WordPress admin.",
-															"theme-site-kit",
+															"theme-site-kit"
 														)
 													}
 												/>
@@ -1109,7 +1127,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																<SettingRow
 																	title={__(
 																		"Custom Post Types",
-																		"theme-site-kit",
+																		"theme-site-kit"
 																	)}
 																	slug={`cpts_post_types`}
 																	value={kwtskOptions.cpts?.post_types}
@@ -1144,7 +1162,7 @@ const SettingsPage = ({ kwtskObj }) => {
 											title={__("Extra Useful Features", "theme-site-kit")}
 											description={__(
 												"A few thoughtful Extra's to improve your workflow and enhance your frontend experience - small details that make a big difference.",
-												"theme-site-kit",
+												"theme-site-kit"
 											)}
 										/>
 
@@ -1160,12 +1178,12 @@ const SettingsPage = ({ kwtskObj }) => {
 														kwtskOptions.svgupload?.enabled
 															? __(
 																	"You can now safely upload SVG files.",
-																	"theme-site-kit",
-																)
+																	"theme-site-kit"
+															  )
 															: __(
 																	"Allow SVG uploads in the Media Library. SVG files are XML-based vector images that can be scaled to any size without losing quality. They are often used for logos, icons, and other graphics on the web.",
-																	"theme-site-kit",
-																)
+																	"theme-site-kit"
+															  )
 													}
 												/>
 
@@ -1179,14 +1197,69 @@ const SettingsPage = ({ kwtskObj }) => {
 														kwtskOptions.code?.enabled
 															? __(
 																	"You can now add custom code snippets to your site.",
-																	"theme-site-kit",
-																)
+																	"theme-site-kit"
+															  )
 															: __(
-																"Once enabled, refresh the page to see Code Snippets in your Dashboard sidebar.",
-																"theme-site-kit",
-															)
+																	"Once enabled, refresh the page to see Code Snippets in your Dashboard sidebar.",
+																	"theme-site-kit"
+															  )
 													}
 												/>
+
+												<SettingGroup
+													label={__("Disable WP Emails", "theme-site-kit")}
+													groupClass="kwtsk-disable-emails"
+												>
+													<SettingRow
+														title={__(
+															"Disable Plugin Auto Updates Email",
+															"theme-site-kit"
+														)}
+														slug={`emails_plugin_updates`}
+														value={kwtskOptions.emails?.plugin_updates}
+														inputType="toggle"
+														onChange={handleChange}
+													/>
+													<SettingRow
+														title={__(
+															"Disable Theme Auto Updates Email",
+															"theme-site-kit"
+														)}
+														slug="emails_theme_updates"
+														value={kwtskOptions.emails?.theme_updates}
+														inputType="toggle"
+														onChange={handleChange}
+													/>
+												</SettingGroup>
+
+												<SettingGroup
+													label={__("Anchor Links Scroll", "theme-site-kit")}
+													groupClass="kwtsk-smooth-scroll"
+													note={__(
+														"Enable smooth scrolling for anchor links on your site.",
+														"theme-site-kit"
+													)}
+												>
+													<SettingRow
+														title={__("Enable Smooth Scroll", "theme-site-kit")}
+														slug="sscroll_enabled"
+														value={kwtskOptions.sscroll?.enabled}
+														inputType="toggle"
+														onChange={handleChange}
+													/>
+
+													{kwtskOptions.sscroll?.enabled && (
+														<SettingRow
+															title={__("Animation Duration", "theme-site-kit")}
+															note={__("1000ms = 1 second", "theme-site-kit")}
+															slug="sscroll_speed"
+															value={kwtskOptions.sscroll?.speed || 800}
+															inputType="number"
+															onChange={handleChange}
+															suffix="ms"
+														/>
+													)}
+												</SettingGroup>
 
 												<SettingRow
 													title={__("Duplicate Posts", "theme-site-kit")}
@@ -1227,7 +1300,7 @@ const SettingsPage = ({ kwtskObj }) => {
 												<a onClick={handleDeleteOptions}>
 													{__(
 														"Confirm... Reset All Settings!",
-														"theme-site-kit",
+														"theme-site-kit"
 													)}
 												</a>
 											</div>

@@ -72,6 +72,9 @@ class KWTSK_Scripts {
 			wp_register_script( 'kwtsk-mobile-menu-script', esc_url(KWTSK_PLUGIN_URL) . 'dist/pro/mobile-menu.min.js', array(), KWTSK_PLUGIN_VERSION, true );
 		}
 
+		// Scroll Animation
+		wp_register_script( 'kwtsk-scroll-animation-script', esc_url(KWTSK_PLUGIN_URL) . 'dist/scroll-animation.min.js', array(), KWTSK_PLUGIN_VERSION, true );
+
 		// Admin
 		wp_register_style('kwtsk-admin-style', esc_url(KWTSK_PLUGIN_URL . 'dist/admin' . $suffix . '.css'), array(), KWTSK_PLUGIN_VERSION);
 		wp_register_script('kwtsk-admin-script', esc_url(KWTSK_PLUGIN_URL . 'dist/admin' . $suffix . '.js'), array(), KWTSK_PLUGIN_VERSION, true);
@@ -113,6 +116,14 @@ class KWTSK_Scripts {
 			'kwtskOptions' => $kwtskOptions->social,
 			'isPremium' => $isPro,
 		));
+
+		// Anchor Smooth Scroll Animation
+		if ( isset($kwtskOptions->sscroll->enabled) && $kwtskOptions->sscroll->enabled == true ) {
+			wp_enqueue_script('kwtsk-scroll-animation-script');
+			wp_localize_script('kwtsk-scroll-animation-script', 'kwtskScrollObj', array(
+				'duration' => isset($kwtskOptions->sscroll->speed) ? (int)$kwtskOptions->sscroll->speed : 800,
+			));
+		}
 
 		// Custom Mobile Menu
         if ( $isPro && isset($kwtskOptions->mobilemenu->enabled) && $kwtskOptions->mobilemenu->enabled == true ) {
@@ -330,6 +341,15 @@ class KWTSK_Scripts {
 				),
 				"code" => array(
 					"enabled" => false,
+				),
+				"emails" => array(
+					"enabled" => false,
+					"plugin_updates" => false,
+					"theme_updates" => false,
+				),
+				"sscroll" => array(
+					"enabled" => false,
+					"speed" => 800,
 				),
 		);
 		return $defaultSettings;

@@ -126,6 +126,8 @@ class KWTSK_Custom_Code {
         $selected_items = is_array($selected_items) ? $selected_items : [];
         $enabled        = get_post_meta($post->ID, '_kwtsk_enabled', true) !== '0'; // default ON
         $minify         = get_post_meta($post->ID, '_kwtsk_minify', true) === '1';
+        $php_hook       = get_post_meta($post->ID, '_kwtsk_php_hook', true) ?: 'wp_head';
+        $custom_hook    = get_post_meta($post->ID, '_kwtsk_custom_hook', true) ?: '';
 
         // Get all available content
         $pages = get_pages();
@@ -295,10 +297,38 @@ class KWTSK_Custom_Code {
                 }
             }
 
+            // PHP Hook Selection (only show for PHP language)
+            echo '<div class="kwtsk-code-setting-cols kwtsk-php-hook-settings" id="kwtsk_php_hook_settings">';
+                echo '<div class="kwtsk-code-setting-col">';
+                    echo '<label class="label" for="kwtsk_php_hook">' . esc_html__('PHP Hook (where specifically to run):', 'theme-site-kit') . '</label>';
+                    echo '<select name="kwtsk_php_hook" id="kwtsk_php_hook">';
+                        // Show all hooks for both free and pro versions
+                        $hook_options = [
+                            'wp_head' => esc_html__('wp_head (In HTML head)', 'theme-site-kit'),
+                            'wp_footer' => esc_html__('wp_footer (Before closing body)', 'theme-site-kit'),
+                            'custom' => esc_html__('Custom Hook', 'theme-site-kit')
+                        ];
+                        
+                        foreach ($hook_options as $value => $label) {
+                            $is_pro_option = !in_array($value, ['wp_head', 'wp_footer']);
+                            echo '<option value="' . esc_attr($value) . '"' . 
+                                 selected($php_hook, $value, false) . 
+                                 ($is_pro_option && !$this->isPro ? ' disabled' : '') . '>' . 
+                                 esc_html($label) . ($is_pro_option && !$this->isPro ? ' (Pro)' : '') . '</option>';
+                        }
+                    echo '</select>';
+                echo '</div>'; // .kwtsk-code-setting-col
+                
+                echo '<div class="kwtsk-code-setting-col right ' . ( !$this->isPro ? 'toggle-disabled' : '' ) . '" id="kwtsk_custom_hook_field">';
+                    echo '<label class="label" for="kwtsk_custom_hook">' . esc_html__('Custom Hook Name:', 'theme-site-kit') . '</label>';
+                    echo '<input type="text" id="kwtsk_custom_hook" name="kwtsk_custom_hook" value="' . esc_attr($custom_hook) . '" placeholder="' . esc_attr__('e.g. plugins_loaded', 'theme-site-kit') . '" ' . ( !$this->isPro ? 'disabled' : '' ) . '>';
+                echo '</div>'; // .kwtsk-code-setting-col
+            echo '</div>'; // .kwtsk-code-settings
+
             if (!$this->isPro) {
                 echo '<div class="kwtsk-upgrade-pro">';
                     echo '<p class="kwtsk-code-setting-col-inner-text">' . esc_html__('Upgrade to Theme Site Kit Pro to unlock more advanced features!', 'theme-site-kit') . '</p>';
-                    echo '<p class="kwtsk-code-setting-col-inner-text">' . esc_html__('Load your custom code only on the pages you choose!, Select posts, pages, or specificWooCommerce screens, and optimize your site even more with the added feature of minifying CSS and JavaScript file on the page.', 'theme-site-kit') . '</p>';
+                    echo '<p class="kwtsk-code-setting-col-inner-text">' . esc_html__('Load your custom code only on the pages you choose! Select posts, pages, or specific WooCommerce screens. Get advanced PHP custom hook options for precise control over when your code runs, and optimize your site even more with the added feature of minifying CSS and JavaScript files on the page.', 'theme-site-kit') . '</p>';
                     echo '<a href="' . esc_url(kwtsk_fs()->get_upgrade_url()) . '" target="_blank" class="pronote-btn">' . esc_html__('Upgrade to Pro', 'theme-site-kit') . '</a>';
                 echo '</div>';
             }
@@ -320,6 +350,36 @@ class KWTSK_Custom_Code {
         update_post_meta($post_id, '_kwtsk_where', sanitize_text_field($_POST['kwtsk_where'] ?? ''));
         update_post_meta($post_id, '_kwtsk_priority', intval($_POST['kwtsk_priority'] ?? 10));
         update_post_meta($post_id, '_kwtsk_minify', isset($_POST['kwtsk_minify']) ? '1' : '0');
+        
+        // Save PHP hook settings
+        $php_hook = sanitize_text_field($_POST['kwtsk_php_hook'] ?? 'wp_head');
+        
+        // Restrict hook options based on Pro status
+        $allowed_hooks = ['wp_head', 'wp_footer'];
+        if ($this->isPro) {
+            $allowed_hooks[] = 'custom';
+        }
+        
+        if (!in_array($php_hook, $allowed_hooks)) {
+            $php_hook = 'wp_head'; // Default fallback
+        }
+        
+        update_post_meta($post_id, '_kwtsk_php_hook', $php_hook);
+        
+        // Save custom hook only if Pro and it's being used and is valid
+        if ($this->isPro && $php_hook === 'custom') {
+            $custom_hook = sanitize_text_field($_POST['kwtsk_custom_hook'] ?? '');
+            // Basic validation for hook name (alphanumeric, underscore, dash)
+            if (preg_match('/^[a-zA-Z_][a-zA-Z0-9_-]*$/', $custom_hook)) {
+                update_post_meta($post_id, '_kwtsk_custom_hook', $custom_hook);
+            } else {
+                // Clear invalid custom hook
+                delete_post_meta($post_id, '_kwtsk_custom_hook');
+            }
+        } else {
+            // Clear custom hook if not Pro or not using custom option
+            delete_post_meta($post_id, '_kwtsk_custom_hook');
+        }
 
         // Save selected items
         if (!empty($_POST['kwtsk_selected_items']) && is_array($_POST['kwtsk_selected_items'])) {
@@ -352,6 +412,58 @@ class KWTSK_Custom_Code {
         ]);
         wp_enqueue_script('wp-codemirror');
         wp_enqueue_style('wp-codemirror');
+
+        // Add custom JavaScript for PHP hook UI interactions
+        wp_add_inline_script('wp-codemirror', "
+            jQuery(document).ready(function($) {
+                // Show/hide PHP hook settings based on language selection
+                function togglePHPHookSettings() {
+                    var language = $('#kwtsk_code_language').val();
+                    if (language === 'php') {
+                        $('#kwtsk_php_hook_settings').show();
+                    } else {
+                        $('#kwtsk_php_hook_settings').hide();
+                    }
+                }
+
+                // Show/hide custom hook field based on hook selection
+                function toggleCustomHookField() {
+                    var hookType = $('#kwtsk_php_hook').val();
+                    if (hookType === 'custom') {
+                        $('#kwtsk_custom_hook_field').show();
+                    } else {
+                        $('#kwtsk_custom_hook_field').hide();
+                    }
+                }
+
+                // Reset all selected items when placement type changes
+                function resetSelectedItems() {
+                    // Clear all multi-select fields
+                    $('#kwtsk_selected_pages').val(null).trigger('change');
+                    $('#kwtsk_selected_posts').val(null).trigger('change');
+                    $('#kwtsk_selected_wc_pages').val(null).trigger('change');
+                    $('#kwtsk_selected_wc_products').val(null).trigger('change');
+                }
+
+                // Initialize visibility
+                togglePHPHookSettings();
+                toggleCustomHookField();
+
+                // Bind events
+                $('#kwtsk_code_language').on('change', togglePHPHookSettings);
+                $('#kwtsk_php_hook').on('change', toggleCustomHookField);
+                
+                // Reset selected items when placement type changes
+                $('#kwtsk_where').on('change', function() {
+                    var whereValue = $(this).val();
+                    
+                    // Only reset if changing to a specific placement type that uses selectors
+                    if (['pages', 'posts', 'woocommerce_pages', 'woocommerce_products'].includes(whereValue)) {
+                        resetSelectedItems();
+                    }
+                });
+            });
+        ");
     }
 
     private function kwtsk_get_current_page_id() {
@@ -466,7 +578,8 @@ class KWTSK_Custom_Code {
             $selected_items = get_post_meta($id, '_kwtsk_selected_items', true); // Changed meta key
             $selected_items = is_array($selected_items) ? $selected_items : [];
 
-            if (!$this->kwtsk_should_run_snippet($where, $selected_items)) {
+            // For PHP snippets, skip the placement check here as it's handled in kwtsk_schedule_php_snippet
+            if ($language !== 'php' && !$this->kwtsk_should_run_snippet($where, $selected_items)) {
                 continue;
             }
 
@@ -523,20 +636,108 @@ class KWTSK_Custom_Code {
                 /* ----------  PHP  ---------- */
                 case 'php':
                 default:
-                    // Run ASAP but *after* plugins_loaded so WP is bootstrapped.
-                    add_action(
-                        'init',
-                        function() use ( $code ) {
-                            // Devs: consider sandboxing / try..catch.
-                            eval( "?>{$code}" );
-                        },
-                        $priority
-                    );
+                    // Get PHP hook settings
+                    $php_hook = get_post_meta($id, '_kwtsk_php_hook', true) ?: 'wp';
+                    $custom_hook = get_post_meta($id, '_kwtsk_custom_hook', true) ?: '';
+                    
+                    // For PHP snippets, we need to run the placement check at the right time
+                    // when WordPress has determined the current page context
+                    $this->kwtsk_schedule_php_snippet($code, $where, $selected_items, $priority, $php_hook, $custom_hook);
                     break;
             }
         }
     }
 
+    /**
+     * Schedule PHP snippet execution with proper placement logic and hook selection
+     */
+    private function kwtsk_schedule_php_snippet($code, $where, $selected_items, $priority, $php_hook = 'wp_head', $custom_hook = '') {
+        // Determine the actual hook to use
+        $hook_name = $php_hook === 'custom' && !empty($custom_hook) ? $custom_hook : $php_hook;
+        
+        // For admin-only snippets
+        if ($where === 'admin') {
+            $admin_hook = $this->kwtsk_map_hook_for_admin($hook_name);
+            add_action($admin_hook, function() use ($code) {
+                eval("?>{$code}");
+            }, $priority);
+            return;
+        }
+
+        // For frontend-only snippets
+        if ($where === 'frontend') {
+            add_action($hook_name, function() use ($code) {
+                eval("?>{$code}");
+            }, $priority);
+            return;
+        }
+
+        // For everywhere snippets, run on both admin and frontend
+        if ($where === 'everywhere') {
+            // Admin side
+            $admin_hook = $this->kwtsk_map_hook_for_admin($hook_name);
+            add_action($admin_hook, function() use ($code) {
+                eval("?>{$code}");
+            }, $priority);
+            
+            // Frontend side
+            add_action($hook_name, function() use ($code) {
+                eval("?>{$code}");
+            }, $priority);
+            return;
+        }
+
+        // For specific page/post/WooCommerce placement
+        // For placement-specific snippets, we need to ensure WordPress context is available
+        $placement_hook = $this->kwtsk_get_placement_hook($hook_name);
+        
+        // Frontend execution with placement check
+        $self = $this; // Capture $this for use in closure
+        add_action($placement_hook, function() use ($code, $where, $selected_items, $self) {
+            if (!is_admin() && $self->kwtsk_should_run_snippet($where, $selected_items)) {
+                eval("?>{$code}");
+            }
+        }, $priority);
+
+        // Admin execution with placement check (for editing pages/posts)
+        add_action('admin_init', function() use ($code, $where, $selected_items, $self) {
+            if (is_admin() && $self->kwtsk_should_run_snippet($where, $selected_items)) {
+                eval("?>{$code}");
+            }
+        }, $priority);
+    }
+
+    /**
+     * Map hooks appropriately for admin use
+     */
+    private function kwtsk_map_hook_for_admin($hook_name) {
+        // Map frontend hooks to admin equivalents
+        switch ($hook_name) {
+            case 'wp_head':
+                return 'admin_head';
+            case 'wp_footer':
+                return 'admin_footer';
+            default:
+                // For custom hooks, use admin_init as fallback
+                return in_array($hook_name, ['wp_head', 'wp_footer']) ? $hook_name : 'admin_init';
+        }
+    }
+
+    /**
+     * Get appropriate hook for placement-specific snippets
+     */
+    private function kwtsk_get_placement_hook($requested_hook) {
+        // For placement-specific snippets, we need hooks that run after query is set
+        // wp_head and wp_footer are fine, but early hooks need to be mapped
+        $early_hooks = ['init', 'plugins_loaded', 'after_setup_theme', 'wp_loaded'];
+        
+        if (in_array($requested_hook, $early_hooks)) {
+            // Use 'wp' instead for placement logic to work
+            return 'wp';
+        }
+        
+        return $requested_hook;
+    }
     /* ---------------------------------------------------------------------
     * Naïve-but-safe minifiers (no dependencies)
     * ------------------------------------------------------------------- */
