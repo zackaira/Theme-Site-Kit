@@ -44,7 +44,7 @@ const SettingsPage = ({ kwtskObj }) => {
 		window.history.replaceState(null, "", "?" + params.toString());
 	};
 
-	console.log(kwtskOptions);
+	// console.log(kwtskOptions);
 
 	// setState dynamically for each setting
 	const handleChange = ({

@@ -232,7 +232,7 @@ class KWTSK_Scripts {
 		// Code Snippets
 		if (
 			( 'edit.php' === $pagenow || 'post-new.php' === $pagenow || 'post.php' === $pagenow ) &&
-			( 'kwtsk_code_snippet' === get_post_type((int) $_GET['post']) )
+			( isset($_GET['post']) && 'kwtsk_code_snippet' === get_post_type((int) $_GET['post']) )
 		) {
 			if ( isset( $kwtskOptions->code->enabled ) && $kwtskOptions->code->enabled == true ) {
 				wp_enqueue_style('kwtsk-code-snippets-style');
