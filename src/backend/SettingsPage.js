@@ -1209,6 +1209,10 @@ const SettingsPage = ({ kwtskObj }) => {
 												<SettingGroup
 													label={__("Disable WP Emails", "theme-site-kit")}
 													groupClass="kwtsk-disable-emails"
+													note={__(
+														"Disable the WordPress email notifications for plugin and theme updates.",
+														"theme-site-kit"
+													)}
 												>
 													<SettingRow
 														title={__(
