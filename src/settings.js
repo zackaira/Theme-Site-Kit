@@ -1,4 +1,4 @@
-const { createRoot, render } = wp.element;
+const { createRoot } = wp.element;
 import SettingsPage from "./backend/SettingsPage";
 import "./backend/settings.css";
 
@@ -7,11 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	const element = document.getElementById("kwtsk-root");
 
 	if (element) {
-		if (createRoot) {
-			const root = createRoot(element);
-			root.render(<SettingsPage kwtskObj={kwtskObj} />);
-		} else {
-			render(<SettingsPage kwtskObj={kwtskObj} />, element);
-		}
+		const root = createRoot(element);
+		root.render(<SettingsPage kwtskObj={kwtskObj} />);
 	}
 });

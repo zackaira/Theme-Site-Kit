@@ -88,7 +88,7 @@ const SettingRow = (props) => {
 					<div className={`kwtsk-row-col-left ${props.customClass || ""}`}>
 						{theInput}
 
-						{props.note ? <p className="setting-note">{props.note}</p> : ""}
+						{props.note ? <div className="setting-note">{props.note}</div> : ""}
 						{props.standOutNote && (
 							<>
 								<p className="stand-out-note">

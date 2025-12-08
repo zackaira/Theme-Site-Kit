@@ -53,7 +53,7 @@
 .kwtskDesctip {
 	cursor: pointer;
 }
-.kwtsk-row p.setting-note {
+.kwtsk-row .setting-note {
 	font-size: 13px;
 	color: #979797;
 	margin: 5px 0 0 6px;

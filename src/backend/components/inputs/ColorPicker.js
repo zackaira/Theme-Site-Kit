@@ -1,6 +1,6 @@
 const { useState, useEffect } = wp.element;
 const { __ } = wp.i18n;
-import { ChromePicker } from "react-color";
+import { HexColorPicker } from "react-colorful";
 import { kwtskConvertToSlug } from "../../helpers";
 
 const ColorPicker = (props) => {
@@ -12,8 +12,31 @@ const ColorPicker = (props) => {
 	let allBtns = document.getElementsByClassName("kwtskColorPicker");
 
 	useEffect(() => {
-		props.value ? setActiveColor(props.value) : defaultValue;
+		if (props.value) {
+			setActiveColor(props.value);
+		}
 	}, [props.value]);
+
+	useEffect(() => {
+		const handleWindowClick = (e) => {
+			const isElement = document.getElementById("openColorPicker");
+
+			if (isElement) {
+				if (e.target !== isElement && !isElement.contains(e.target)) {
+					isElement.removeAttribute("id");
+					isElement
+						.closest(".kwtskColorPicker")
+						.classList.remove("kwtskButton-active");
+				}
+			}
+		};
+
+		window.addEventListener("click", handleWindowClick);
+
+		return () => {
+			window.removeEventListener("click", handleWindowClick);
+		};
+	}, []);
 
 	const onButtonFocus = (e) => {
 		e.preventDefault();
@@ -26,46 +49,23 @@ const ColorPicker = (props) => {
 		e.target.closest(".kwtskColorPicker").classList.add("kwtskButton-active");
 	};
 
-	window.addEventListener("click", function (e) {
-		const isElement = document.getElementById("openColorPicker");
-
-		if (isElement) {
-			if (!e.target == isElement || !isElement.contains(e.target)) {
-				isElement.removeAttribute("id");
-				isElement
-					.closest(".kwtskColorPicker")
-					.classList.remove("kwtskButton-active");
-			}
-		}
-	});
-
 	const handleColorChange = (newColor) => {
-		if (typeof newColor === "object" && newColor !== null) {
-			setActiveColor(newColor.hex);
-		} else {
-			setActiveColor(newColor);
-		}
-	};
-
-	const changeColor = (newColor) => {
-		const colorValue =
-			typeof newColor === "object" && newColor !== null
-				? newColor.hex
-				: newColor;
+		// react-colorful returns hex string directly
+		setActiveColor(newColor);
 
 		// Directly call the onChange prop with a synthetic event object.
 		if (props.onChange) {
 			props.onChange({
 				target: {
 					name: colorTitleSlug,
-					value: colorValue,
+					value: newColor,
 				},
 			});
 		}
 	};
 
 	return (
-		<div className="kwtskColorPicker">
+		<div className="kwtskColorPicker" style={{ display: "block" }}>
 			<div className="kwtskColorDisplay">
 				<button
 					className="kwtskColorBtn"
@@ -87,13 +87,9 @@ const ColorPicker = (props) => {
 					onChange={props.onChange}
 				/>
 			</div>
+
 			<div className="kwtskPickColor">
-				<ChromePicker
-					color={activeColor}
-					onChange={(newColor) => handleColorChange(newColor)}
-					disableAlpha={true}
-					onChangeComplete={(newColor) => changeColor(newColor)}
-				/>
+				<HexColorPicker color={activeColor} onChange={handleColorChange} />
 			</div>
 		</div>
 	);

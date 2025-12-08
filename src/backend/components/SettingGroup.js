@@ -7,7 +7,7 @@ const SettingGroup = ({ label, children, groupClass = "", note = "" }) => {
 					<a className="kwtsk-group-btn">
 						<span className="dashicons dashicons-edit"></span>
 					</a>
-					{note && <p className="setting-note">{note}</p>}
+					{note && <div className="setting-note">{note}</div>}
 					<div className="kwtsk-group-container">
 						<table className="form-table" role="presentation">
 							<tbody>{children}</tbody>

@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: customizations, comments, mobile menu, svg upload, theme
 Requires at least: 5.0
 Requires PHP: 7.4
-Tested up to: 6.8
-Stable tag: 1.0.6
+Tested up to: 6.9
+Stable tag: 1.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,6 +163,13 @@ This could be from the theme you're using, or another plugin. Again, please [con
 
 
 == Changelog ==
+
+= 1.0.7 =
+* Styling tweaks/fixes
+* Updated Freemius SDK
+* Replaced and updated Settings ColorPicker
+* Fixed html console layout bug
+* Updated the language .pot file
 
 = 1.0.6 =
 * Styling tweaks/fixes

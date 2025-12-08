@@ -91,7 +91,16 @@ class KWTSK_Disable_Comments {
     public function kwtsk_filter_post_type_args($args, $post_type) {
         if (in_array($post_type, $this->disabled_post_types)) {
             if (isset($args['supports']) && is_array($args['supports'])) {
-                $args['supports'] = array_diff($args['supports'], array('comments', 'trackbacks'));
+                // Handle both indexed and associative arrays
+                $keys = array_keys($args['supports']);
+                $is_indexed = $keys === range(0, count($args['supports']) - 1);
+                if ($is_indexed) {
+                    // Indexed array - use array_diff
+                    $args['supports'] = array_diff($args['supports'], array('comments', 'trackbacks'));
+                } else {
+                    // Associative array - unset the keys directly
+                    unset($args['supports']['comments'], $args['supports']['trackbacks']);
+                }
             }
         }
         return $args;
@@ -120,7 +129,14 @@ class KWTSK_Disable_Comments {
                     return $args;
                 }
                 if (isset($args['supports']) && is_array($args['supports'])) {
-                    $args['supports'] = array_diff($args['supports'], array('comments', 'trackbacks'));
+                    // Handle both indexed and associative arrays
+                    if (array_values($args['supports']) === $args['supports']) {
+                        // Indexed array - use array_diff
+                        $args['supports'] = array_diff($args['supports'], array('comments', 'trackbacks'));
+                    } else {
+                        // Associative array - unset the keys directly
+                        unset($args['supports']['comments'], $args['supports']['trackbacks']);
+                    }
                 }
                 return $args;
             }, 99, 2);
@@ -138,7 +154,14 @@ class KWTSK_Disable_Comments {
             add_filter('register_post_type_args', function($args, $post_type) {
                 if (in_array($post_type, $this->disabled_post_types)) {
                     if (isset($args['supports']) && is_array($args['supports'])) {
-                        $args['supports'] = array_diff($args['supports'], array('comments', 'trackbacks'));
+                        // Handle both indexed and associative arrays
+                        if (array_values($args['supports']) === $args['supports']) {
+                            // Indexed array - use array_diff
+                            $args['supports'] = array_diff($args['supports'], array('comments', 'trackbacks'));
+                        } else {
+                            // Associative array - unset the keys directly
+                            unset($args['supports']['comments'], $args['supports']['trackbacks']);
+                        }
                     }
                 }
                 return $args;

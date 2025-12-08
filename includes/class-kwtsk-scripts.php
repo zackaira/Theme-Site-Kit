@@ -64,7 +64,7 @@ class KWTSK_Scripts {
 		
 		// Frontend
 		wp_register_style('kwtsk-frontend-style', esc_url(KWTSK_PLUGIN_URL . 'dist/frontend' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTSK_PLUGIN_VERSION);
-		wp_register_script('kwtsk-frontend-script', esc_url(KWTSK_PLUGIN_URL . 'dist/frontend' . $suffix . '.js'), array('wp-i18n'), KWTSK_PLUGIN_VERSION);
+		wp_register_script('kwtsk-frontend-script', esc_url(KWTSK_PLUGIN_URL . 'dist/frontend' . $suffix . '.js'), array('wp-element', 'wp-i18n'), KWTSK_PLUGIN_VERSION);
 
 		// Custom Mobile Menu (add custom-mobile-menu class to Nav Block)
 		if ($isPro) {
