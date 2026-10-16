@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: customizations, comments, mobile menu, svg upload, theme
 Requires at least: 5.0
 Requires PHP: 7.4
-Tested up to: 6.9
-Stable tag: 1.0.7
+Tested up to: 7.1
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,7 +29,7 @@ Every feature above is lightweight, toggle-able, and built for the modern WordPr
 Instantly disable comments in WordPress across your whole site, or simply turn off comments on selected posts and pages or custom post types. This lightweight comment-control plugin keeps spam away and creates a cleaner experience for posts, pages, portfolios, landing pages, and more - No code needed!
 
 &#9989; **Maintenance Mode for WordPress**:
-Flip a switch to activate a simple maintenance mode plugin for WordPress. Select whether isitors see a site "under construction" page or a "coming soon" page, while logged-in admins (or any role you choose) can keep working on the website in the background until you turn off maintenance mode.
+Choose maintenance mode or a coming soon page to temporarily hide your site from visitors. Administrators, or any role you choose, can keep working on the website in the background until you turn maintenance mode off.
 
 &#9989; **Safe SVG Uploads**:
 Easily upload SVG images to WordPress without worrying about vulnerabilities. Our SVG uploader sanitizes and cleans every file, giving you crisp, scalable logos and icons in both the Block Editor or the older Classic Editor. Enjoy full SVG support in WordPress with zero security headaches.
@@ -52,8 +52,8 @@ Tired of seeing the “Some plugins were automatically updated” emails from Wo
 &#9989; **Smooth Scroll Animation** for page anchor links:
 Enhance your site’s navigation experience with smooth scrolling. Instead of the default “jump” to an anchor link, this feature adds a sleek scroll animation that gently guides visitors to the section they clicked. A simple touch that makes your site feel more modern and user-friendly.
 
-&#9989; **Duplicate Posts & Pages - One-Click Clone (Coming Soon)**:
-We'll soon be adding the abolity to instantly duplicate any post, page, CPT, or WooCommerce products. All content, images, and blocks copy into a draft, ready to edit and publish.
+&#9989; **Duplicate Posts & Pages**:
+Instantly duplicate any post, page, custom post type, or WooCommerce product. All content, images, and blocks copy into a draft, ready to edit and publish. Turn it on under Theme Site Kit Settings -> Extras, then use Duplicate in the list table or under Move to trash in the editor.
 
 
 &#128312; We're working on adding more features... Send us some ideas and maybe we can add on the features you need!
@@ -163,6 +163,15 @@ This could be from the theme you're using, or another plugin. Again, please [con
 
 
 == Changelog ==
+
+= 1.0.8 =
+* Styling tweaks/fixes
+* Fixed mobile menu styling & submenus
+* Fixed code snippets admin bug
+* Updated and fixed the Maintenance Mode feature
+* Updated Freemius SDK
+* Updated the language .pot file
+* NEW FEATURE: Duplicate posts, pages, and custom post types as drafts
 
 = 1.0.7 =
 * Styling tweaks/fixes

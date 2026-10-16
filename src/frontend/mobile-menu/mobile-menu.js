@@ -1,6 +1,20 @@
 import "./mobile-menu.css";
 
-document.addEventListener("DOMContentLoaded", function () {
+let mobileMenuStarted = false;
+
+function itemHasSubmenu(item) {
+	return (
+		item.classList.contains("has-child") ||
+		item.classList.contains("wp-block-navigation-submenu") ||
+		!!item.querySelector(":scope > ul.wp-block-navigation__submenu-container")
+	);
+}
+
+function initMobileMenu() {
+	if (mobileMenuStarted) return;
+	if (!document.querySelector("nav.wp-block-navigation.kwtsk-mm")) return;
+	mobileMenuStarted = true;
+
 	const isPremium = kwtskMMObj?.isPremium;
 	const menuWidth = kwtskMMObj?.menuWidth;
 
@@ -142,28 +156,84 @@ document.addEventListener("DOMContentLoaded", function () {
 				}
 			});
 
-			// Submenu toggle handlers
-			const navItems = menu.querySelectorAll("li.wp-block-navigation-item");
-			navItems.forEach((item) => {
-				const submenuToggle = item.querySelector(
-					"button.wp-block-navigation-submenu__toggle",
-				);
-				if (submenuToggle) {
-					const clickHandler = function (e) {
-						e.preventDefault();
-						e.stopPropagation();
-						e.stopImmediatePropagation();
-						item.classList.toggle("open-sub");
-						document.body.classList.toggle("has-menu-open");
-					};
+			// Drop Navigation interactivity on submenu items so core click,
+			// hover, and focus handlers cannot swallow the chevron click.
+			menu
+				.querySelectorAll("li.has-child, button.wp-block-navigation-submenu__toggle")
+				.forEach((el) => {
+					[
+						"data-wp-interactive",
+						"data-wp-context",
+						"data-wp-watch",
+						"data-wp-on--focusout",
+						"data-wp-on--keydown",
+						"data-wp-on--pointerenter",
+						"data-wp-on--pointerleave",
+						"data-wp-on--click",
+						"data-wp-on-async--click",
+						"data-wp-bind--aria-expanded",
+					].forEach((attr) => el.removeAttribute(attr));
+				});
 
-					// Remove old event listener if exists, then add the new one
-					submenuToggle.removeEventListener("click", clickHandler);
-					submenuToggle.addEventListener("click", clickHandler, {
-						capture: true,
-					});
-				}
-			});
+			// Chevron may be the toggle button (hover) or a sibling icon (click).
+			// Delegate in the capture phase so the link stacked above it cannot win.
+			responsiveContainer.addEventListener(
+				"click",
+				(e) => {
+					let toggle = e.target.closest(
+						"button.wp-block-navigation-submenu__toggle, .wp-block-navigation__submenu-icon",
+					);
+
+					// If a theme link is stretched over the chevron, a tap on the
+					// right edge of that item is still a submenu toggle.
+					if (!toggle) {
+						const hit = e.target.closest(
+							"a, button.wp-block-navigation-item__content",
+						);
+						const hitItem = hit?.closest("li");
+						if (
+							!hitItem ||
+							!itemHasSubmenu(hitItem) ||
+							!responsiveContainer.contains(hitItem)
+						) {
+							return;
+						}
+						const rect = hitItem.getBoundingClientRect();
+						if (e.clientX < rect.right - 44) {
+							return;
+						}
+						toggle = hitItem.querySelector(
+							":scope > .wp-block-navigation__submenu-icon, :scope > button.wp-block-navigation-submenu__toggle",
+						);
+					}
+
+					if (!toggle || !responsiveContainer.contains(toggle)) {
+						return;
+					}
+
+					const item = toggle.closest("li");
+					if (!item || !itemHasSubmenu(item)) {
+						return;
+					}
+
+					e.preventDefault();
+					e.stopPropagation();
+
+					const isOpen = item.classList.toggle("open-sub");
+					const button = item.querySelector(
+						":scope > button.wp-block-navigation-submenu__toggle",
+					);
+					if (button) {
+						button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+					}
+				},
+				true,
+			);
 		});
 	}
-});
+}
+
+// Footer script: the menu is already parsed, but readyState is still "loading".
+// Run now so submenu attributes are removed before the Navigation module hydrates.
+initMobileMenu();
+document.addEventListener("DOMContentLoaded", initMobileMenu);

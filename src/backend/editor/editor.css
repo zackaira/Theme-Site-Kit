@@ -8,6 +8,17 @@
 .kwtsk-hide {
 	display: none !important;
 }
+.kwtsk-duplicate-post {
+	display: flex;
+}
+.kwtsk-duplicate-post__dropdown,
+.kwtsk-duplicate-post__button.components-button {
+	flex-grow: 1;
+	width: 100%;
+}
+.kwtsk-duplicate-post__button.components-button {
+	justify-content: center;
+}
 /**
  * Theme Site Kit ColorPicker Component
  */

@@ -42,6 +42,7 @@ class KWTSK_Scripts {
 
 		// Load Frontend JS & CSS.
 		add_action( 'wp_enqueue_scripts', array( $this, 'kwtsk_frontend_scripts' ), 10 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'kwtsk_prioritize_mobile_menu_style' ), 100 );
 
 		// Load Admin JS & CSS.
 		add_action( 'admin_enqueue_scripts', array( $this, 'kwtsk_admin_scripts' ), 10, 1 );
@@ -89,12 +90,12 @@ class KWTSK_Scripts {
 
 		// Editor
 		wp_register_style('kwtsk-admin-editor-style', esc_url(KWTSK_PLUGIN_URL . 'dist/editor' . $suffix . '.css'), array('kwtsk-fontawesome'), KWTSK_PLUGIN_VERSION);
-		wp_register_script('kwtsk-admin-editor-script', esc_url(KWTSK_PLUGIN_URL . 'dist/editor' . $suffix . '.js'), array('wp-edit-post', 'lodash'), KWTSK_PLUGIN_VERSION, true);
+		wp_register_script('kwtsk-admin-editor-script', esc_url(KWTSK_PLUGIN_URL . 'dist/editor' . $suffix . '.js'), array('wp-edit-post', 'wp-plugins', 'wp-element', 'wp-data', 'wp-components', 'wp-api-fetch', 'wp-i18n', 'lodash'), KWTSK_PLUGIN_VERSION, true);
 
 		// Code Snippets
 		if (isset($kwtskOptions->code->enabled) && $kwtskOptions->code->enabled == true) {
 			wp_register_style('kwtsk-code-snippets-style', esc_url(KWTSK_PLUGIN_URL . 'dist/code-snippets' . $suffix . '.css'), array(), KWTSK_PLUGIN_VERSION);
-			wp_register_script('kwtsk-code-snippets-script', esc_url(KWTSK_PLUGIN_URL . 'dist/code-snippets' . $suffix . '.js'), array(), KWTSK_PLUGIN_VERSION, true);
+			wp_register_script('kwtsk-code-snippets-script', esc_url(KWTSK_PLUGIN_URL . 'dist/code-snippets' . $suffix . '.js'), array('wp-i18n'), KWTSK_PLUGIN_VERSION, true);
 		}
 	} // End kwtsk_register_scripts ()
 
@@ -137,6 +138,18 @@ class KWTSK_Scripts {
 	} // End kwtsk_frontend_scripts ()
 
 	/**
+	 * Print the mobile menu styles after theme styles so the panel wins the cascade.
+	 */
+	public function kwtsk_prioritize_mobile_menu_style() {
+		foreach ( array( 'kwtsk-mobile-menu-style', 'kwtsk-custom-nav-style' ) as $handle ) {
+			if ( wp_style_is( $handle, 'enqueued' ) ) {
+				wp_dequeue_style( $handle );
+				wp_enqueue_style( $handle );
+			}
+		}
+	}
+
+	/**
 	 * Admin enqueue Scripts & Styles
 	 */
 	public function kwtsk_admin_scripts( $hook = '') {
@@ -158,6 +171,9 @@ class KWTSK_Scripts {
 		wp_localize_script('kwtsk-admin-script', 'kwtskAObj', array(
 			'apiUrl' => esc_url( get_rest_url() ),
 			'nonce' => wp_create_nonce('wp_rest'),
+			'duplicateCreate' => __( 'Create Duplicate', 'theme-site-kit' ),
+			'duplicateEdit' => __( 'Duplicate and Edit', 'theme-site-kit' ),
+			'duplicateHelp' => __( 'Saves a draft copy. Duplicate and Edit opens that draft.', 'theme-site-kit' ),
 		));
 		
 
@@ -229,15 +245,27 @@ class KWTSK_Scripts {
 			// wp_enqueue_media();
 		}
 
-		// Code Snippets
+		// Code Snippets. Add New uses post-new.php?post_type=... and has no post ID,
+		// so the stylesheet has to follow the current screen instead of $_GET['post'].
+		$snippet_screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
 		if (
-			( 'edit.php' === $pagenow || 'post-new.php' === $pagenow || 'post.php' === $pagenow ) &&
-			( isset($_GET['post']) && 'kwtsk_code_snippet' === get_post_type((int) $_GET['post']) )
+			$snippet_screen
+			&& 'kwtsk_code_snippet' === $snippet_screen->post_type
+			&& 'post' === $snippet_screen->base
+			&& isset( $kwtskOptions->code->enabled )
+			&& $kwtskOptions->code->enabled
 		) {
-			if ( isset( $kwtskOptions->code->enabled ) && $kwtskOptions->code->enabled == true ) {
-				wp_enqueue_style('kwtsk-code-snippets-style');
-				wp_enqueue_script('kwtsk-code-snippets-script');
+			wp_enqueue_style( 'kwtsk-code-snippets-style' );
+			// Run after the code editor inline settings, without forcing the editor on
+			// when the user has turned syntax highlighting off.
+			if ( wp_script_is( 'code-editor', 'enqueued' ) ) {
+				global $wp_scripts;
+				if ( isset( $wp_scripts->registered['kwtsk-code-snippets-script'] ) ) {
+					$wp_scripts->registered['kwtsk-code-snippets-script']->deps[] = 'code-editor';
+				}
 			}
+			wp_enqueue_script( 'kwtsk-code-snippets-script' );
+			wp_set_script_translations( 'kwtsk-code-snippets-script', 'theme-site-kit', KWTSK_PLUGIN_DIR . 'lang' );
 		}
 		
 		// Update the language file with this line in the terminal - "wp i18n make-pot ./ lang/theme-site-kit.pot"
@@ -246,19 +274,28 @@ class KWTSK_Scripts {
 	} // End kwtsk_admin_scripts ()
 
 	/**
-	 * Get all published pages excluding WooCommerce, static pages, privacy policy, and returns page.
+	 * The private maintenance template page, for the settings dropdown.
+	 *
+	 * Returns an empty array when the page has not been created or was deleted.
 	 *
 	 * @return array
 	 */
 	public function kwtsk_get_maintenance_mode_page() {
-		$page_id = get_option( 'kwtsk_maintenance_page_id', false );
-		$page = get_page($page_id);
+		$page_id = (int) get_option( 'kwtsk_maintenance_page_id', 0 );
+		if ( ! $page_id ) {
+			return array();
+		}
 
-		// Format result
-		$pages_for_js = array();
-		$pages_for_js[$page->ID] = $page->post_title;
+		$page = get_post( $page_id );
+		if ( ! $page instanceof WP_Post || 'page' !== $page->post_type ) {
+			return array();
+		}
 
-		return $page_id ? $pages_for_js : false;
+		if ( ! in_array( $page->post_status, array( 'private', 'publish' ), true ) ) {
+			return array();
+		}
+
+		return array( $page->ID => $page->post_title );
 	}
 
 	/**
@@ -330,14 +367,14 @@ class KWTSK_Scripts {
 				"maintenance" => array(
 					"enabled" => false,
 					"mode" => "",
-					"access" => "loggedin",
+					"access" => "administrators",
 					"userroles" => array(),
 					"template" => "",
-					"bgcolor" => "#ffffff",
+					"bgcolor" => "#f5f5f5",
 					"title" => "",
-					"titlecolor" => "#333",
+					"titlecolor" => "#333333",
 					"text" => "",
-					"textcolor" => "#666",
+					"textcolor" => "#666666",
 				),
 				"code" => array(
 					"enabled" => false,
@@ -350,6 +387,9 @@ class KWTSK_Scripts {
 				"sscroll" => array(
 					"enabled" => false,
 					"speed" => 800,
+				),
+				"duplicate" => array(
+					"enabled" => false,
 				),
 		);
 		return $defaultSettings;

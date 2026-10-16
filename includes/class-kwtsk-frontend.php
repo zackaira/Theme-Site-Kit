@@ -32,7 +32,7 @@ class KWTSK_Frontend {
             // Add custom classes to the navigation block on the frontend.
             add_action( 'render_block', array( $this, 'kwtsk_add_nav_classes' ), 10, 2 );
             if ( isset( $kwtskOptions->mobilemenu->style ) && $kwtskOptions->mobilemenu->style === 'custom' ) {
-                add_action( 'wp_enqueue_scripts', array( $this, 'kwtsk_add_nav_custom_styles' ), 10, 2 );
+                add_action( 'wp_enqueue_scripts', array( $this, 'kwtsk_add_nav_custom_styles' ), 20, 2 );
             }
         }
     }

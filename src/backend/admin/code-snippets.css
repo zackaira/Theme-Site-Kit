@@ -32,7 +32,9 @@
 /* - Settings - */
 #kwtsk_specific_pages,
 .kwtsk-code-settings > br,
-#kwtsk_minify_opt {
+#kwtsk_minify_opt:not(.is-active),
+#kwtsk_php_hook_settings:not(.is-active),
+#kwtsk_custom_hook_field:not(.is-active) {
 	display: none;
 }
 .kwtsk-code-settings {
@@ -85,6 +87,9 @@
 .kwtsk-select-pages {
 	margin: 20px 0;
 	display: none;
+}
+.kwtsk-select-pages.is-active {
+	display: block;
 }
 .kwtsk-code-pages-opts {
 	display: flex;
@@ -159,6 +164,9 @@
 /* Choices.js custom styles */
 .kwtsk-choices {
 	position: relative;
+	margin-bottom: 0;
+	font-size: 14px;
+	overflow: visible;
 }
 
 .kwtsk-choices .choices__inner {

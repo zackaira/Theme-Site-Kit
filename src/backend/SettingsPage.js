@@ -19,7 +19,7 @@ const SettingsPage = ({ kwtskObj }) => {
 	const postTypes = kwtskObj.post_types;
 	const publishedPages = kwtskObj.publishedPages;
 	// const pageTemplates = kwtskObj.pageTemplates;
-	const [templatePages, setTemplatePages] = useState(publishedPages);
+	const [templatePages, setTemplatePages] = useState(publishedPages || {});
 	const userRoles = kwtskObj.userRoles;
 
 	const [loader, setLoader] = useState(false);
@@ -35,6 +35,26 @@ const SettingsPage = ({ kwtskObj }) => {
 	const [showSocialPreview, setShowSocialPreview] = useState(false);
 
 	const [creatingPage, setCreatingPage] = useState(false);
+	const maintenanceMode =
+		kwtskOptions.maintenance?.enabled &&
+		(kwtskOptions.maintenance?.mode === "maintenance" ||
+			kwtskOptions.maintenance?.mode === "coming_soon")
+			? kwtskOptions.maintenance.mode
+			: "";
+
+	const handleMaintenanceModeChange = (e) => {
+		const mode = e.target.value;
+		const enabled = mode === "maintenance" || mode === "coming_soon";
+
+		setKwtskOptions((prev) => ({
+			...prev,
+			maintenance: {
+				...(prev.maintenance || {}),
+				enabled,
+				mode: enabled ? mode : "",
+			},
+		}));
+	};
 
 	const changeTab = (tabId = "general") => {
 		setActiveTab(tabId);
@@ -167,7 +187,11 @@ const SettingsPage = ({ kwtskObj }) => {
 	// Get Settings from db
 	useEffect(() => {
 		axios
-			.get(url + "/settings")
+			.get(url + "/settings", {
+				headers: {
+					"X-WP-NONCE": nonce,
+				},
+			})
 			.then((res) => {
 				const kwtskOptions = res?.data
 					? JSON.parse(res.data)
@@ -187,7 +211,8 @@ const SettingsPage = ({ kwtskObj }) => {
 				}
 				// console.log(kwtskOptions);
 			})
-			.then(() => {
+			.catch(() => {})
+			.finally(() => {
 				setLoadSetting(false);
 			});
 	}, []);
@@ -459,7 +484,7 @@ const SettingsPage = ({ kwtskObj }) => {
 										<SettingHeader
 											title={__("Maintenance Mode", "theme-site-kit")}
 											description={__(
-												"Enable maintenance mode to temporarily hide your site from visitors while you build your website or make needed updates.",
+												"Hide your site from visitors while you build it or make updates. Choose a maintenance page or a coming soon page.",
 												"theme-site-kit"
 											)}
 										/>
@@ -467,59 +492,42 @@ const SettingsPage = ({ kwtskObj }) => {
 										<table className="form-table" role="presentation">
 											<tbody>
 												<SettingRow
-													title={__(
-														"Enable Maintenance Mode",
-														"theme-site-kit"
-													)}
-													slug={`maintenance_enabled`}
-													value={kwtskOptions.maintenance?.enabled}
-													inputType="toggle"
-													onChange={handleChange}
+													title={__("Mode", "theme-site-kit")}
+													slug="maintenance_mode"
+													value={maintenanceMode}
+													inputType="select"
+													emptyOption={true}
+													emptyLabel={__("Off", "theme-site-kit")}
+													options={{
+														maintenance: __(
+															"Maintenance Mode",
+															"theme-site-kit"
+														),
+														coming_soon: __(
+															"Coming Soon",
+															"theme-site-kit"
+														),
+													}}
+													onChange={handleMaintenanceModeChange}
+													note={
+														maintenanceMode === "maintenance"
+															? __(
+																	"Visitors see a maintenance page and the site returns HTTP 503, so search engines know to check back later.",
+																	"theme-site-kit"
+															  )
+															: maintenanceMode === "coming_soon"
+															? __(
+																	"Visitors see a coming soon page and the site returns HTTP 200 with a noindex tag, so this page is not indexed as your homepage.",
+																	"theme-site-kit"
+															  )
+															: __(
+																	"Choose Coming Soon (HTTP 200, noindex) or Maintenance Mode (HTTP 503).",
+																	"theme-site-kit"
+															  )
+													}
 												/>
 
-												{kwtskOptions.maintenance?.enabled && (
-													<>
-														<SettingRow
-															title={__("Choose Mode", "linkt")}
-															slug="maintenance_mode"
-															value={kwtskOptions.maintenance?.mode}
-															inputType="select"
-															emptyOption={true}
-															emptyLabel={__("Disabled", "theme-site-kit")}
-															options={{
-																maintenance: __(
-																	"Maintenance Mode",
-																	"theme-site-kit"
-																),
-																coming_soon: __(
-																	"Coming Soon",
-																	"theme-site-kit"
-																),
-															}}
-															onChange={handleChange}
-															note={
-																kwtskOptions.maintenance?.mode
-																	? kwtskOptions.maintenance?.mode ===
-																	  "maintenance"
-																		? __(
-																				"Maintenance Mode (returning HTTP 503 code)",
-																				"theme-site-kit"
-																		  )
-																		: __(
-																				"Coming Soon mode (returning HTTP 200 code)",
-																				"theme-site-kit"
-																		  )
-																	: __(
-																			"Choose between Coming Soon mode (returning HTTP 200 code) or Maintenance Mode (returning HTTP 503 code).",
-																			"theme-site-kit"
-																	  )
-															}
-														/>
-
-														{(kwtskOptions.maintenance?.mode ===
-															"maintenance" ||
-															kwtskOptions.maintenance?.mode ===
-																"coming_soon") && (
+												{maintenanceMode && (
 															<>
 																{isPremium && (
 																	<SettingRow
@@ -535,7 +543,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																			"Default Basic Template",
 																			"theme-site-kit"
 																		)}
-																		options={templatePages}
+																		options={templatePages || {}}
 																		onChange={handleChange}
 																		note={
 																			kwtskOptions.maintenance?.template ? (
@@ -580,7 +588,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																							</a>{" "}
 																							<div>
 																								{__(
-																									"Remember to save your settings afterwards!",
+																									"The page is saved as your template. Save your other settings if you still have changes.",
 																									"theme-site-kit"
 																								)}
 																							</div>
@@ -642,7 +650,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																					kwtskOptions.maintenance?.titlecolor
 																				}
 																				inputType="colorpicker"
-																				defaultValue="#333"
+																				defaultValue="#333333"
 																				onChange={handleChange}
 																			/>
 																		)}
@@ -677,7 +685,7 @@ const SettingsPage = ({ kwtskObj }) => {
 																					kwtskOptions.maintenance?.textcolor
 																				}
 																				inputType="colorpicker"
-																				defaultValue="#666"
+																				defaultValue="#666666"
 																				onChange={handleChange}
 																			/>
 																		)}
@@ -685,11 +693,21 @@ const SettingsPage = ({ kwtskObj }) => {
 																)}
 
 																<SettingRow
-																	title={__("Who Can Access the Site", "linkt")}
+																	title={__(
+																		"Who Can Access the Site",
+																		"theme-site-kit"
+																	)}
 																	slug="maintenance_access"
-																	value={kwtskOptions.maintenance?.access}
+																	value={
+																		kwtskOptions.maintenance?.access ||
+																		"administrators"
+																	}
 																	inputType="select"
 																	options={{
+																		administrators: __(
+																			"Administrators",
+																			"theme-site-kit"
+																		),
 																		loggedin: __(
 																			"Logged In Users",
 																			"theme-site-kit"
@@ -716,25 +734,23 @@ const SettingsPage = ({ kwtskObj }) => {
 																		/>
 																	</>
 																)}
+																{!isPremium && (
+																	<>
+																		<br />
+																		<br />
+																		<SettingRow
+																			slug="maintenance_pronote"
+																			desc={__(
+																				"Unlock full design control with Theme Site Kit Pro - customize default template colors, build your own Maintenance Mode page using the intuitive WordPress block editor, or instantly import our pre-designed page layouts to use for your 'Maintenance Mode' template.",
+																				"theme-site-kit"
+																			)}
+																			inputType="pronote"
+																			upgradeUrl={upgradeUrl}
+																		/>
+																	</>
+																)}
 															</>
 														)}
-														{!isPremium && (
-															<>
-																<br />
-																<br />
-																<SettingRow
-																	slug="maintenance_pronote"
-																	desc={__(
-																		"Unlock full design control with Theme Site Kit Pro - customize default template colors, build your own Maintenance Mode page using the intuitive WordPress block editor, or instantly import our pre-designed page layouts to use for your 'Maintenance Mode' template.",
-																		"theme-site-kit"
-																	)}
-																	inputType="pronote"
-																	upgradeUrl={upgradeUrl}
-																/>
-															</>
-														)}
-													</>
-												)}
 											</tbody>
 										</table>
 									</div>
@@ -1267,15 +1283,21 @@ const SettingsPage = ({ kwtskObj }) => {
 
 												<SettingRow
 													title={__("Duplicate Posts", "theme-site-kit")}
-													slug={`duplicate_comingsoon`}
-													value={kwtskOptions.duplicate?.comingsoon}
+													slug={`duplicate_enabled`}
+													value={kwtskOptions.duplicate?.enabled}
 													inputType="toggle"
 													onChange={handleChange}
-													comingSoon
-													// note={__(
-													// 	"Once you've enabled this, refresh the page to then view and access Code Snippets in your Dashboard sidebar.",
-													// 	"theme-site-kit",
-													// )}
+													note={
+														kwtskOptions.duplicate?.enabled
+															? __(
+																	"Duplicate is available on posts, pages, and custom post types. Copies are saved as drafts.",
+																	"theme-site-kit"
+															  )
+															: __(
+																	"Add a Duplicate action to posts, pages, and custom post types. The copy is saved as a draft with the same content and metadata.",
+																	"theme-site-kit"
+															  )
+													}
 												/>
 											</tbody>
 										</table>

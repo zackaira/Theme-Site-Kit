@@ -1,14 +1,15 @@
 import 'choices.js/public/assets/styles/choices.min.css';
 import Choices from 'choices.js'; 
 import "./code-snippets.css";
-const { __ } = wp.i18n;
+const __ = window.wp?.i18n?.__ ? window.wp.i18n.__ : (text) => text;
 
 document.addEventListener("DOMContentLoaded", () => {
 	/* <fs_premium_only> */
-	// Initialize Choices.js for all select elements
+	// Initialize Choices.js for all select elements.
+	// Choices 11 class names are arrays; replacing containerOuter with a string
+	// drops the base "choices" class and the library styles never apply.
 	const selects = document.querySelectorAll('#kwtsk_selected_pages, #kwtsk_selected_posts, #kwtsk_selected_wc_pages, #kwtsk_selected_wc_products');
 	selects.forEach(select => {
-		// Make sure the select has the multiple attribute
 		select.setAttribute('multiple', 'multiple');
 		
 		new Choices(select, {
@@ -19,18 +20,18 @@ document.addEventListener("DOMContentLoaded", () => {
 			placeholder: true,
 			placeholderValue: __("Search...", "theme-site-kit"),
 			classNames: {
-				containerOuter: 'kwtsk-choices',
+				containerOuter: ['choices', 'kwtsk-choices'],
 			},
-			maxItemCount: -1, // Allow unlimited selections
+			maxItemCount: -1,
 			position: 'bottom'
 		});
 	});
 
-	// Show/hide selectors based on where option
+	// Show the selector that matches the current placement, and only let that
+	// select submit. The others share the same field name.
 	function toggleSelectors() {
 		const where = document.getElementById('kwtsk_where')?.value;
 		
-		// Get all select containers
 		const containers = {
 			pages: document.getElementById('kwtsk_pages_select'),
 			posts: document.getElementById('kwtsk_posts_select'),
@@ -38,24 +39,27 @@ document.addEventListener("DOMContentLoaded", () => {
 			woocommerce_products: document.getElementById('kwtsk_wc_products_select')
 		};
 		
-		// Hide all containers first
-		Object.values(containers).forEach(container => {
-			if (container) {
-				container.style.display = 'none';
+		Object.entries(containers).forEach(([key, container]) => {
+			if (!container) {
+				return;
 			}
+
+			const active = key === where;
+			container.classList.toggle('is-active', active);
+			container.querySelectorAll('select').forEach((select) => {
+				if (active) {
+					select.setAttribute('name', 'kwtsk_selected_items[]');
+				} else {
+					select.removeAttribute('name');
+				}
+			});
 		});
-		
-		// Show the appropriate container based on selection
-		if (where && containers[where]) {
-			containers[where].style.display = 'block';
-		}
 	}
 
-	// Add event listener for change event
 	const whereSelect = document.getElementById('kwtsk_where');
 	if (whereSelect) {
 		whereSelect.addEventListener('change', toggleSelectors);
-		toggleSelectors(); // Initial state
+		toggleSelectors();
 	}
 
 	/* </fs_premium_only> */
@@ -66,13 +70,50 @@ document.addEventListener("DOMContentLoaded", () => {
 	const textarea = document.getElementById("kwtsk_code");
 	const langSelect = document.getElementById("kwtsk_code_language");
 
-	if (!textarea || !langSelect || !window.wp?.codeEditor) return;
-
 	const minifySetting = document.getElementById("kwtsk_minify_opt");
-	const settings = wp.codeEditor.defaultSettings;
+
+	function setMinifyVisibility(lang) {
+		if (!minifySetting) {
+			return;
+		}
+		minifySetting.classList.toggle("is-active", lang !== "php");
+	}
+
+	if (!textarea || !langSelect || !window.wp?.codeEditor) {
+		if (langSelect) {
+			setMinifyVisibility(langSelect.value);
+		}
+		return;
+	}
+
+	const settings = wp.codeEditor.defaultSettings || {};
+	settings.codemirror = Object.assign({}, settings.codemirror, {
+		mode: langSelect.value === "php" ? "php" : langSelect.value,
+		lineNumbers: true,
+		lineWrapping: true,
+	});
 	const editorWrapper = wp.codeEditor.initialize(textarea, settings);
 	const editor = editorWrapper.codemirror;
 	window.kwtEditor = editor;
+
+	// CodeMirror measures the textarea before the metabox layout has settled,
+	// so the editor paints unstyled until something forces a refresh.
+	const refreshEditor = () => {
+		if (editor) {
+			editor.refresh();
+		}
+	};
+	refreshEditor();
+	window.requestAnimationFrame(refreshEditor);
+	window.setTimeout(refreshEditor, 50);
+
+	if (window.jQuery) {
+		window.jQuery(document).on("postbox-toggled", (_event, postbox) => {
+			if (postbox && postbox.id === "kwtsk_custom_code_box") {
+				refreshEditor();
+			}
+		});
+	}
 
 	// Function to set PHP prefix
 	function maybeSetPhpPrefix(lang) {
@@ -134,9 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	maybeSetPhpPrefix(langSelect.value);
 	updateCodeWrapperTags(langSelect.value);
 
-	if (minifySetting) {
-		minifySetting.style.display = langSelect.value === "php" ? "none" : "flex";
-	}
+	setMinifyVisibility(langSelect.value);
 
 	// On language change
 	let currentLang = langSelect.value;
@@ -167,8 +206,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		maybeSetPhpPrefix(requestedLang);
 		updateCodeWrapperTags(requestedLang);
 
-		if (minifySetting) {
-			minifySetting.style.display = requestedLang === "php" ? "none" : "flex";
-		}
+		setMinifyVisibility(requestedLang);
 	});
 });
